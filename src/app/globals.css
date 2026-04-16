@@ -1,0 +1,115 @@
+:root {
+  --color-background: #ffffff;
+  --color-foreground: #000000;
+  --color-brown: #8B5A2B;
+  --color-indigo: #2B3A67;
+  --color-light-gray: #f9f9f9;
+  --color-medium-gray: #666666;
+  --color-border: #e0e0e0;
+  --color-footer-bg: #2B3A67; 
+  --color-footer-text: #ffffff;
+
+  --spacing-unit: 8px;
+  --section-padding: 80px 5%;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+a:hover {
+  opacity: 0.7;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-playfair), serif;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+h1 { font-size: 3.5rem; }
+h2 { font-size: 2.5rem; }
+h3 { font-size: 1.5rem; }
+
+p, span, div, button, input {
+  font-family: var(--font-inter), sans-serif;
+  line-height: 1.6;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+.btn-primary {
+  background-color: var(--color-brown);
+  color: white;
+  padding: 12px 24px;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #6a4320;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-foreground);
+  border: 1px solid var(--color-foreground);
+  padding: 12px 24px;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.3s;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-indigo);
+  color: white;
+  border-color: var(--color-indigo);
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 5%;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --section-padding: 40px 5%;
+  }
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+}

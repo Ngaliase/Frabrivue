@@ -1,0 +1,84 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.headerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 5%;
+}
+
+.logo {
+  font-family: var(--font-playfair), serif;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-indigo);
+}
+
+.nav {
+  display: flex;
+  gap: 32px;
+}
+
+.navLink {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  color: var(--color-foreground);
+}
+
+.navLink:hover {
+  color: var(--color-brown);
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.langBtn {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-indigo);
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+}
+
+.hamburger {
+  display: none;
+  font-size: 1.5rem;
+  color: var(--color-indigo);
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+  .nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    padding: 20px 5%;
+    border-bottom: 2px solid var(--color-indigo);
+    gap: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  }
+  .navOpen {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+  }
+}
