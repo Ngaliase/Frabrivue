@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { BookMarked, ArrowLeft, Trash2, LogIn, Scissors, ExternalLink } from 'lucide-react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import styles from './page.module.css';
 import { useTranslations } from 'next-intl';
 
@@ -27,6 +29,8 @@ export default function MoodboardPage() {
   const [items, setItems] = useState<MoodItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [authed, setAuthed] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('fabrivo_token');
@@ -41,16 +45,31 @@ export default function MoodboardPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  useGSAP(() => {
+    if (!loading && items.length > 0 && gridRef.current) {
+      gsap.fromTo(
+        gridRef.current.children,
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: 'power2.out', delay: 0.2 }
+      );
+    }
+    
+    if (!loading && !authed) {
+      gsap.fromTo(`.${styles.emptyState} > *`,
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power2.out' }
+      );
+    }
+  }, { scope: containerRef, dependencies: [loading, items, authed] });
+
   const remove = async (id: number) => {
     const token = localStorage.getItem('fabrivo_token');
-    // Optimistic UI update
     setItems(prev => prev.filter(i => i.id !== id));
-    // Note: Backend DELETE endpoint would go here when implemented
     console.log('Remove moodboard item', id, token);
   };
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page} ref={containerRef}>
       {/* Header */}
       <div className={styles.topBar}>
         <div className="container" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 24px' }}>
@@ -68,7 +87,9 @@ export default function MoodboardPage() {
         {/* Not logged in */}
         {!authed && !loading && (
           <div className={styles.emptyState}>
-            <BookMarked size={48} strokeWidth={1.2} className={styles.emptyIcon} />
+            <div className={styles.emptyIconWrap}>
+              <BookMarked size={48} strokeWidth={1.2} className={styles.emptyIcon} />
+            </div>
             <h2>{t('notLoggedIn')}</h2>
             <p>{t('loginMessage')}</p>
             <Link href="/auth" className={styles.authLink}>
@@ -87,7 +108,9 @@ export default function MoodboardPage() {
         {/* Logged in – empty */}
         {authed && !loading && items.length === 0 && (
           <div className={styles.emptyState}>
-            <BookMarked size={48} strokeWidth={1.2} className={styles.emptyIcon} />
+            <div className={styles.emptyIconWrap}>
+              <BookMarked size={48} strokeWidth={1.2} className={styles.emptyIcon} />
+            </div>
             <h2>{t('emptyCollection')}</h2>
             <p>{t('exploreMessage')}</p>
             <Link href="/" className={styles.authLink}>
@@ -98,12 +121,11 @@ export default function MoodboardPage() {
 
         {/* Grid */}
         {authed && !loading && items.length > 0 && (
-          <div className={styles.grid}>
-            {items.map((item, idx) => (
+          <div className={styles.grid} ref={gridRef}>
+            {items.map((item) => (
               <div
                 key={item.id}
                 className={styles.card}
-                style={{ animationDelay: `${idx * 0.06}s` }}
               >
                 <div className={styles.cardThumb}>
                   <Scissors size={24} strokeWidth={1.4} className={styles.thumbIcon} />

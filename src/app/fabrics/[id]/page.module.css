@@ -5,12 +5,12 @@
 }
 
 .topBar {
-  background: white;
-  border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: var(--shadow-sm);
 }
 
 .topBarInner {
@@ -40,7 +40,7 @@
   gap: 6px;
   font-size: 0.85rem;
   font-weight: 600;
-  background: var(--brand-indigo);
+  background: linear-gradient(135deg, var(--brand-indigo) 0%, #3a5099 100%);
   color: white;
   border: none;
   border-radius: var(--radius-sm);
@@ -155,7 +155,10 @@
   font-family: var(--font-merriweather), 'Merriweather', serif;
   font-size: 2.4rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: transparent;
+  background: linear-gradient(90deg, var(--brand-brown) 0%, var(--brand-indigo) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
   line-height: 1.2;
 }
 
@@ -175,12 +178,13 @@
 }
 
 .section {
-  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
   border-radius: var(--radius-md);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 24px 28px;
   box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--transition-base);
+  transition: all var(--transition-base);
 }
 .section:hover {
   box-shadow: var(--shadow-md);

@@ -1,19 +1,33 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import { Search, Globe, Sparkles, BookMarked, LogIn, User, LogOut } from 'lucide-react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import styles from './Header.module.css';
 
-export default function Header() {
+export default function Header({ transparent = false }: { transparent?: boolean }) {
   const t = useTranslations('Header');
   const locale = useLocale();
   const router = useRouter();
 
   const [search, setSearch] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+
+  useGSAP(() => {
+    if (transparent && headerRef.current) {
+      gsap.fromTo(
+        headerRef.current,
+        { y: -30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: 'power3.out' }
+      );
+    }
+  }, { scope: headerRef, dependencies: [transparent] });
 
   useEffect(() => {
     const token = localStorage.getItem('fabrivo_token');
@@ -33,7 +47,7 @@ export default function Header() {
   };
 
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} ${transparent ? styles.transparent : ''}`} ref={headerRef}>
       <div className={`container ${styles.inner}`}>
         {/* Logo */}
         <Link href="/" className={styles.logo}>
@@ -55,15 +69,24 @@ export default function Header() {
         </div>
 
         {/* Search */}
-        <div className={styles.searchWrap}>
-          <Search size={14} className={styles.searchIcon} />
-          <input
-            type="text"
-            className={styles.searchInput}
-            placeholder={t('searchPlaceholder')}
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
+        <div className={`${styles.searchWrap} ${isSearchOpen ? styles.searchOpen : ''}`}>
+          <button 
+            className={styles.searchToggle} 
+            onClick={() => setIsSearchOpen(!isSearchOpen)}
+            title={t('searchPlaceholder')}
+          >
+            <Search size={18} />
+          </button>
+          <div className={styles.searchInputContainer}>
+            <input
+              type="text"
+              className={styles.searchInput}
+              placeholder={t('searchPlaceholder')}
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              autoFocus={isSearchOpen}
+            />
+          </div>
         </div>
 
         {/* Nav actions */}
@@ -87,9 +110,8 @@ export default function Header() {
             </Link>
           )}
 
-          <Link href="/quiz" className={styles.quizBtn}>
-            <Sparkles size={15} />
-            {t('quiz')}
+          <Link href="/quiz" className={styles.iconNavBtn} title={t('quiz')}>
+            <Sparkles size={18} />
           </Link>
         </div>
       </div>

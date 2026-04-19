@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { Upload, Camera, Leaf, Loader2, Snowflake, Flame, Sun, Wind, Scan, AlertCircle, FileText } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import styles from './AIScanner.module.css';
 
 interface AIResult {
@@ -28,6 +30,26 @@ export default function AIScanner() {
   const [activeSeason, setActiveSeason] = useState('autumn');
   const [dragOver, setDragOver] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(() => {
+    gsap.fromTo(
+      [`.${styles.zoneLeft}`, `.${styles.zoneCenter}`, `.${styles.zoneRight}`],
+      { y: 50, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out' }
+    );
+  }, { scope: sectionRef });
+
+  useGSAP(() => {
+    if (result) {
+      gsap.fromTo(
+        `.${styles.resultContent} > div`,
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.4, stagger: 0.05, ease: 'power2.out' }
+      );
+    }
+  }, { dependencies: [result], scope: sectionRef });
 
   const getMockResult = (): AIResult => ({
     fabric: t('mock_result.fabric'),
@@ -67,7 +89,7 @@ export default function AIScanner() {
   }, [activeSeason]);
 
   return (
-    <section className={styles.section}>
+    <section className={styles.section} ref={sectionRef}>
       <div className="container">
         <div className={styles.studioHeader}>
           <h2 className={styles.sectionTitle}>{t('section_title')}</h2>
@@ -160,7 +182,7 @@ export default function AIScanner() {
               )}
 
               {result && !loading && (
-                <div className={`${styles.resultContent} ${styles.animateResult}`}>
+                <div className={styles.resultContent}>
                   <div className={styles.resultMain}>
                     <div className={styles.resultRow}>
                       <span className={styles.resultLabel}>{t('fabric_type_label')}</span>
@@ -208,7 +230,7 @@ export default function AIScanner() {
           </div>
           <div className={styles.seasonTabs}>
             {SEASONS.map(({ key, Icon }) => (
-              <button
+               <button
                 key={key}
                 className={`${styles.seasonTab} ${activeSeason === key ? styles.seasonActive : ''}`}
                 onClick={() => setActiveSeason(key)}

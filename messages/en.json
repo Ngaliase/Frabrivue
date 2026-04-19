@@ -1,139 +1,147 @@
 {
-  "Layout": {
-    "title": "Fabrivo – Smart Fabric Search & AI Recognition",
-    "description": "Look up over 300 types of fabric using AI. Get details, care instructions, and seasonal style suggestions."
-  },
-  "Header": {
-    "searchPlaceholder": "Search >300 fabrics",
-    "moodboardTitle": "Moodboard",
-    "login": "Login",
-    "account": "Account",
-    "logout": "Logout",
-    "quiz": "Style Quiz"
-  },
-  "Footer": {
-    "help": "Help",
-    "settings": "Settings"
-  },
-  "Home": {},
-  "FabricGrid": {
-    "serverError": "Server error",
-    "connectionError": "Cannot connect to server. Make sure Backend is running on port 8000.",
-    "fiberType": "Fiber",
-    "fabricType": "Fabric",
-    "noDescription": "No description.",
-    "viewDetails": "View details",
-    "previousPage": "Previous page",
-    "nextPage": "Next page",
-    "updateDatabase": "Refresh",
-    "manageCollection": "Manage Collection"
-  },
-  "AIScanner": {
-    "section_title": "Studio Try-On & AI Fabric Recognition",
-    "section_description": "Experience changing fabric materials directly on the model and intelligently identify fabrics through images.",
-    "scanner_header": "Fabric Sample Scanner Area",
-    "upload_label": "Upload Your Fabric Image",
-    "upload_file": "Select File",
-    "upload_camera": "Take Photo",
-    "upload_hint": "Supports JPG, PNG (Max 5MB)",
-    "loading_message": "AI is analyzing fabric...",
-    "info_message": "Click the image to upload another sample.",
-    "model_label": "Fashion Model",
-    "model_material": "Apply material:",
-    "analysis_header": "Material Analysis Report",
-    "empty_state": "Analysis panel is empty. Scan a fabric sample for AI to extract material information.",
-    "fabric_type_label": "Detected fabric type:",
-    "accuracy_label": "AI Accuracy:",
-    "eco_label": "Environment:",
-    "eco_friendly": "Eco Friendly",
-    "eco_not_certified": "Not Eco Certified",
-    "traits_title": "Material Characteristics",
-    "care_title": "Care Recommendations",
-    "wardrobe_header": "Fabric Wardrobe by Season (Select to change model)",
-    "seasons": {
-      "spring": {
-        "label": "SPRING COLLECTION",
-        "material": "Snow Rain"
-      },
-      "summer": {
-        "label": "SUMMER COLLECTION",
-        "material": "Linen Fabric"
-      },
-      "autumn": {
-        "label": "AUTUMN COLLECTION",
-        "material": "Satin Silk"
-      },
-      "winter": {
-        "label": "WINTER COLLECTION",
-        "material": "Wool Fabric"
-      }
+    "Layout": {
+        "title": "Fabrivo – Smart Fabric Search & AI Recognition",
+        "description": "Look up over 300 types of fabric using AI. Get details, care instructions, and seasonal style suggestions."
     },
-    "mock_result": {
-      "fabric": "Satin Silk",
-      "traits": [
-        "Soft",
-        "Shiny",
-        "Breathable"
-      ],
-      "care": [
-        "Dry Clean",
-        "Avoid direct sunlight"
-      ]
+    "Header": {
+        "searchPlaceholder": "Search >300 fabrics",
+        "moodboardTitle": "Moodboard",
+        "login": "Login",
+        "account": "Account",
+        "logout": "Logout",
+        "quiz": "Style Quiz"
+    },
+    "Footer": {
+        "help": "Help",
+        "settings": "Settings"
+    },
+    "Home": {},
+    "Hero": {
+        "title": "Wear Your Power",
+        "subtitle": "Fabrivo creates bold fabrics for confident everyday style.",
+        "shopNow": "Shop now",
+        "newArrivals": "New Arrivals",
+        "popularStyles": "Popular Styles",
+        "tryAILbl": "Try AI Stylist"
+    },
+    "FabricGrid": {
+        "serverError": "Server error",
+        "connectionError": "Cannot connect to server. Make sure Backend is running on port 8000.",
+        "fiberType": "Fiber",
+        "fabricType": "Fabric",
+        "noDescription": "No description.",
+        "viewDetails": "View details",
+        "previousPage": "Previous page",
+        "nextPage": "Next page",
+        "updateDatabase": "Refresh",
+        "manageCollection": "Manage Collection"
+    },
+    "AIScanner": {
+        "section_title": "Studio Try-On & AI Fabric Recognition",
+        "section_description": "Experience changing fabric materials directly on the model and intelligently identify fabrics through images.",
+        "scanner_header": "Fabric Sample Scanner Area",
+        "upload_label": "Upload Your Fabric Image",
+        "upload_file": "Select File",
+        "upload_camera": "Take Photo",
+        "upload_hint": "Supports JPG, PNG (Max 5MB)",
+        "loading_message": "AI is analyzing fabric...",
+        "info_message": "Click the image to upload another sample.",
+        "model_label": "Fashion Model",
+        "model_material": "Apply material:",
+        "analysis_header": "Material Analysis Report",
+        "empty_state": "Analysis panel is empty. Scan a fabric sample for AI to extract material information.",
+        "fabric_type_label": "Detected fabric type:",
+        "accuracy_label": "AI Accuracy:",
+        "eco_label": "Environment:",
+        "eco_friendly": "Eco Friendly",
+        "eco_not_certified": "Not Eco Certified",
+        "traits_title": "Material Characteristics",
+        "care_title": "Care Recommendations",
+        "wardrobe_header": "Fabric Wardrobe by Season (Select to change model)",
+        "seasons": {
+            "spring": {
+                "label": "SPRING COLLECTION",
+                "material": "Snow Rain"
+            },
+            "summer": {
+                "label": "SUMMER COLLECTION",
+                "material": "Linen Fabric"
+            },
+            "autumn": {
+                "label": "AUTUMN COLLECTION",
+                "material": "Satin Silk"
+            },
+            "winter": {
+                "label": "WINTER COLLECTION",
+                "material": "Wool Fabric"
+            }
+        },
+        "mock_result": {
+            "fabric": "Satin Silk",
+            "traits": [
+                "Soft",
+                "Shiny",
+                "Breathable"
+            ],
+            "care": [
+                "Dry Clean",
+                "Avoid direct sunlight"
+            ]
+        }
+    },
+    "AuthPage": {
+        "backHome": "Home",
+        "brandTagline": "Discover the world of fabrics with smart AI",
+        "loginTab": "Login",
+        "registerTab": "Register",
+        "loginTitle": "Welcome back!",
+        "registerTitle": "Create a new account",
+        "loginSubtitle": "Log in to save your fabric collection",
+        "registerSubtitle": "Join thousands of fabric lovers",
+        "fullNameLabel": "Full Name",
+        "fullNamePlaceholder": "Full Name",
+        "emailLabel": "Email",
+        "emailPlaceholder": "email@example.com",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "••••••••",
+        "loginButton": "Login",
+        "registerButton": "Create Account",
+        "registrationFailed": "Registration failed",
+        "registrationSuccess": "Registration successful! You can log in now.",
+        "loginFailed": "Login failed",
+        "loginSuccess": "Login successful! Redirecting...",
+        "errorOccurred": "An error occurred"
+    },
+    "MoodboardPage": {
+        "home": "Home",
+        "myCollection": "My Collection",
+        "notLoggedIn": "You are not logged in",
+        "loginMessage": "Please log in to save and manage your favorite fabric collections",
+        "loginNow": "Log in now",
+        "emptyCollection": "Empty collection",
+        "exploreMessage": "Explore fabric types and add them to your collection",
+        "exploreFabrics": "Explore fabric types",
+        "fiber": "Fiber",
+        "fabricType": "Fabric type",
+        "added": "Added:",
+        "viewDetails": "View details"
+    },
+    "FabricDetailPage": {
+        "fabricNotFound": "This fabric type not found",
+        "loginPrompt": "Please log in to save to collection!",
+        "saveError": "Error saving",
+        "saveSuccess": "Successfully saved to collection!",
+        "saveDuplicate": "Unable to save, this fabric may already be in your collection.",
+        "loadingFabric": "Loading fabric information...",
+        "backHome": "Back to home",
+        "back": "Back",
+        "saving": "Saving...",
+        "saveCollection": "Save to collection",
+        "naturalFiber": "Natural fiber",
+        "fabricType": "Fabric type",
+        "idLabel": "ID: ",
+        "inDepthExplanation": "In-depth explanation",
+        "fabricProperties": "Construction properties",
+        "careInstructions": "Care instructions"
     }
-  },
-  "AuthPage": {
-    "backHome": "Home",
-    "brandTagline": "Discover the world of fabrics with smart AI",
-    "loginTab": "Login",
-    "registerTab": "Register",
-    "loginTitle": "Welcome back!",
-    "registerTitle": "Create a new account",
-    "loginSubtitle": "Log in to save your fabric collection",
-    "registerSubtitle": "Join thousands of fabric lovers",
-    "fullNameLabel": "Full Name",
-    "fullNamePlaceholder": "Full Name",
-    "emailLabel": "Email",
-    "emailPlaceholder": "email@example.com",
-    "passwordLabel": "Password",
-    "passwordPlaceholder": "••••••••",
-    "loginButton": "Login",
-    "registerButton": "Create Account",
-    "registrationFailed": "Registration failed",
-    "registrationSuccess": "Registration successful! You can log in now.",
-    "loginFailed": "Login failed",
-    "loginSuccess": "Login successful! Redirecting...",
-    "errorOccurred": "An error occurred"
-  },
-  "MoodboardPage": {
-    "home": "Home",
-    "myCollection": "My Collection",
-    "notLoggedIn": "You are not logged in",
-    "loginMessage": "Please log in to save and manage your favorite fabric collections",
-    "loginNow": "Log in now",
-    "emptyCollection": "Empty collection",
-    "exploreMessage": "Explore fabric types and add them to your collection",
-    "exploreFabrics": "Explore fabric types",
-    "fiber": "Fiber",
-    "fabricType": "Fabric type",
-    "added": "Added:",
-    "viewDetails": "View details"
-  },
-  "FabricDetailPage": {
-    "fabricNotFound": "This fabric type not found",
-    "loginPrompt": "Please log in to save to collection!",
-    "saveError": "Error saving",
-    "saveSuccess": "Successfully saved to collection!",
-    "saveDuplicate": "Unable to save, this fabric may already be in your collection.",
-    "loadingFabric": "Loading fabric information...",
-    "backHome": "Back to home",
-    "back": "Back",
-    "saving": "Saving...",
-    "saveCollection": "Save to collection",
-    "naturalFiber": "Natural fiber",
-    "fabricType": "Fabric type",
-    "idLabel": "ID: ",
-    "inDepthExplanation": "In-depth explanation",
-    "fabricProperties": "Construction properties",
-    "careInstructions": "Care instructions"
-  }
 }

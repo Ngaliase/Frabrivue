@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, BookMarked, Scissors, Info, Sparkles, Droplets } from 'lucide-react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import styles from './page.module.css';
 import { useTranslations } from 'next-intl';
 
@@ -26,11 +28,12 @@ export default function FabricDetailPage() {
   const t = useTranslations('FabricDetailPage');
   const { id } = useParams();
   const router = useRouter();
-  
+
   const [fabric, setFabric] = useState<FabricDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch(`${API_BASE}/api/v1/fabrics/${id}`)
@@ -43,6 +46,22 @@ export default function FabricDetailPage() {
       .finally(() => setLoading(false));
   }, [id, t]);
 
+  useGSAP(() => {
+    if (!loading && fabric && containerRef.current) {
+      // 1. Graphic Reveal
+      gsap.fromTo(`.${styles.graphicCard}`, 
+        { x: -40, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }
+      );
+
+      // 2. Content Stagger
+      gsap.fromTo(`.${styles.contentArea} > *`,
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out', delay: 0.2 }
+      );
+    }
+  }, { scope: containerRef, dependencies: [loading, fabric] });
+
   const handleSaveToMoodboard = async () => {
     const token = localStorage.getItem('fabrivo_token');
     if (!token) {
@@ -50,7 +69,7 @@ export default function FabricDetailPage() {
       router.push('/auth');
       return;
     }
-    
+
     setSaving(true);
     try {
       const res = await fetch(`${API_BASE}/api/v1/moodboards/`, {
@@ -95,20 +114,20 @@ export default function FabricDetailPage() {
   const propEntries = fabric.properties ? Object.entries(fabric.properties) : [];
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page} ref={containerRef}>
       {/* Sticky Header */}
       <div className={styles.topBar}>
         <div className={`container ${styles.topBarInner}`}>
           <button onClick={() => router.back()} className={styles.backBtn}>
             <ArrowLeft size={16} /> {t('back')}
           </button>
-          
-          <button 
-            className={styles.saveBtn} 
+
+          <button
+            className={styles.saveBtn}
             onClick={handleSaveToMoodboard}
             disabled={saving}
           >
-            <BookMarked size={15} /> 
+            <BookMarked size={15} />
             {saving ? t('saving') : t('saveCollection')}
           </button>
         </div>
@@ -179,7 +198,7 @@ export default function FabricDetailPage() {
               </div>
             </div>
           )}
-          
+
         </div>
       </div>
     </div>

@@ -51,10 +51,13 @@
   font-family: var(--font-merriweather), 'Merriweather', serif;
   font-size: 2.6rem;
   font-weight: 700;
-  color: white;
+  color: transparent;
+  background: linear-gradient(90deg, #ffffff 0%, var(--accent-beige) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
   line-height: 1;
 }
-.brandName span { color: var(--accent-beige); }
+.brandName span { color: rgba(255,255,255,0.8); }
 
 .brandTagline {
   font-size: 0.95rem;
@@ -88,14 +91,14 @@
 }
 
 .formCard {
-  background: white;
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: var(--radius-lg);
   padding: 40px 40px;
   width: 100%;
   max-width: 440px;
   box-shadow: var(--shadow-md);
-  animation: fadeInUp 0.45s ease forwards;
 }
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(20px); }
@@ -127,8 +130,8 @@
   transition: all var(--transition-base);
 }
 .modeActive {
-  background: white;
-  color: var(--brand-indigo);
+  background: linear-gradient(135deg, var(--brand-indigo) 0%, #3a5099 100%);
+  color: white;
   box-shadow: var(--shadow-sm);
 }
 .modeTab:hover:not(.modeActive) { color: var(--text-secondary); }
@@ -215,7 +218,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: var(--brand-indigo);
+  background: linear-gradient(135deg, var(--brand-indigo) 0%, #3a5099 100%);
   color: white;
   padding: 13px;
   border-radius: var(--radius-sm);

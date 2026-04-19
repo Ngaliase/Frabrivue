@@ -1,29 +1,92 @@
-import Image from 'next/image';
+"use client";
+
+import { useRef } from 'react';
+import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { Sparkles } from 'lucide-react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import styles from './Hero.module.css';
 
 export default function Hero() {
+  const t = useTranslations('Hero');
+  const containerRef = useRef<HTMLElement>(null);
+  const aiBtnRef = useRef<HTMLAnchorElement>(null);
+
+  useGSAP(() => {
+    // 1. Staggered text slide sequence
+    gsap.fromTo(
+      `.${styles.mainText} > *`,
+      { y: 40, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1, stagger: 0.15, ease: 'power3.out', delay: 0.2 }
+    );
+
+    // 2. Cards slide in from left
+    gsap.fromTo(
+      `.${styles.cards} > div`,
+      { x: -50, opacity: 0 },
+      { x: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power2.out', delay: 0.6 }
+    );
+
+    // 3. AI Float Animation
+    if (aiBtnRef.current) {
+      gsap.fromTo(aiBtnRef.current, 
+        { scale: 0.8, opacity: 0 }, 
+        { scale: 1, opacity: 1, duration: 0.7, delay: 0.8, ease: 'back.out(1.7)' }
+      );
+      gsap.to(aiBtnRef.current, {
+        y: -10,
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: 1.5
+      });
+    }
+  }, { scope: containerRef });
+
+  const scrollToGrid = () => {
+    const grid = document.getElementById('fabric-grid-section');
+    if (grid) {
+      grid.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section className={styles.hero}>
-      <div className={styles.imageContainer}>
-        <Image 
-          src="/images/hero.png" 
-          alt="Mùa Xuân Vải Tuyết Mưa" 
-          fill 
-          priority
-          style={{ objectFit: 'cover' }} 
-        />
-        <div className={styles.overlay}></div>
-      </div>
-      
-      <div className={`${styles.content} animate-fade-in`}>
-        <h3 className={styles.subtitle}>Bộ Sưu Tập Mùa Xuân</h3>
-        <h1 className={styles.title}>Thanh Lịch.<br/>Vải Tuyết Mưa.</h1>
-        <p className={styles.description}>
-          Khám phá những đặc tính tuyệt vời của Vải Tuyết Mưa trong tiết trời mùa xuân với sự định hướng phong cách từ Trợ lý AI của Fabnivo.
-        </p>
-        <div className={styles.actionsBox}>
-          <button className="btn-primary">Quét Bề Mặt Vải Ngay</button>
-          <button className="btn-secondary">Gợi ý thiết kế</button>
+    <section className={styles.hero} ref={containerRef}>
+      <div className={`container ${styles.content}`}>
+        <div className={styles.mainText}>
+          <h1 className={styles.title}>{t('title')}</h1>
+          <p className={styles.subtitle}>{t('subtitle')}</p>
+          <button className={styles.shopBtn} onClick={scrollToGrid}>
+            {t('shopNow')}
+          </button>
+        </div>
+
+        <div className={styles.bottomArea}>
+          <div className={styles.cards}>
+            <div className={styles.card}>
+              <div className={styles.cardImgPlaceholder1}></div>
+              <div className={styles.cardInfo}>
+                <span className={styles.cardTitle}>{t('newArrivals')}</span>
+                <button className={styles.cardLink} onClick={scrollToGrid}>&bull; {t('shopNow')}</button>
+              </div>
+            </div>
+            <div className={styles.card}>
+              <div className={styles.cardImgPlaceholder2}></div>
+              <div className={styles.cardInfo}>
+                <span className={styles.cardTitle}>{t('popularStyles')}</span>
+                <button className={styles.cardLink} onClick={scrollToGrid}>&bull; {t('shopNow')}</button>
+              </div>
+            </div>
+          </div>
+          
+          <Link href="/studio" className={styles.aiBtn} ref={aiBtnRef}>
+            <span className={styles.aiBtnText}>{t('tryAILbl')}</span>
+            <div className={styles.aiIconWrap}>
+              <Sparkles size={16} className={styles.aiIcon} />
+            </div>
+          </Link>
         </div>
       </div>
     </section>

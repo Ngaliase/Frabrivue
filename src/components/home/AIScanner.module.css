@@ -1,12 +1,7 @@
 .section {
-  background: var(--bg-white);
-  border-bottom: 1px solid var(--border);
-  padding: 40px 0;
+  background: var(--bg-page);
+  padding: 60px 0;
   position: relative;
-  background-image:
-    linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
-  background-size: 40px 40px;
 }
 
 .studioHeader {
@@ -18,7 +13,10 @@
   font-family: var(--font-merriweather), 'Merriweather', serif;
   font-size: 1.8rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: transparent;
+  background: linear-gradient(90deg, var(--brand-brown) 0%, var(--brand-indigo) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
   margin-bottom: 8px;
 }
 
@@ -32,12 +30,13 @@
 .studioWorkspace {
   display: grid;
   grid-template-columns: 320px 1fr 340px;
-  gap: 24px;
+  gap: 0;
   align-items: stretch;
-  background: white;
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
   overflow: hidden;
   margin-bottom: 32px;
 }
@@ -52,13 +51,13 @@
 }
 
 .zoneLeft {
-  background: #faf9f7;
-  border-right: 1px dashed var(--border);
+  background: rgba(255, 255, 255, 0.4);
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .zoneRight {
-  background: #faf9f7;
-  border-left: 1px dashed var(--border);
+  background: rgba(255, 255, 255, 0.4);
+  border-left: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .zoneHeader {
@@ -76,9 +75,9 @@
 
 /* Zone Left: Upload */
 .uploadBox {
-  border: 2px dashed var(--accent-beige);
+  border: 2px dashed rgba(139, 94, 60, 0.2);
   border-radius: var(--radius-md);
-  background: white;
+  background: rgba(255, 255, 255, 0.5);
   width: 100%;
   aspect-ratio: 1;
   display: flex;
@@ -120,7 +119,7 @@
 .uploadIconWrap {
   width: 64px;
   height: 64px;
-  background: var(--accent-cream);
+  background: linear-gradient(135deg, var(--accent-cream) 0%, #fae8e0 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -450,21 +449,7 @@
   }
 }
 
-.animateResult {
-  animation: fadeInUp 0.4s ease forwards;
-}
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 /* Bottom Zone: Wardrobe */
 .studioWardrobe {
@@ -519,7 +504,7 @@
 .seasonIconWrap {
   width: 48px;
   height: 48px;
-  background: var(--accent-cream);
+  background: linear-gradient(135deg, var(--accent-cream) 0%, #fae8e0 100%);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -662,7 +647,7 @@
   gap: 20px;
   padding-top: 20px;
   padding-bottom: 20px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .catTitle {

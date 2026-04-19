@@ -32,6 +32,10 @@
   font-family: var(--font-merriweather), 'Merriweather', serif;
   font-size: 1.1rem;
   font-weight: 700;
+  color: transparent;
+  background: linear-gradient(90deg, var(--brand-brown) 0%, var(--brand-indigo) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
 /* Empty state */
@@ -43,7 +47,17 @@
   padding: 80px 24px;
   gap: 14px;
 }
-.emptyIcon { color: var(--accent-beige); }
+.emptyIconWrap {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--accent-cream) 0%, var(--accent-beige) 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.emptyIcon { color: var(--brand-brown); opacity: 0.8; }
 .emptyState h2 {
   font-family: var(--font-merriweather), 'Merriweather', serif;
   font-size: 1.3rem;
@@ -55,7 +69,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--brand-indigo);
+  background: linear-gradient(135deg, var(--brand-indigo) 0%, #3a5099 100%);
   color: white;
   padding: 11px 24px;
   border-radius: var(--radius-sm);
@@ -97,13 +111,12 @@
 }
 
 .card {
-  background: white;
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
-  animation: fadeInUp 0.35s ease forwards;
-  opacity: 0;
   transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
@@ -159,7 +172,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  background: var(--brand-indigo);
+  background: linear-gradient(135deg, var(--brand-indigo) 0%, #3a5099 100%);
   color: white;
   padding: 6px 12px;
   border-radius: var(--radius-sm);

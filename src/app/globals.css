@@ -39,7 +39,7 @@
 
 html,
 body {
-  font-family: var(--font-inter), 'Inter', sans-serif;
+  font-family: var(--font-jakarta), 'Plus Jakarta Sans', sans-serif;
   background: var(--bg-page);
   color: var(--text-primary);
   overflow-x: hidden;
@@ -113,6 +113,7 @@ button {
   background: var(--accent-beige);
   color: var(--brand-indigo);
   padding: 9px 18px;
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   font-size: 0.85rem;
   font-weight: 600;

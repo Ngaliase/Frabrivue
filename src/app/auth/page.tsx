@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { Mail, Lock, User, LogIn, UserPlus, Eye, EyeOff, ArrowLeft, Scissors } from 'lucide-react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import styles from './page.module.css';
 import { useTranslations } from 'next-intl';
 
@@ -18,7 +20,26 @@ export default function AuthPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  const containerRef = useRef<HTMLDivElement>(null);
   const [form, setForm] = useState({ email: '', password: '', full_name: '' });
+
+  useGSAP(() => {
+    // Left panel reveal
+    gsap.fromTo(`.${styles.brandArea} > *`, 
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out', delay: 0.2 }
+    );
+    gsap.fromTo(`.${styles.decorCell}`, 
+      { scale: 0.8, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.6, stagger: 0.05, ease: 'back.out(1.7)', delay: 0.5 }
+    );
+
+    // Right panel reveal
+    gsap.fromTo(`.${styles.formCard}`, 
+      { x: 40, opacity: 0 },
+      { x: 0, opacity: 1, duration: 0.8, ease: 'power2.out', delay: 0.3 }
+    );
+  }, { scope: containerRef });
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
@@ -59,7 +80,7 @@ export default function AuthPage() {
   };
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page} ref={containerRef}>
       {/* Left panel */}
       <div className={styles.leftPanel}>
         <Link href="/" className={styles.backBtn}>

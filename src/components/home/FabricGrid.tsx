@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { ChevronLeft, ChevronRight, MoreHorizontal, BookMarked, RefreshCcw, Scissors } from 'lucide-react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import styles from './FabricGrid.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
@@ -33,6 +35,19 @@ export default function FabricGrid() {
   const [total, setTotal] = useState(247); // known total from seed
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (!loading && fabrics.length > 0 && gridRef.current) {
+      gsap.fromTo(
+        gridRef.current.children,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.6, stagger: 0.08, ease: 'back.out(1.2)' }
+      );
+    }
+  }, { scope: gridRef, dependencies: [fabrics, loading] });
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
@@ -70,7 +85,7 @@ export default function FabricGrid() {
   };
 
   return (
-    <section className={styles.section}>
+    <section className={styles.section} ref={sectionRef}>
       <div className="container">
         {error && (
           <div className={styles.errorBanner}>
@@ -86,7 +101,7 @@ export default function FabricGrid() {
             ))}
           </div>
         ) : (
-          <div className={styles.grid}>
+          <div className={styles.grid} ref={gridRef}>
             {fabrics.map((fabric, idx) => (
               <div
                 key={fabric.id}

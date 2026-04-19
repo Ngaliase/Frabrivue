@@ -1,13 +1,13 @@
 import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import { NextIntlClientProvider } from 'next-intl';
 import type { Metadata } from 'next';
-import { Inter, Merriweather } from 'next/font/google';
+import { Plus_Jakarta_Sans, Merriweather } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin', 'vietnamese'],
   display: 'swap',
-  variable: '--font-inter',
+  variable: '--font-jakarta',
 });
 
 const merriweather = Merriweather({
@@ -31,7 +31,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className={`${inter.variable} ${merriweather.variable}`}>
+    <html lang={locale} className={`${jakarta.variable} ${merriweather.variable}`}>
       <body>
         <NextIntlClientProvider messages={messages} locale={locale}>
           {children}

@@ -32,18 +32,21 @@
 
 /* Card */
 .card {
-  background: var(--bg-white);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
   border-radius: var(--radius-md);
   overflow: hidden;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
-  animation: fadeInUp 0.35s ease forwards;
-  opacity: 0;
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  transition: all var(--transition-base);
 }
-.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.card:hover { 
+  transform: translateY(-4px); 
+  box-shadow: var(--shadow-md); 
+  border-color: rgba(255, 255, 255, 0.5);
+}
 
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(14px); }
@@ -118,7 +121,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: var(--brand-indigo);
+  background: linear-gradient(135deg, var(--brand-indigo) 0%, #3a5099 100%);
   color: white;
   padding: 7px 14px;
   border-radius: var(--radius-sm);
@@ -173,9 +176,9 @@
 .pageBtn:hover:not(:disabled) { border-color: var(--brand-indigo); color: var(--brand-indigo); }
 .pageBtn:disabled { opacity: 0.4; cursor: not-allowed; }
 .pageActive {
-  background: var(--brand-indigo) !important;
+  background: linear-gradient(135deg, var(--brand-indigo) 0%, #3a5099 100%) !important;
   color: white !important;
-  border-color: var(--brand-indigo) !important;
+  border-color: transparent !important;
 }
 .pageDots { padding: 0 4px; color: var(--text-muted); font-size: 0.85rem; }
 
@@ -199,7 +202,7 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  background: var(--brand-indigo);
+  background: linear-gradient(135deg, var(--brand-indigo) 0%, #3a5099 100%);
   color: white;
   padding: 9px 18px;
   border-radius: var(--radius-sm);
