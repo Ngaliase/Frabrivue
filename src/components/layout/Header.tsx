@@ -1,33 +1,60 @@
 "use client";
 
-import Link from 'next/link';
 import { useState } from 'react';
+import Link from 'next/link';
+import { Search, Globe, Sparkles, BookMarked, LogIn, Sun } from 'lucide-react';
 import styles from './Header.module.css';
 
 export default function Header() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [lang, setLang] = useState<'VI' | 'EN'>('VI');
+  const [search, setSearch] = useState('');
 
   return (
     <header className={styles.header}>
-      <div className={styles.headerTop}>
+      <div className={`container ${styles.inner}`}>
+        {/* Logo */}
         <Link href="/" className={styles.logo}>
-          FABNIVO
+          Fabri<span>vo</span>
         </Link>
-        
-        {/* Desktop Nav */}
-        <nav className={`${styles.nav} ${isOpen ? styles.navOpen : ''}`}>
-          <a href="#features" className={styles.navLink} onClick={() => setIsOpen(false)}>Tính Năng Băng AI</a>
-          <a href="#stylist" className={styles.navLink} onClick={() => setIsOpen(false)}>AI Stylist</a>
-          <a href="#calculator" className={styles.navLink} onClick={() => setIsOpen(false)}>Đo Lượng Vải</a>
-          <a href="#eco" className={styles.navLink} onClick={() => setIsOpen(false)}>Eco-Score</a>
-        </nav>
 
-        <div className={styles.actions}>
-          <button className={styles.langBtn}>VN / EN</button>
-          {/* Hamburger for mobile */}
-          <button className={styles.hamburger} onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? '✕' : '☰'}
-          </button>
+        {/* Language Toggle */}
+        <div className={styles.langSwitch}>
+          <Globe size={13} className={styles.globeIcon} />
+          <button
+            className={lang === 'VI' ? styles.langActive : styles.langBtn}
+            onClick={() => setLang('VI')}
+          >VI</button>
+          <span className={styles.langDivider}>|</span>
+          <button
+            className={lang === 'EN' ? styles.langActive : styles.langBtn}
+            onClick={() => setLang('EN')}
+          >EN</button>
+        </div>
+
+        {/* Search */}
+        <div className={styles.searchWrap}>
+          <Search size={14} className={styles.searchIcon} />
+          <input
+            type="text"
+            className={styles.searchInput}
+            placeholder="Tra cứu >300 loại vải"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
+        </div>
+
+        {/* Nav actions */}
+        <div className={styles.navActions}>
+          <Link href="/moodboard" className={styles.iconNavBtn} title="Bộ sưu tập">
+            <BookMarked size={18} />
+          </Link>
+          <Link href="/auth" className={styles.iconNavBtn} title="Đăng nhập">
+            <LogIn size={18} />
+          </Link>
+          <Link href="/quiz" className={styles.quizBtn}>
+            <Sparkles size={15} />
+            Quiz Cá Nhân
+          </Link>
         </div>
       </div>
     </header>

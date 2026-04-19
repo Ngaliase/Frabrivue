@@ -1,16 +1,14 @@
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import Hero from '@/components/home/Hero';
-import Features from '@/components/home/Features';
-import AIStyleSection from '@/components/home/AIStyleSection';
+import AIScanner from '@/components/home/AIScanner';
+import FabricGrid from '@/components/home/FabricGrid';
 
 export default function Home() {
   return (
-    <main>
+    <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Header />
-      <Hero />
-      <Features />
-      <AIStyleSection />
+      <AIScanner />
+      <FabricGrid />
       <Footer />
     </main>
   );
