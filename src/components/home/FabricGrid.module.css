@@ -3,6 +3,87 @@
   padding: 28px 0 0;
 }
 
+/* ── Filter Tabs ──────────────────────────────────────────── */
+.filterBar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 4px 0 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  margin-bottom: 24px;
+}
+
+.filterTab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-radius: 30px;
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(4px);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.filterTab:hover {
+  border-color: var(--brand-brown);
+  color: var(--brand-brown);
+  transform: translateY(-1px);
+}
+
+.filterTabActive {
+  background: linear-gradient(135deg, var(--brand-indigo) 0%, #3a5099 100%);
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 4px 12px rgba(30, 45, 90, 0.2);
+}
+
+.filterTabActive:hover {
+  color: white;
+  border-color: transparent;
+}
+
+.tabEmoji {
+  font-size: 0.9rem;
+}
+
+/* Search Result Banner */
+.searchBanner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, rgba(30, 45, 90, 0.06) 0%, rgba(139, 94, 60, 0.04) 100%);
+  border: 1px solid rgba(30, 45, 90, 0.1);
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.searchBanner strong { color: var(--brand-indigo); }
+.searchCount {
+  margin-left: auto;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* Empty State */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 64px 24px;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+.emptyIcon { opacity: 0.3; }
+
 /* Grid */
 .grid {
   display: grid;
@@ -55,23 +136,29 @@
 
 /* Thumbnail */
 .thumb {
-  height: 90px;
+  height: 120px;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  background: var(--accent-cream);
 }
+
+.thumbImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.card:hover .thumbImg {
+  transform: scale(1.05);
+}
+
 .thumbPattern {
   position: absolute;
   inset: 0;
-  background-image: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 6px,
-    rgba(255,255,255,0.15) 6px,
-    rgba(255,255,255,0.15) 12px
-  );
 }
 .thumbLabel { font-size: 1.8rem; position: relative; z-index: 1; }
 
@@ -101,13 +188,29 @@
   flex-wrap: wrap;
   gap: 4px;
 }
-.tag {
-  background: var(--accent-cream);
-  color: var(--brand-brown);
+.catTag {
+  background: linear-gradient(135deg, rgba(30, 45, 90, 0.08) 0%, rgba(139, 94, 60, 0.08) 100%);
+  color: var(--brand-indigo);
   font-size: 0.7rem;
-  padding: 2px 7px;
+  padding: 2px 8px;
   border-radius: 12px;
-  font-weight: 500;
+  font-weight: 600;
+  border: 1px solid rgba(30, 45, 90, 0.1);
+}
+
+.conceptBadge {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
 }
 
 .cardDesc {
@@ -134,7 +237,11 @@
 }
 .infoBtn:hover { background: var(--brand-brown); opacity: 1; transform: translateY(-1px); }
 
-.error {
+.error,
+.errorBanner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   background: #fde8e8;
   color: #c0392b;
   padding: 12px 16px;

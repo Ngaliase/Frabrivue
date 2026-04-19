@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
-import { Search, Globe, Sparkles, BookMarked, LogIn, User, LogOut } from 'lucide-react';
+import { Search, Globe, Sparkles, BookMarked, LogIn, User, LogOut, X } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import styles from './Header.module.css';
@@ -13,11 +13,13 @@ export default function Header({ transparent = false }: { transparent?: boolean 
   const t = useTranslations('Header');
   const locale = useLocale();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(searchParams.get('q') || '');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(!!searchParams.get('q'));
   const headerRef = useRef<HTMLElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useGSAP(() => {
     if (transparent && headerRef.current) {
@@ -31,10 +33,14 @@ export default function Header({ transparent = false }: { transparent?: boolean 
 
   useEffect(() => {
     const token = localStorage.getItem('fabrivo_token');
-    if (token) {
-      setIsLoggedIn(true);
-    }
+    if (token) setIsLoggedIn(true);
   }, []);
+
+  useEffect(() => {
+    if (isSearchOpen && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isSearchOpen]);
 
   const handleLogout = () => {
     localStorage.removeItem('fabrivo_token');
@@ -44,6 +50,22 @@ export default function Header({ transparent = false }: { transparent?: boolean 
   const changeLocale = (newLocale: string) => {
     document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=31536000`;
     router.refresh();
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const q = search.trim();
+    if (q) {
+      router.push(`/?q=${encodeURIComponent(q)}`);
+    } else {
+      router.push('/');
+    }
+    setIsSearchOpen(false);
+  };
+
+  const handleClear = () => {
+    setSearch('');
+    router.push('/');
   };
 
   return (
@@ -69,9 +91,13 @@ export default function Header({ transparent = false }: { transparent?: boolean 
         </div>
 
         {/* Search */}
-        <div className={`${styles.searchWrap} ${isSearchOpen ? styles.searchOpen : ''}`}>
-          <button 
-            className={styles.searchToggle} 
+        <form
+          className={`${styles.searchWrap} ${isSearchOpen ? styles.searchOpen : ''}`}
+          onSubmit={handleSearch}
+        >
+          <button
+            type="button"
+            className={styles.searchToggle}
             onClick={() => setIsSearchOpen(!isSearchOpen)}
             title={t('searchPlaceholder')}
           >
@@ -79,15 +105,21 @@ export default function Header({ transparent = false }: { transparent?: boolean 
           </button>
           <div className={styles.searchInputContainer}>
             <input
+              ref={inputRef}
               type="text"
               className={styles.searchInput}
               placeholder={t('searchPlaceholder')}
               value={search}
               onChange={e => setSearch(e.target.value)}
-              autoFocus={isSearchOpen}
+              onKeyDown={e => e.key === 'Escape' && setIsSearchOpen(false)}
             />
+            {search && (
+              <button type="button" className={styles.searchClear} onClick={handleClear}>
+                <X size={14} />
+              </button>
+            )}
           </div>
-        </div>
+        </form>
 
         {/* Nav actions */}
         <div className={styles.navActions}>

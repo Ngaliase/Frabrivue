@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { Sparkles } from 'lucide-react';
@@ -10,6 +11,7 @@ import styles from './Hero.module.css';
 
 export default function Hero() {
   const t = useTranslations('Hero');
+  const router = useRouter();
   const containerRef = useRef<HTMLElement>(null);
   const aiBtnRef = useRef<HTMLAnchorElement>(null);
 
@@ -52,6 +54,17 @@ export default function Hero() {
     }
   };
 
+  const handleSeasonalClick = () => {
+    const month = new Date().getMonth() + 1;
+    let season = 'winter';
+    if (month >= 3 && month <= 5) season = 'spring';
+    else if (month >= 6 && month <= 8) season = 'summer';
+    else if (month >= 9 && month <= 11) season = 'autumn';
+    
+    router.push(`/?season=${season}`);
+    setTimeout(scrollToGrid, 100);
+  };
+
   return (
     <section className={styles.hero} ref={containerRef}>
       <div className={`container ${styles.content}`}>
@@ -65,11 +78,11 @@ export default function Hero() {
 
         <div className={styles.bottomArea}>
           <div className={styles.cards}>
-            <div className={styles.card}>
+            <div className={styles.card} onClick={handleSeasonalClick}>
               <div className={styles.cardImgPlaceholder1}></div>
               <div className={styles.cardInfo}>
                 <span className={styles.cardTitle}>{t('newArrivals')}</span>
-                <button className={styles.cardLink} onClick={scrollToGrid}>&bull; {t('shopNow')}</button>
+                <button className={styles.cardLink}>&bull; {t('shopNow')}</button>
               </div>
             </div>
             <div className={styles.card}>

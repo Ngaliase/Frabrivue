@@ -2,8 +2,13 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { ChevronLeft, ChevronRight, MoreHorizontal, BookMarked, RefreshCcw, Scissors } from 'lucide-react';
+import {
+  ChevronLeft, ChevronRight, MoreHorizontal, BookMarked, RefreshCcw,
+  Scissors, LayoutGrid, Briefcase, GraduationCap, Dumbbell,
+  PartyPopper, Moon, Heart, Sparkles, Search
+} from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import styles from './FabricGrid.module.css';
@@ -15,28 +20,51 @@ interface Fabric {
   id: number;
   name: string;
   type: string | null;
+  image_url: string | null;
   meta_description: string | null;
   about_text: string | null;
   tags: string[] | null;
+  categories: string[] | null;
+  style_concepts: string[] | null;
   properties: Record<string, string> | null;
   care_instructions: string | null;
 }
 
-const THUMB_COLORS: Record<string, string> = {
-  fabric: '#c4b5a5',
-  fiber: '#a5b4c4',
+// Category filter tabs — Lucide icons thay vì emoji
+const CATEGORY_TABS = [
+  { key: '', label: 'Tất cả', icon: LayoutGrid },
+  { key: 'hang_ngay', label: 'Hàng ngày', icon: Sparkles },
+  { key: 'cong_so', label: 'Công sở', icon: Briefcase },
+  { key: 'di_hoc', label: 'Đi học', icon: GraduationCap },
+  { key: 'the_thao', label: 'Thể thao', icon: Dumbbell },
+  { key: 'su_kien', label: 'Sự kiện', icon: PartyPopper },
+  { key: 'da_tiec', label: 'Dạ tiệc', icon: Moon },
+  { key: 'dam_cuoi', label: 'Đám cưới', icon: Heart },
+];
+
+const CONCEPT_LABELS: Record<string, string> = {
+  casual: 'Thường ngày',
+  formal: 'Trang trọng',
+  smart_casual: 'Smart Casual',
+  sporty: 'Năng động',
+  elegant: 'Thanh lịch',
+  bohemian: 'Bohemian',
+  streetwear: 'Streetwear',
 };
 
 export default function FabricGrid() {
   const t = useTranslations('FabricGrid');
+  const searchParams = useSearchParams();
+  const urlQuery = searchParams.get('q') || '';
+  const urlSeason = searchParams.get('season') || '';
 
   const [fabrics, setFabrics] = useState<Fabric[]>([]);
   const [page, setPage] = useState(1);
-  const [total, setTotal] = useState(247); // known total from seed
+  const [total, setTotal] = useState(247);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [activeCategory, setActiveCategory] = useState('');
 
-  const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
@@ -44,23 +72,31 @@ export default function FabricGrid() {
       gsap.fromTo(
         gridRef.current.children,
         { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.6, stagger: 0.08, ease: 'back.out(1.2)' }
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: 'back.out(1.2)' }
       );
     }
   }, { scope: gridRef, dependencies: [fabrics, loading] });
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
-  const fetchFabrics = useCallback(async (p: number) => {
+  const fetchFabrics = useCallback(async (p: number, category: string, query: string, season: string) => {
     setLoading(true);
     setError('');
     try {
       const skip = (p - 1) * PAGE_SIZE;
-      const res = await fetch(`${API_BASE}/api/v1/fabrics/?skip=${skip}&limit=${PAGE_SIZE}`);
+      const params = new URLSearchParams({ skip: String(skip), limit: String(PAGE_SIZE) });
+      if (category) params.set('category', category);
+      if (query) params.set('search', query);
+      if (season) params.set('season', season);
+      const res = await fetch(`${API_BASE}/api/v1/fabrics/?${params}`);
       if (!res.ok) throw new Error(t('serverError') as string);
       const data: Fabric[] = await res.json();
       setFabrics(data);
-      if (p === 1) setTotal(Math.max(total, data.length < PAGE_SIZE ? data.length : 247));
+      if (data.length < PAGE_SIZE) {
+        setTotal((p - 1) * PAGE_SIZE + data.length);
+      } else {
+        setTotal(Math.max(total, p * PAGE_SIZE + 1));
+      }
     } catch {
       setError(t('connectionError') as string);
     } finally {
@@ -68,7 +104,15 @@ export default function FabricGrid() {
     }
   }, [total, t]);
 
-  useEffect(() => { fetchFabrics(page); }, [page]); // eslint-disable-line
+  // Re-fetch when URL query or season changes
+  useEffect(() => {
+    setPage(1);
+    fetchFabrics(1, activeCategory, urlQuery, urlSeason);
+  }, [urlQuery, activeCategory, urlSeason]); // eslint-disable-line
+
+  useEffect(() => {
+    fetchFabrics(page, activeCategory, urlQuery, urlSeason);
+  }, [page]); // eslint-disable-line
 
   const getPageNumbers = () => {
     const pages: (number | '...')[] = [];
@@ -84,9 +128,54 @@ export default function FabricGrid() {
     return pages;
   };
 
+  const getSeasonLabel = (s: string) => {
+    const labels: Record<string, string> = {
+      spring: 'Mùa Xuân',
+      summer: 'Mùa Hạ',
+      autumn: 'Mùa Thu',
+      winter: 'Mùa Đông'
+    };
+    return labels[s] || s;
+  };
+
   return (
-    <section className={styles.section} ref={sectionRef}>
+    <section className={styles.section} id="fabric-grid-section">
       <div className="container">
+        {/* Search result indicator */}
+        {urlQuery && (
+          <div className={styles.searchBanner}>
+            <Search size={15} />
+            <span>Kết quả tìm kiếm cho: <strong>&ldquo;{urlQuery}&rdquo;</strong></span>
+            <span className={styles.searchCount}>{total} kết quả</span>
+          </div>
+        )}
+
+        {/* Seasonal indicator */}
+        {urlSeason && (
+          <div className={`${styles.searchBanner} ${styles.seasonalBanner}`}>
+            <Sparkles size={15} className={styles.seasonalIcon} />
+            <span>Gợi ý cho <strong>{getSeasonLabel(urlSeason)}</strong></span>
+            <span className={styles.searchCount}>{total} loại vải phù hợp</span>
+          </div>
+        )}
+
+        {/* Category Filter Tabs */}
+        <div className={styles.filterBar}>
+          {CATEGORY_TABS.map(tab => {
+            const Icon = tab.icon;
+            return (
+              <button
+                key={tab.key}
+                className={`${styles.filterTab} ${activeCategory === tab.key ? styles.filterTabActive : ''}`}
+                onClick={() => setActiveCategory(tab.key)}
+              >
+                <Icon size={15} strokeWidth={2} />
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
         {error && (
           <div className={styles.errorBanner}>
             <RefreshCcw size={15} />
@@ -100,6 +189,11 @@ export default function FabricGrid() {
               <div key={i} className={styles.skeleton} />
             ))}
           </div>
+        ) : fabrics.length === 0 ? (
+          <div className={styles.emptyState}>
+            <Scissors size={40} strokeWidth={1.2} className={styles.emptyIcon} />
+            <p>Không tìm thấy loại vải nào phù hợp.</p>
+          </div>
         ) : (
           <div className={styles.grid} ref={gridRef}>
             {fabrics.map((fabric, idx) => (
@@ -109,12 +203,30 @@ export default function FabricGrid() {
                 style={{ animationDelay: `${idx * 0.04}s` }}
               >
                 {/* Thumbnail */}
-                <div
-                  className={styles.thumb}
-                  style={{ background: fabric.type === 'fiber' ? 'var(--svg-color-2)' : 'var(--svg-color-1)' }}
-                >
-                  <div className={styles.thumbPattern} />
-                  <Scissors size={22} strokeWidth={1.5} className={styles.thumbIcon} />
+                <div className={styles.thumb}>
+                  {fabric.image_url ? (
+                    <img
+                      src={fabric.image_url}
+                      alt={fabric.name}
+                      className={styles.thumbImg}
+                      loading="lazy"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = 'none';
+                      }}
+                    />
+                  ) : (
+                    <div
+                      className={styles.thumbPattern}
+                      style={{ background: fabric.type === 'fiber' ? 'var(--svg-color-2)' : 'var(--svg-color-1)' }}
+                    />
+                  )}
+
+                  {/* Style concept badge */}
+                  {fabric.style_concepts && fabric.style_concepts.length > 0 && (
+                    <span className={styles.conceptBadge}>
+                      {CONCEPT_LABELS[fabric.style_concepts[0]] || fabric.style_concepts[0]}
+                    </span>
+                  )}
                 </div>
 
                 {/* Info */}
@@ -122,11 +234,16 @@ export default function FabricGrid() {
                   <h3 className={styles.cardName}>{fabric.name}</h3>
                   <p className={styles.cardType}>{fabric.type === 'fiber' ? t('fiberType') : t('fabricType')}</p>
 
-                  {fabric.tags && fabric.tags.length > 0 && (
+                  {fabric.categories && fabric.categories.length > 0 && (
                     <div className={styles.tags}>
-                      {fabric.tags.slice(0, 2).map(tag => (
-                        <span key={tag} className={styles.tag}>{tag}</span>
-                      ))}
+                      {fabric.categories.slice(0, 2).map(cat => {
+                        const tab = CATEGORY_TABS.find(tb => tb.key === cat);
+                        return tab ? (
+                          <span key={cat} className={styles.catTag}>
+                            {tab.label}
+                          </span>
+                        ) : null;
+                      })}
                     </div>
                   )}
 
@@ -182,7 +299,7 @@ export default function FabricGrid() {
           </div>
 
           <div className={styles.actionBtns}>
-            <button className={styles.dbBtn} onClick={() => fetchFabrics(page)}>
+            <button className={styles.dbBtn} onClick={() => fetchFabrics(page, activeCategory, urlQuery, urlSeason)}>
               <RefreshCcw size={14} />
               {t('updateDatabase')}
             </button>
@@ -196,3 +313,4 @@ export default function FabricGrid() {
     </section>
   );
 }
+
