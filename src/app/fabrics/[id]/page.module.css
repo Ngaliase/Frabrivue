@@ -153,28 +153,58 @@
 
 .fabricName {
   font-family: var(--font-merriweather), 'Merriweather', serif;
-  font-size: 2.4rem;
+  font-size: 2.6rem;
   font-weight: 800;
   color: transparent;
   background: linear-gradient(90deg, var(--brand-brown) 0%, var(--brand-indigo) 100%);
   -webkit-background-clip: text;
   background-clip: text;
-  line-height: 1.2;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+
+.badgeRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.catBadge, .conceptBadge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.catBadge {
+  background: rgba(30, 45, 90, 0.08);
+  color: var(--brand-indigo);
+  border: 1px solid rgba(30, 45, 90, 0.1);
+}
+
+.conceptBadge {
+  background: rgba(139, 94, 60, 0.08);
+  color: var(--brand-brown);
+  border: 1px solid rgba(139, 94, 60, 0.1);
 }
 
 .tags {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+  margin-top: 10px;
 }
 .tag {
   background: var(--accent-cream);
-  color: var(--brand-brown);
-  font-size: 0.8rem;
-  padding: 4px 12px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  padding: 3px 10px;
   border-radius: 20px;
-  font-weight: 600;
-  border: 1px solid var(--border);
+  font-weight: 500;
+  border: 1px dashed var(--border);
 }
 
 .section {

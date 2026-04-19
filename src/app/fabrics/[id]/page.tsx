@@ -15,14 +15,38 @@ interface FabricDetail {
   id: number;
   type: string | null;
   name: string;
-  url: string | null;
+  image_url: string | null;
   meta_description: string | null;
   about_text: string | null;
   tags: string[] | null;
+  categories: string[] | null;
+  age_groups: string[] | null;
+  style_concepts: string[] | null;
+  seasons: string[] | null;
   properties: Record<string, string> | null;
   care_instructions: string | null;
   additional_info: string | null;
 }
+
+const CATEGORY_LABELS: Record<string, string> = {
+  hang_ngay: 'Hàng ngày',
+  cong_so: 'Công sở',
+  di_hoc: 'Đi học',
+  the_thao: 'Thể thao',
+  su_kien: 'Sự kiện',
+  da_tiec: 'Dạ tiệc',
+  dam_cuoi: 'Đám cưới',
+};
+
+const CONCEPT_LABELS: Record<string, string> = {
+  casual: 'Casual',
+  formal: 'Formal',
+  smart_casual: 'Smart Casual',
+  sporty: 'Sporty',
+  elegant: 'Elegant',
+  bohemian: 'Bohemian',
+  streetwear: 'Streetwear',
+};
 
 export default function FabricDetailPage() {
   const t = useTranslations('FabricDetailPage');
@@ -48,16 +72,14 @@ export default function FabricDetailPage() {
 
   useGSAP(() => {
     if (!loading && fabric && containerRef.current) {
-      // 1. Graphic Reveal
       gsap.fromTo(`.${styles.graphicCard}`, 
         { x: -40, opacity: 0 },
         { x: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }
       );
 
-      // 2. Content Stagger
       gsap.fromTo(`.${styles.contentArea} > *`,
         { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out', delay: 0.2 }
+        { y: 0, opacity: 1, duration: 0.8, stagger: 0.12, ease: 'power3.out', delay: 0.1 }
       );
     }
   }, { scope: containerRef, dependencies: [loading, fabric] });
@@ -137,8 +159,14 @@ export default function FabricDetailPage() {
         {/* Left Side: Graphic / Thumbnail */}
         <div className={styles.graphicCard}>
           <div className={styles.graphicBox}>
-            <div className={styles.graphicPattern} />
-            <Scissors size={80} strokeWidth={1} className={styles.graphicIcon} />
+            {fabric.image_url ? (
+               <img src={fabric.image_url} alt={fabric.name} className={styles.fabricImg} />
+            ) : (
+              <>
+                <div className={styles.graphicPattern} />
+                <Scissors size={80} strokeWidth={1} className={styles.graphicIcon} />
+              </>
+            )}
           </div>
           <div className={styles.graphicMeta}>
             <span className={styles.graphicType}>
@@ -152,8 +180,25 @@ export default function FabricDetailPage() {
         <div className={styles.contentArea}>
           <div>
             <h1 className={styles.fabricName}>{fabric.name}</h1>
+            
+            {/* New Badges Section */}
+            {(fabric.categories || fabric.style_concepts) && (
+              <div className={styles.badgeRow}>
+                {fabric.categories?.map(cat => (
+                  <span key={cat} className={styles.catBadge}>
+                    {CATEGORY_LABELS[cat] || cat}
+                  </span>
+                ))}
+                {fabric.style_concepts?.map(concept => (
+                  <span key={concept} className={styles.conceptBadge}>
+                    {CONCEPT_LABELS[concept] || concept}
+                  </span>
+                ))}
+              </div>
+            )}
+
             {fabric.tags && fabric.tags.length > 0 && (
-              <div className={styles.tags} style={{ marginTop: '16px' }}>
+              <div className={styles.tags}>
                 {fabric.tags.map(tag => (
                   <span key={tag} className={styles.tag}>{tag}</span>
                 ))}
