@@ -55,6 +55,7 @@
 .searchBanner {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
   padding: 10px 16px;
   background: linear-gradient(135deg, rgba(30, 45, 90, 0.06) 0%, rgba(139, 94, 60, 0.04) 100%);
@@ -70,6 +71,16 @@
   font-size: 0.78rem;
   color: var(--text-muted);
   font-weight: 600;
+}
+
+.seasonalBanner {
+  background: linear-gradient(135deg, rgba(139, 94, 60, 0.08) 0%, rgba(30, 45, 90, 0.04) 100%);
+  border-color: rgba(139, 94, 60, 0.2);
+}
+.seasonalIcon { color: var(--brand-brown); }
+
+@media (max-width: 480px) {
+  .searchCount { width: 100%; margin-left: 0; padding-top: 4px; border-top: 1px solid rgba(0,0,0,0.05); }
 }
 
 /* Empty State */

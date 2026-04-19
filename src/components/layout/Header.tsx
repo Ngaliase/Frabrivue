@@ -73,6 +73,7 @@ export default function Header({ transparent = false }: { transparent?: boolean 
       <div className={`container ${styles.inner}`}>
         {/* Logo */}
         <Link href="/" className={styles.logo}>
+          <img src="/logo.png" alt="Fabrivo Logo" className={styles.logoIcon} />
           Fabri<span>vo</span>
         </Link>
 

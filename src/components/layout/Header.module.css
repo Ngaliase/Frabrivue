@@ -28,6 +28,15 @@
   flex-shrink: 0;
   letter-spacing: -0.3px;
   transition: opacity var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logoIcon {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
 }
 
 .logo:hover {
@@ -267,5 +276,24 @@
 .header.transparent .iconNavBtn:hover {
   background: transparent;
   opacity: 0.8;
+}
+
+@media (max-width: 1024px) {
+  .navLabel { display: none; }
+}
+
+@media (max-width: 768px) {
+  .inner { padding: 0 16px; height: 64px; }
+  .logo { font-size: 1.1rem; gap: 8px; }
+  .logoIcon { height: 24px; }
+  .navActions { gap: 8px; }
+  .iconNavBtn { width: 36px; height: 36px; }
+  .searchWrap { max-width: 160px; }
+  .langSwitch { display: none; } /* Hide on small mobile to save space */
+}
+
+@media (max-width: 480px) {
+  .searchWrap { max-width: 120px; }
+  .logo span { display: none; } /* Shorten logo on very small screens */
 }
 

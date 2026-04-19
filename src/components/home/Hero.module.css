@@ -192,3 +192,25 @@
   color: #fff;
   box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.2);
 }
+
+@media (max-width: 1024px) {
+  .title { font-size: 3.5rem; }
+}
+
+@media (max-width: 768px) {
+  .hero { align-items: center; padding-bottom: 0; min-height: 100vh; }
+  .content { justify-content: center; padding: 0 20px; }
+  .mainText { margin-bottom: 40px; text-align: center; max-width: 100%; }
+  .title { font-size: 2.2rem; }
+  .subtitle { font-size: 1.1rem; margin: 0 auto 30px; }
+  
+  .bottomArea { flex-direction: column; align-items: center; gap: 40px; margin-top: 40px; }
+  .cards { flex-direction: column; width: 100%; }
+  .card { width: 100%; justify-content: center; }
+  .aiBtn { width: 100%; justify-content: space-between; }
+}
+
+@media (max-width: 480px) {
+  .title { font-size: 2rem; }
+  .hero { background-position: 35% center; } /* Adjust bg for portrait */
+}
