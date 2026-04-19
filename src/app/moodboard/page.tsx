@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { BookMarked, ArrowLeft, Trash2, LogIn, Scissors, ExternalLink } from 'lucide-react';
 import styles from './page.module.css';
+import { useTranslations } from 'next-intl';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
@@ -22,6 +23,7 @@ interface MoodItem {
 }
 
 export default function MoodboardPage() {
+  const t = useTranslations('MoodboardPage');
   const [items, setItems] = useState<MoodItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [authed, setAuthed] = useState(false);
@@ -53,11 +55,11 @@ export default function MoodboardPage() {
       <div className={styles.topBar}>
         <div className="container" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 24px' }}>
           <Link href="/" className={styles.backBtn}>
-            <ArrowLeft size={16} /> Trang chủ
+            <ArrowLeft size={16} /> {t('home')}
           </Link>
           <div className={styles.pageTitle}>
             <BookMarked size={20} strokeWidth={1.8} />
-            <h1>Bộ Sưu Tập Của Tôi</h1>
+            <h1>{t('myCollection')}</h1>
           </div>
         </div>
       </div>
@@ -67,10 +69,10 @@ export default function MoodboardPage() {
         {!authed && !loading && (
           <div className={styles.emptyState}>
             <BookMarked size={48} strokeWidth={1.2} className={styles.emptyIcon} />
-            <h2>Bạn chưa đăng nhập</h2>
-            <p>Hãy đăng nhập để lưu và quản lý bộ sưu tập vải yêu thích của bạn</p>
+            <h2>{t('notLoggedIn')}</h2>
+            <p>{t('loginMessage')}</p>
             <Link href="/auth" className={styles.authLink}>
-              <LogIn size={16} /> Đăng nhập ngay
+              <LogIn size={16} /> {t('loginNow')}
             </Link>
           </div>
         )}
@@ -86,10 +88,10 @@ export default function MoodboardPage() {
         {authed && !loading && items.length === 0 && (
           <div className={styles.emptyState}>
             <BookMarked size={48} strokeWidth={1.2} className={styles.emptyIcon} />
-            <h2>Bộ sưu tập trống</h2>
-            <p>Hãy khám phá các loại vải và thêm chúng vào bộ sưu tập của bạn</p>
+            <h2>{t('emptyCollection')}</h2>
+            <p>{t('exploreMessage')}</p>
             <Link href="/" className={styles.authLink}>
-              <Scissors size={16} /> Khám phá loại vải
+              <Scissors size={16} /> {t('exploreFabrics')}
             </Link>
           </div>
         )}
@@ -108,7 +110,7 @@ export default function MoodboardPage() {
                 </div>
                 <div className={styles.cardBody}>
                   <h3 className={styles.cardName}>{item.fabric.name}</h3>
-                  <p className={styles.cardType}>{item.fabric.type === 'fiber' ? 'Sợi vải' : 'Loại vải'}</p>
+                  <p className={styles.cardType}>{item.fabric.type === 'fiber' ? t('fiber') : t('fabricType')}</p>
                   {item.fabric.tags && (
                     <div className={styles.tags}>
                       {item.fabric.tags.slice(0, 2).map(t => (
@@ -118,11 +120,11 @@ export default function MoodboardPage() {
                   )}
                   {item.note && <p className={styles.note}>📝 {item.note}</p>}
                   <p className={styles.date}>
-                    Thêm: {new Date(item.added_at).toLocaleDateString('vi-VN')}
+                    {t('added')} {new Date(item.added_at).toLocaleDateString('vi-VN')}
                   </p>
                   <div className={styles.cardActions}>
                     <Link href={`/fabrics/${item.fabric.id}`} className={styles.viewBtn}>
-                      <ExternalLink size={13} /> Xem chi tiết
+                      <ExternalLink size={13} /> {t('viewDetails')}
                     </Link>
                     <button className={styles.removeBtn} onClick={() => remove(item.id)}>
                       <Trash2 size={13} />

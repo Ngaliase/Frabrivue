@@ -4,12 +4,14 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Mail, Lock, User, LogIn, UserPlus, Eye, EyeOff, ArrowLeft, Scissors } from 'lucide-react';
 import styles from './page.module.css';
+import { useTranslations } from 'next-intl';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 type Mode = 'login' | 'register';
 
 export default function AuthPage() {
+  const t = useTranslations('AuthPage');
   const [mode, setMode] = useState<Mode>('login');
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -33,8 +35,8 @@ export default function AuthPage() {
           body: JSON.stringify(form),
         });
         const data = await res.json();
-        if (!res.ok) throw new Error(data.detail ?? 'Đăng ký thất bại');
-        setSuccess('Đăng ký thành công! Bạn có thể đăng nhập ngay.');
+        if (!res.ok) throw new Error(data.detail ?? t('registrationFailed'));
+        setSuccess(t('registrationSuccess'));
         setMode('login');
       } else {
         const body = new URLSearchParams({ username: form.email, password: form.password });
@@ -44,13 +46,13 @@ export default function AuthPage() {
           body: body.toString(),
         });
         const data = await res.json();
-        if (!res.ok) throw new Error(data.detail ?? 'Đăng nhập thất bại');
+        if (!res.ok) throw new Error(data.detail ?? t('loginFailed'));
         localStorage.setItem('fabrivo_token', data.access_token);
-        setSuccess('Đăng nhập thành công! Đang chuyển hướng...');
+        setSuccess(t('loginSuccess'));
         setTimeout(() => { window.location.href = '/'; }, 1000);
       }
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Đã xảy ra lỗi');
+      setError(err instanceof Error ? err.message : t('errorOccurred'));
     } finally {
       setLoading(false);
     }
@@ -61,14 +63,14 @@ export default function AuthPage() {
       {/* Left panel */}
       <div className={styles.leftPanel}>
         <Link href="/" className={styles.backBtn}>
-          <ArrowLeft size={16} /> Trang chủ
+          <ArrowLeft size={16} /> {t('backHome')}
         </Link>
         <div className={styles.brandArea}>
           <div className={styles.brandLogo}>
             <Scissors size={32} strokeWidth={1.5} />
           </div>
           <h1 className={styles.brandName}>Fabri<span>vo</span></h1>
-          <p className={styles.brandTagline}>Khám phá thế giới vải với AI thông minh</p>
+          <p className={styles.brandTagline}>{t('brandTagline')}</p>
         </div>
         <div className={styles.decorGrid}>
           {Array.from({ length: 9 }).map((_, i) => (
@@ -86,23 +88,23 @@ export default function AuthPage() {
               className={`${styles.modeTab} ${mode === 'login' ? styles.modeActive : ''}`}
               onClick={() => { setMode('login'); setError(''); setSuccess(''); }}
             >
-              <LogIn size={15} /> Đăng nhập
+              <LogIn size={15} /> {t('loginTab')}
             </button>
             <button
               className={`${styles.modeTab} ${mode === 'register' ? styles.modeActive : ''}`}
               onClick={() => { setMode('register'); setError(''); setSuccess(''); }}
             >
-              <UserPlus size={15} /> Đăng ký
+              <UserPlus size={15} /> {t('registerTab')}
             </button>
           </div>
 
           <h2 className={styles.formTitle}>
-            {mode === 'login' ? 'Chào mừng quay lại!' : 'Tạo tài khoản mới'}
+            {mode === 'login' ? t('loginTitle') : t('registerTitle')}
           </h2>
           <p className={styles.formSub}>
             {mode === 'login'
-              ? 'Đăng nhập để lưu bộ sưu tập vải của bạn'
-              : 'Tham gia cùng hàng ngàn người yêu thích vải'}
+              ? t('loginSubtitle')
+              : t('registerSubtitle')}
           </p>
 
           {error && <div className={styles.alertError}>{error}</div>}
@@ -111,12 +113,12 @@ export default function AuthPage() {
           <form onSubmit={submit} className={styles.form}>
             {mode === 'register' && (
               <div className={styles.inputGroup}>
-                <label className={styles.label}>Họ và tên</label>
+                <label className={styles.label}>{t('fullNameLabel')}</label>
                 <div className={styles.inputWrap}>
                   <User size={16} className={styles.inputIcon} />
                   <input
                     type="text"
-                    placeholder="Họ Và Tên"
+                    placeholder={t('fullNamePlaceholder')}
                     value={form.full_name}
                     onChange={e => set('full_name', e.target.value)}
                     required
@@ -127,12 +129,12 @@ export default function AuthPage() {
             )}
 
             <div className={styles.inputGroup}>
-              <label className={styles.label}>Email</label>
+              <label className={styles.label}>{t('emailLabel')}</label>
               <div className={styles.inputWrap}>
                 <Mail size={16} className={styles.inputIcon} />
                 <input
                   type="email"
-                  placeholder="email@example.com"
+                  placeholder={t('emailPlaceholder')}
                   value={form.email}
                   onChange={e => set('email', e.target.value)}
                   required
@@ -142,12 +144,12 @@ export default function AuthPage() {
             </div>
 
             <div className={styles.inputGroup}>
-              <label className={styles.label}>Mật khẩu</label>
+              <label className={styles.label}>{t('passwordLabel')}</label>
               <div className={styles.inputWrap}>
                 <Lock size={16} className={styles.inputIcon} />
                 <input
                   type={showPass ? 'text' : 'password'}
-                  placeholder="••••••••"
+                  placeholder={t('passwordPlaceholder')}
                   value={form.password}
                   onChange={e => set('password', e.target.value)}
                   required
@@ -168,7 +170,7 @@ export default function AuthPage() {
                 <span className={styles.btnSpinner} />
               ) : (
                 <>{mode === 'login' ? <LogIn size={16} /> : <UserPlus size={16} />}
-                  {mode === 'login' ? 'Đăng nhập' : 'Tạo tài khoản'}</>
+                  {mode === 'login' ? t('loginButton') : t('registerButton')}</>
               )}
             </button>
           </form>

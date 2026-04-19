@@ -29,7 +29,7 @@
   color: var(--brand-indigo);
 }
 .pageTitle h1 {
-  font-family: 'Merriweather', serif;
+  font-family: var(--font-merriweather), 'Merriweather', serif;
   font-size: 1.1rem;
   font-weight: 700;
 }
@@ -45,7 +45,7 @@
 }
 .emptyIcon { color: var(--accent-beige); }
 .emptyState h2 {
-  font-family: 'Merriweather', serif;
+  font-family: var(--font-merriweather), 'Merriweather', serif;
   font-size: 1.3rem;
   color: var(--text-primary);
 }

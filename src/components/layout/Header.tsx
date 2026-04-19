@@ -1,13 +1,36 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Search, Globe, Sparkles, BookMarked, LogIn, Sun } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useTranslations, useLocale } from 'next-intl';
+import { Search, Globe, Sparkles, BookMarked, LogIn, User, LogOut } from 'lucide-react';
 import styles from './Header.module.css';
 
 export default function Header() {
-  const [lang, setLang] = useState<'VI' | 'EN'>('VI');
+  const t = useTranslations('Header');
+  const locale = useLocale();
+  const router = useRouter();
+
   const [search, setSearch] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('fabrivo_token');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('fabrivo_token');
+    setIsLoggedIn(false);
+  };
+
+  const changeLocale = (newLocale: string) => {
+    document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=31536000`;
+    router.refresh();
+  };
 
   return (
     <header className={styles.header}>
@@ -21,13 +44,13 @@ export default function Header() {
         <div className={styles.langSwitch}>
           <Globe size={13} className={styles.globeIcon} />
           <button
-            className={lang === 'VI' ? styles.langActive : styles.langBtn}
-            onClick={() => setLang('VI')}
+            className={locale === 'vi' ? styles.langActive : styles.langBtn}
+            onClick={() => changeLocale('vi')}
           >VI</button>
           <span className={styles.langDivider}>|</span>
           <button
-            className={lang === 'EN' ? styles.langActive : styles.langBtn}
-            onClick={() => setLang('EN')}
+            className={locale === 'en' ? styles.langActive : styles.langBtn}
+            onClick={() => changeLocale('en')}
           >EN</button>
         </div>
 
@@ -37,7 +60,7 @@ export default function Header() {
           <input
             type="text"
             className={styles.searchInput}
-            placeholder="Tra cứu >300 loại vải"
+            placeholder={t('searchPlaceholder')}
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
@@ -45,15 +68,28 @@ export default function Header() {
 
         {/* Nav actions */}
         <div className={styles.navActions}>
-          <Link href="/moodboard" className={styles.iconNavBtn} title="Bộ sưu tập">
+          <Link href="/moodboard" className={styles.iconNavBtn} title={t('moodboardTitle')}>
             <BookMarked size={18} />
           </Link>
-          <Link href="/auth" className={styles.iconNavBtn} title="Đăng nhập">
-            <LogIn size={18} />
-          </Link>
+
+          {isLoggedIn ? (
+            <div className={styles.userMenu}>
+              <Link href="/moodboard" className={styles.iconNavBtn} title={t('account')}>
+                <User size={18} />
+              </Link>
+              <button onClick={handleLogout} className={styles.iconNavBtn} title={t('logout')}>
+                <LogOut size={18} />
+              </button>
+            </div>
+          ) : (
+            <Link href="/auth" className={styles.iconNavBtn} title={t('login')}>
+              <LogIn size={18} />
+            </Link>
+          )}
+
           <Link href="/quiz" className={styles.quizBtn}>
             <Sparkles size={15} />
-            Quiz Cá Nhân
+            {t('quiz')}
           </Link>
         </div>
       </div>

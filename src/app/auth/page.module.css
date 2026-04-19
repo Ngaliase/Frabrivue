@@ -48,7 +48,7 @@
 }
 
 .brandName {
-  font-family: 'Merriweather', serif;
+  font-family: var(--font-merriweather), 'Merriweather', serif;
   font-size: 2.6rem;
   font-weight: 700;
   color: white;
@@ -134,7 +134,7 @@
 .modeTab:hover:not(.modeActive) { color: var(--text-secondary); }
 
 .formTitle {
-  font-family: 'Merriweather', serif;
+  font-family: var(--font-merriweather), 'Merriweather', serif;
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--text-primary);

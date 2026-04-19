@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, BookMarked, Scissors, Info, Sparkles, Droplets } from 'lucide-react';
 import styles from './page.module.css';
+import { useTranslations } from 'next-intl';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
@@ -22,6 +23,7 @@ interface FabricDetail {
 }
 
 export default function FabricDetailPage() {
+  const t = useTranslations('FabricDetailPage');
   const { id } = useParams();
   const router = useRouter();
   
@@ -33,18 +35,18 @@ export default function FabricDetailPage() {
   useEffect(() => {
     fetch(`${API_BASE}/api/v1/fabrics/${id}`)
       .then(res => {
-        if (!res.ok) throw new Error('Không tìm thấy loại vải này');
+        if (!res.ok) throw new Error(t('fabricNotFound'));
         return res.json();
       })
       .then(data => setFabric(data))
       .catch(err => setError(err.message))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, t]);
 
   const handleSaveToMoodboard = async () => {
     const token = localStorage.getItem('fabrivo_token');
     if (!token) {
-      alert('Vui lòng đăng nhập để lưu vào bộ sưu tập!');
+      alert(t('loginPrompt'));
       router.push('/auth');
       return;
     }
@@ -59,10 +61,10 @@ export default function FabricDetailPage() {
         },
         body: JSON.stringify({ fabric_id: Number(id) })
       });
-      if (!res.ok) throw new Error('Lỗi khi lưu');
-      alert('Đã lưu thành công vào Bộ Sưu Tập!');
+      if (!res.ok) throw new Error(t('saveError'));
+      alert(t('saveSuccess'));
     } catch {
-      alert('Chưa thể lưu, có thể loại vải này đã có trong bộ sưu tập.');
+      alert(t('saveDuplicate'));
     } finally {
       setSaving(false);
     }
@@ -73,7 +75,7 @@ export default function FabricDetailPage() {
       <div className={styles.page}>
         <div className={styles.loadingWrapper}>
           <Scissors size={32} className={styles.spinner} />
-          <p>Đang tải thông tin vải...</p>
+          <p>{t('loadingFabric')}</p>
         </div>
       </div>
     );
@@ -84,7 +86,7 @@ export default function FabricDetailPage() {
       <div className={styles.page}>
         <div className={styles.loadingWrapper}>
           <p>{error}</p>
-          <Link href="/" className={styles.backBtn}>Quay lại trang chủ</Link>
+          <Link href="/" className={styles.backBtn}>{t('backHome')}</Link>
         </div>
       </div>
     );
@@ -98,7 +100,7 @@ export default function FabricDetailPage() {
       <div className={styles.topBar}>
         <div className={`container ${styles.topBarInner}`}>
           <button onClick={() => router.back()} className={styles.backBtn}>
-            <ArrowLeft size={16} /> Quay lại
+            <ArrowLeft size={16} /> {t('back')}
           </button>
           
           <button 
@@ -107,7 +109,7 @@ export default function FabricDetailPage() {
             disabled={saving}
           >
             <BookMarked size={15} /> 
-            {saving ? 'Đang lưu...' : 'Lưu vào bộ sưu tập'}
+            {saving ? t('saving') : t('saveCollection')}
           </button>
         </div>
       </div>
@@ -121,9 +123,9 @@ export default function FabricDetailPage() {
           </div>
           <div className={styles.graphicMeta}>
             <span className={styles.graphicType}>
-              {fabric.type === 'fiber' ? 'Sợi tự nhiên' : 'Loại vải'}
+              {fabric.type === 'fiber' ? t('naturalFiber') : t('fabricType')}
             </span>
-            <span className={styles.graphicId}>ID: {fabric.id}</span>
+            <span className={styles.graphicId}>{t('idLabel')}{fabric.id}</span>
           </div>
         </div>
 
@@ -143,7 +145,7 @@ export default function FabricDetailPage() {
           {(fabric.meta_description || fabric.about_text) && (
             <div className={styles.section}>
               <h2 className={styles.sectionTitle}>
-                <Info size={18} /> Giải thích chuyên sâu
+                <Info size={18} /> {t('inDepthExplanation')}
               </h2>
               <p className={styles.descText}>
                 {fabric.about_text || fabric.meta_description}
@@ -154,7 +156,7 @@ export default function FabricDetailPage() {
           {propEntries.length > 0 && (
             <div className={styles.section}>
               <h2 className={styles.sectionTitle}>
-                <Sparkles size={18} /> Đặc tính cấu tạo
+                <Sparkles size={18} /> {t('fabricProperties')}
               </h2>
               <div className={styles.propGrid}>
                 {propEntries.map(([key, val]) => (
@@ -170,7 +172,7 @@ export default function FabricDetailPage() {
           {fabric.care_instructions && (
             <div className={styles.section}>
               <h2 className={styles.sectionTitle}>
-                <Droplets size={18} /> Hướng dẫn bảo quản
+                <Droplets size={18} /> {t('careInstructions')}
               </h2>
               <div className={styles.careBox}>
                 {fabric.care_instructions}

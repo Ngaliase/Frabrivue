@@ -1,0 +1,139 @@
+{
+  "Layout": {
+    "title": "Fabrivo – Tra Cứu & Nhận Diện Vải Thông Minh",
+    "description": "Tra cứu hơn 300 loại vải bằng AI. Nhận thông tin chi tiết, hướng dẫn bảo quản và gợi ý phong cách theo mùa."
+  },
+  "Header": {
+    "searchPlaceholder": "Tra cứu >300 loại vải",
+    "moodboardTitle": "Bộ sưu tập",
+    "login": "Đăng nhập",
+    "account": "Tài khoản",
+    "logout": "Đăng xuất",
+    "quiz": "Quiz Cá Nhân"
+  },
+  "Footer": {
+    "help": "Trợ giúp",
+    "settings": "Cài đặt"
+  },
+  "Home": {},
+  "FabricGrid": {
+    "serverError": "Lỗi máy chủ",
+    "connectionError": "Không thể kết nối đến máy chủ. Hãy chắc chắn Backend đang chạy tại cổng 8000.",
+    "fiberType": "Sợi vải",
+    "fabricType": "Loại vải",
+    "noDescription": "Không có mô tả.",
+    "viewDetails": "Xem chi tiết",
+    "previousPage": "Trang trước",
+    "nextPage": "Trang sau",
+    "updateDatabase": "Làm mới",
+    "manageCollection": "Quản lý bộ sưu tập"
+  },
+  "AIScanner": {
+    "section_title": "Studio Thử Đồ & Nhận Diện AI",
+    "section_description": "Trải nghiệm thay đổi chất liệu vải trực tiếp trên người mẫu và nhận diện vải thông minh qua hình ảnh.",
+    "scanner_header": "Khu Vực Quét Mẫu Vải",
+    "upload_label": "Tải Ảnh Vải Của Bạn Lên",
+    "upload_file": "Chọn tệp",
+    "upload_camera": "Chụp ảnh",
+    "upload_hint": "Hỗ trợ JPG, PNG (Max 5MB)",
+    "loading_message": "AI đang phân tích sợi vải...",
+    "info_message": "Nhấp vào ảnh để tải lên mẫu khác.",
+    "model_label": "Người Mẫu",
+    "model_material": "Áp dụng chất liệu:",
+    "analysis_header": "Bảng Phân Tích Chất Liệu",
+    "empty_state": "Bảng phân tích trống. Hãy quét một mẫu vải để AI trích xuất thông tin chất liệu.",
+    "fabric_type_label": "Loại vải phát hiện:",
+    "accuracy_label": "Độ chính xác AI:",
+    "eco_label": "Môi trường:",
+    "eco_friendly": "Thân thiện Eco",
+    "eco_not_certified": "Chưa chứng nhận Eco",
+    "traits_title": "Đặc Tính Chất Liệu",
+    "care_title": "Khuyến Nghị Bảo Quản",
+    "wardrobe_header": "Tủ Vải Theo Mùa (Chọn để thay đổi người mẫu)",
+    "seasons": {
+      "spring": {
+        "label": "BỘ SƯU TẬP XUÂN",
+        "material": "Tuyết Mưa"
+      },
+      "summer": {
+        "label": "BỘ SƯU TẬP HẠ",
+        "material": "Vải Lanh"
+      },
+      "autumn": {
+        "label": "BỘ SƯU TẬP THU",
+        "material": "Lụa Satin"
+      },
+      "winter": {
+        "label": "BỘ SƯU TẬP ĐÔNG",
+        "material": "Vải Dạ Len"
+      }
+    },
+    "mock_result": {
+      "fabric": "Lụa Satin",
+      "traits": [
+        "Mềm mại",
+        "Bóng bẩy",
+        "Thoáng khí"
+      ],
+      "care": [
+        "Giặt khô",
+        "Tránh ánh nắng trực tiếp"
+      ]
+    }
+  },
+  "AuthPage": {
+    "backHome": "Trang chủ",
+    "brandTagline": "Khám phá thế giới vải với AI thông minh",
+    "loginTab": "Đăng nhập",
+    "registerTab": "Đăng ký",
+    "loginTitle": "Chào mừng quay lại!",
+    "registerTitle": "Tạo tài khoản mới",
+    "loginSubtitle": "Đăng nhập để lưu bộ sưu tập vải của bạn",
+    "registerSubtitle": "Tham gia cùng hàng ngàn người yêu thích vải",
+    "fullNameLabel": "Họ và tên",
+    "fullNamePlaceholder": "Họ Và Tên",
+    "emailLabel": "Email",
+    "emailPlaceholder": "email@example.com",
+    "passwordLabel": "Mật khẩu",
+    "passwordPlaceholder": "••••••••",
+    "loginButton": "Đăng nhập",
+    "registerButton": "Tạo tài khoản",
+    "registrationFailed": "Đăng ký thất bại",
+    "registrationSuccess": "Đăng ký thành công! Bạn có thể đăng nhập ngay.",
+    "loginFailed": "Đăng nhập thất bại",
+    "loginSuccess": "Đăng nhập thành công! Đang chuyển hướng...",
+    "errorOccurred": "Đã xảy ra lỗi"
+  },
+  "MoodboardPage": {
+    "home": "Trang chủ",
+    "myCollection": "Bộ Sưu Tập Của Tôi",
+    "notLoggedIn": "Bạn chưa đăng nhập",
+    "loginMessage": "Hãy đăng nhập để lưu và quản lý bộ sưu tập vải yêu thích của bạn",
+    "loginNow": "Đăng nhập ngay",
+    "emptyCollection": "Bộ sưu tập trống",
+    "exploreMessage": "Hãy khám phá các loại vải và thêm chúng vào bộ sưu tập của bạn",
+    "exploreFabrics": "Khám phá loại vải",
+    "fiber": "Sợi vải",
+    "fabricType": "Loại vải",
+    "added": "Thêm:",
+    "viewDetails": "Xem chi tiết"
+  },
+  "FabricDetailPage": {
+    "fabricNotFound": "Không tìm thấy loại vải này",
+    "loginPrompt": "Vui lòng đăng nhập để lưu vào bộ sưu tập!",
+    "saveError": "Lỗi khi lưu",
+    "saveSuccess": "Đã lưu thành công vào Bộ Sưu Tập!",
+    "saveDuplicate": "Chưa thể lưu, có thể loại vải này đã có trong bộ sưu tập.",
+    "loadingFabric": "Đang tải thông tin vải...",
+    "backHome": "Quay lại trang chủ",
+    "back": "Quay lại",
+    "saving": "Đang lưu...",
+    "saveCollection": "Lưu vào bộ sưu tập",
+    "naturalFiber": "Sợi tự nhiên",
+    "fabricType": "Loại vải",
+    "idLabel": "ID: ",
+    "inDepthExplanation": "Giải thích chuyên sâu",
+    "fabricProperties": "Đặc tính cấu tạo",
+    "careInstructions": "Hướng dẫn bảo quản"
+  }
+}

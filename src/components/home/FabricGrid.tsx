@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { ChevronLeft, ChevronRight, MoreHorizontal, BookMarked, RefreshCcw, Scissors } from 'lucide-react';
 import styles from './FabricGrid.module.css';
 
@@ -25,6 +26,8 @@ const THUMB_COLORS: Record<string, string> = {
 };
 
 export default function FabricGrid() {
+  const t = useTranslations('FabricGrid');
+
   const [fabrics, setFabrics] = useState<Fabric[]>([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(247); // known total from seed
@@ -39,16 +42,16 @@ export default function FabricGrid() {
     try {
       const skip = (p - 1) * PAGE_SIZE;
       const res = await fetch(`${API_BASE}/api/v1/fabrics/?skip=${skip}&limit=${PAGE_SIZE}`);
-      if (!res.ok) throw new Error('Lỗi máy chủ');
+      if (!res.ok) throw new Error(t('serverError') as string);
       const data: Fabric[] = await res.json();
       setFabrics(data);
       if (p === 1) setTotal(Math.max(total, data.length < PAGE_SIZE ? data.length : 247));
     } catch {
-      setError('Không thể kết nối đến máy chủ. Hãy chắc chắn Backend đang chạy tại cổng 8000.');
+      setError(t('connectionError') as string);
     } finally {
       setLoading(false);
     }
-  }, [total]);
+  }, [total, t]);
 
   useEffect(() => { fetchFabrics(page); }, [page]); // eslint-disable-line
 
@@ -102,7 +105,7 @@ export default function FabricGrid() {
                 {/* Info */}
                 <div className={styles.cardBody}>
                   <h3 className={styles.cardName}>{fabric.name}</h3>
-                  <p className={styles.cardType}>{fabric.type === 'fiber' ? 'Sợi vải' : 'Loại vải'}</p>
+                  <p className={styles.cardType}>{fabric.type === 'fiber' ? t('fiberType') : t('fabricType')}</p>
 
                   {fabric.tags && fabric.tags.length > 0 && (
                     <div className={styles.tags}>
@@ -115,11 +118,11 @@ export default function FabricGrid() {
                   <p className={styles.cardDesc}>
                     {fabric.meta_description
                       ? fabric.meta_description.slice(0, 85) + (fabric.meta_description.length > 85 ? '...' : '')
-                      : (fabric.about_text ? fabric.about_text.slice(0, 85) + '...' : 'Không có mô tả.')}
+                      : (fabric.about_text ? fabric.about_text.slice(0, 85) + '...' : t('noDescription'))}
                   </p>
 
                   <Link href={`/fabrics/${fabric.id}`} className={styles.infoBtn}>
-                    Xem chi tiết
+                    {t('viewDetails')}
                   </Link>
                 </div>
               </div>
@@ -134,7 +137,7 @@ export default function FabricGrid() {
               className={styles.pageBtn}
               disabled={page === 1}
               onClick={() => setPage(p => Math.max(1, p - 1))}
-              aria-label="Trang trước"
+              aria-label={t('previousPage')}
             >
               <ChevronLeft size={15} />
             </button>
@@ -157,7 +160,7 @@ export default function FabricGrid() {
               className={styles.pageBtn}
               disabled={page >= totalPages}
               onClick={() => setPage(p => p + 1)}
-              aria-label="Trang sau"
+              aria-label={t('nextPage')}
             >
               <ChevronRight size={15} />
             </button>
@@ -166,11 +169,11 @@ export default function FabricGrid() {
           <div className={styles.actionBtns}>
             <button className={styles.dbBtn} onClick={() => fetchFabrics(page)}>
               <RefreshCcw size={14} />
-              Cập nhật CSDL
+              {t('updateDatabase')}
             </button>
             <Link href="/moodboard" className={styles.moodBtn}>
               <BookMarked size={14} />
-              Quản lý bộ sưu tập
+              {t('manageCollection')}
             </Link>
           </div>
         </div>

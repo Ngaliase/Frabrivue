@@ -1,15 +1,42 @@
+import { getLocale, getMessages, getTranslations } from 'next-intl/server';
+import { NextIntlClientProvider } from 'next-intl';
 import type { Metadata } from 'next';
+import { Inter, Merriweather } from 'next/font/google';
 import './globals.css';
 
-export const metadata: Metadata = {
-  title: 'Fabrivo – Tra Cứu & Nhận Diện Vải Thông Minh',
-  description: 'Tra cứu hơn 300 loại vải bằng AI. Nhận thông tin chi tiết, hướng dẫn bảo quản và gợi ý phong cách theo mùa.',
-};
+const inter = Inter({
+  subsets: ['latin', 'vietnamese'],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+const merriweather = Merriweather({
+  weight: ['400', '700'],
+  style: ['normal', 'italic'],
+  subsets: ['latin', 'vietnamese'],
+  display: 'swap',
+  variable: '--font-merriweather',
+});
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Layout');
+  return {
+    title: t('title'),
+    description: t('description'),
+  };
+}
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="vi">
-      <body>{children}</body>
+    <html lang={locale} className={`${inter.variable} ${merriweather.variable}`}>
+      <body>
+        <NextIntlClientProvider messages={messages} locale={locale}>
+          {children}
+        </NextIntlClientProvider>
+      </body>
     </html>
   );
 }

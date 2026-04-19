@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
-import { Upload, Camera, Leaf, ChevronRight, Loader2, Snowflake, Flame, Sun, Wind } from 'lucide-react';
+import { Upload, Camera, Leaf, Loader2, Snowflake, Flame, Sun, Wind, Scan, AlertCircle, FileText } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import styles from './AIScanner.module.css';
 
 interface AIResult {
@@ -12,22 +13,15 @@ interface AIResult {
   care: string[];
 }
 
-const MOCK_RESULT: AIResult = {
-  fabric: 'Lụa Satin',
-  accuracy: 98,
-  ecoFriendly: true,
-  traits: ['Mềm mại', 'Bóng bẩy', 'Thoáng khí'],
-  care: ['Giặt khô', 'Tránh ánh nắng trực tiếp'],
-};
-
 const SEASONS = [
-  { key: 'spring', label: 'XUÂN', sub: 'Tuyết Mưa', Icon: Wind },
-  { key: 'summer', label: 'HẠ', sub: 'Vải Lanh', Icon: Sun },
-  { key: 'autumn', label: 'THU', sub: 'Lụa Satin', Icon: Flame },
-  { key: 'winter', label: 'ĐÔNG', sub: 'Vải Dạ Len', Icon: Snowflake },
+  { key: 'spring', Icon: Wind },
+  { key: 'summer', Icon: Sun },
+  { key: 'autumn', Icon: Flame },
+  { key: 'winter', Icon: Snowflake },
 ];
 
 export default function AIScanner() {
+  const t = useTranslations('AIScanner');
   const [preview, setPreview] = useState<string | null>(null);
   const [result, setResult] = useState<AIResult | null>(null);
   const [loading, setLoading] = useState(false);
@@ -35,13 +29,28 @@ export default function AIScanner() {
   const [dragOver, setDragOver] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
+  const getMockResult = (): AIResult => ({
+    fabric: t('mock_result.fabric'),
+    accuracy: 98,
+    ecoFriendly: true,
+    traits: [
+      t('mock_result.traits.0'),
+      t('mock_result.traits.1'),
+      t('mock_result.traits.2')
+    ],
+    care: [
+      t('mock_result.care.0'),
+      t('mock_result.care.1')
+    ],
+  });
+
   const handleFile = (file: File) => {
     const url = URL.createObjectURL(file);
     setPreview(url);
     setLoading(true);
     setResult(null);
     setTimeout(() => {
-      setResult(MOCK_RESULT);
+      setResult(getMockResult());
       setLoading(false);
     }, 1800);
   };
@@ -59,123 +68,162 @@ export default function AIScanner() {
 
   return (
     <section className={styles.section}>
-      <div className={`container ${styles.inner}`}>
-
-        {/* LEFT – Upload zone */}
-        <div className={styles.leftCol}>
-          <h2 className={styles.sectionTitle}>Quét Vải &amp; Gợi Ý Theo Mùa</h2>
-          <div
-            className={`${styles.uploadBox} ${preview ? styles.hasPreview : ''} ${dragOver ? styles.dragActive : ''}`}
-            onClick={() => fileRef.current?.click()}
-            onDragOver={e => { e.preventDefault(); setDragOver(true); }}
-            onDragLeave={() => setDragOver(false)}
-            onDrop={onDrop}
-          >
-            {preview ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={preview} alt="preview" className={styles.previewImg} />
-            ) : (
-              <div className={styles.uploadPlaceholder}>
-                <div className={styles.uploadIconWrap}>
-                  <Upload size={28} strokeWidth={1.5} />
-                </div>
-                <p className={styles.uploadLabel}>Tải Lên / Chụp Ảnh</p>
-                <div className={styles.uploadActions}>
-                  <span className={styles.uploadChip}><Upload size={12} /> Tải lên</span>
-                  <span className={styles.uploadChip}><Camera size={12} /> Chụp ảnh</span>
-                </div>
-                <span className={styles.uploadHint}>Kéo thả hoặc nhấp để chọn ảnh</span>
-              </div>
-            )}
-            <input
-              ref={fileRef}
-              type="file"
-              accept="image/*"
-              hidden
-              onChange={e => { if (e.target.files?.[0]) handleFile(e.target.files[0]); }}
-            />
-          </div>
+      <div className="container">
+        <div className={styles.studioHeader}>
+          <h2 className={styles.sectionTitle}>{t('section_title')}</h2>
+          <p className={styles.sectionDesc}>{t('section_description')}</p>
         </div>
 
-        {/* CENTER – Fashion model illustration */}
-        <div className={styles.centerCol}>
-          <div className={styles.modelArea}>
-            <div className={styles.modelLabel}>
-              <strong>Người Mẫu</strong>
-              <span>(Chuyển đổi theo Mùa)</span>
+        <div className={styles.studioWorkspace}>
+          {/* LEFT ZONE: AI Scanner (Input) */}
+          <div className={styles.zoneLeft}>
+            <div className={styles.zoneHeader}>
+              <Scan size={18} />
+              <h3>{t('scanner_header')}</h3>
             </div>
-            <div className={styles.modelSilhouette}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`/models/${activeSeason}.png`} alt={`${activeSeason} fashion model`} className={styles.modelImg} />
+            <div
+              className={`${styles.uploadBox} ${preview ? styles.hasPreview : ''} ${dragOver ? styles.dragActive : ''}`}
+              onClick={() => fileRef.current?.click()}
+              onDragOver={e => { e.preventDefault(); setDragOver(true); }}
+              onDragLeave={() => setDragOver(false)}
+              onDrop={onDrop}
+            >
+              {preview ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={preview} alt="preview" className={styles.previewImg} />
+              ) : (
+                <div className={styles.uploadPlaceholder}>
+                  <div className={styles.uploadIconWrap}>
+                    <Upload size={28} strokeWidth={1.5} />
+                  </div>
+                  <p className={styles.uploadLabel}>{t('upload_label')}</p>
+                  <div className={styles.uploadActions}>
+                    <span className={styles.uploadChip}><Upload size={14} /> {t('upload_file')}</span>
+                    <span className={styles.uploadChip}><Camera size={14} /> {t('upload_camera')}</span>
+                  </div>
+                  <span className={styles.uploadHint}>{t('upload_hint')}</span>
+                </div>
+              )}
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={e => { if (e.target.files?.[0]) handleFile(e.target.files[0]); }}
+              />
             </div>
-            <ChevronRight size={16} className={styles.arrowIcon} />
-          </div>
-        </div>
 
-        {/* RIGHT – AI Result panel */}
-        <div className={styles.rightCol}>
-          <div className={styles.resultPanel}>
-            <h3 className={styles.resultTitle}>Kết Quả Nhận Diện Vải</h3>
             {loading && (
               <div className={styles.loadingState}>
-                <Loader2 size={28} className={styles.spinner} />
-                <p>Đang phân tích...</p>
+                <Loader2 size={24} className={styles.spinner} />
+                <p>{t('loading_message')}</p>
               </div>
             )}
-            {result && !loading && (
-              <div className={`${styles.resultContent} ${styles.animateResult}`}>
-                <div className={styles.resultRow}>
-                  <span className={styles.resultLabel}>Độ chính xác:</span>
-                  <div className={styles.accuracyBar}>
-                    <div className={styles.accuracyFill} style={{ width: `${result.accuracy}%` }} />
-                  </div>
-                  <span className={styles.accuracyNum}>{result.accuracy}%</span>
-                </div>
-                <div className={styles.resultRow}>
-                  <span className={styles.resultLabel}>Vải:</span>
-                  <strong>{result.fabric}</strong>
-                </div>
-                <div className={styles.resultRow}>
-                  <span className={styles.resultLabel}>Thân thiện môi trường:</span>
-                  {result.ecoFriendly
-                    ? <span className={styles.ecoYes}><Leaf size={13} /> Có</span>
-                    : <span className={styles.ecoNo}>Không</span>}
-                </div>
-                <div className={styles.resultSection}>
-                  <p className={styles.resultSub}>Đặc tính:</p>
-                  <ul>{result.traits.map(t => <li key={t}>{t}</li>)}</ul>
-                </div>
-                <div className={styles.resultSection}>
-                  <p className={styles.resultSub}>Cách bảo quản:</p>
-                  <ul>{result.care.map(c => <li key={c}>{c}</li>)}</ul>
-                </div>
+
+            {!result && !loading && preview && (
+              <div className={styles.infoBox}>
+                <AlertCircle size={16} />
+                <p>{t('info_message')}</p>
               </div>
-            )}
-            {!result && !loading && (
-              <p className={styles.emptyState}>Hãy tải lên ảnh vải để nhận kết quả nhận diện</p>
             )}
           </div>
-        </div>
-      </div>
 
-      {/* Season Tabs */}
-      <div className={`container ${styles.seasonRow}`}>
-        <h3 className={styles.catTitle}>Danh mục vải</h3>
-        <div className={styles.seasonTabs}>
-          {SEASONS.map(({ key, label, sub, Icon }) => (
-            <button
-              key={key}
-              className={`${styles.seasonTab} ${activeSeason === key ? styles.seasonActive : ''}`}
-              onClick={() => setActiveSeason(key)}
-              data-season={key}
-            >
-              <Icon size={18} strokeWidth={1.8} className={styles.seasonIcon} />
-              <div className={styles.seasonText}>
-                <span className={styles.seasonLabel}>{label}</span>
-                <span className={styles.seasonSub}>{sub}</span>
+          {/* CENTER ZONE: The Changing Room Mirror (Model) */}
+          <div className={styles.zoneCenter}>
+            <div className={styles.mirrorContainer}>
+              <div className={styles.mirrorLight}></div>
+              <div className={styles.modelSilhouette}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={`/models/${activeSeason}.png`} alt={`${activeSeason} fashion model`} className={styles.modelImg} />
               </div>
-            </button>
-          ))}
+              <div className={styles.mirrorStand}></div>
+            </div>
+            <div className={styles.modelLabel}>
+              <strong>{t('model_label')} {t(`seasons.${activeSeason}.label`)}</strong>
+              <span>{t('model_material')} {t(`seasons.${activeSeason}.material`)}</span>
+            </div>
+          </div>
+
+          {/* RIGHT ZONE: Analysis Results */}
+          <div className={styles.zoneRight}>
+            <div className={styles.zoneHeader}>
+              <FileText size={18} />
+              <h3>{t('analysis_header')}</h3>
+            </div>
+
+            <div className={styles.resultPanel}>
+              {!result && !loading && (
+                <div className={styles.emptyState}>
+                  <FileText size={48} strokeWidth={1} className={styles.emptyIcon} />
+                  <p>{t('empty_state')}</p>
+                </div>
+              )}
+
+              {result && !loading && (
+                <div className={`${styles.resultContent} ${styles.animateResult}`}>
+                  <div className={styles.resultMain}>
+                    <div className={styles.resultRow}>
+                      <span className={styles.resultLabel}>{t('fabric_type_label')}</span>
+                      <strong className={styles.resultHighlight}>{result.fabric}</strong>
+                    </div>
+                    <div className={styles.resultRow}>
+                      <span className={styles.resultLabel}>{t('accuracy_label')}</span>
+                      <div className={styles.accuracyWrap}>
+                        <div className={styles.accuracyBar}>
+                          <div className={styles.accuracyFill} style={{ width: `${result.accuracy}%` }} />
+                        </div>
+                        <span className={styles.accuracyNum}>{result.accuracy}%</span>
+                      </div>
+                    </div>
+                    <div className={styles.resultRow}>
+                      <span className={styles.resultLabel}>{t('eco_label')}</span>
+                      {result.ecoFriendly
+                        ? <span className={styles.ecoYes}><Leaf size={14} /> {t('eco_friendly')}</span>
+                        : <span className={styles.ecoNo}>{t('eco_not_certified')}</span>}
+                    </div>
+                  </div>
+
+                  <div className={styles.resultSection}>
+                    <p className={styles.resultSub}>{t('traits_title')}</p>
+                    <div className={styles.tagList}>
+                      {result.traits.map(t => <span key={t} className={styles.traitTag}>{t}</span>)}
+                    </div>
+                  </div>
+                  <div className={styles.resultSection}>
+                    <p className={styles.resultSub}>{t('care_title')}</p>
+                    <ul className={styles.careList}>
+                      {result.care.map(c => <li key={c}>{c}</li>)}
+                    </ul>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* BOTTOM ZONE: Fabric Wardrobe / Categories */}
+        <div className={styles.studioWardrobe}>
+          <div className={styles.wardrobeHeader}>
+            <h3>{t('wardrobe_header')}</h3>
+          </div>
+          <div className={styles.seasonTabs}>
+            {SEASONS.map(({ key, Icon }) => (
+              <button
+                key={key}
+                className={`${styles.seasonTab} ${activeSeason === key ? styles.seasonActive : ''}`}
+                onClick={() => setActiveSeason(key)}
+                data-season={key}
+              >
+                <div className={styles.seasonIconWrap}>
+                  <Icon size={24} strokeWidth={1.5} className={styles.seasonIcon} />
+                </div>
+                <div className={styles.seasonText}>
+                  <span className={styles.seasonLabel}>{t(`seasons.${key}.label`)}</span>
+                  <span className={styles.seasonSub}>{t('model_material')} {t(`seasons.${key}.material`)}</span>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </section>
