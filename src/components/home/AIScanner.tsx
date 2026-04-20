@@ -29,6 +29,7 @@ export default function AIScanner() {
   const [loading, setLoading] = useState(false);
   const [activeSeason, setActiveSeason] = useState('autumn');
   const [dragOver, setDragOver] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const sectionRef = useRef<HTMLElement>(null);
@@ -51,30 +52,64 @@ export default function AIScanner() {
     }
   }, { dependencies: [result], scope: sectionRef });
 
-  const getMockResult = (): AIResult => ({
-    fabric: t('mock_result.fabric'),
-    accuracy: 98,
-    ecoFriendly: true,
-    traits: [
-      t('mock_result.traits.0'),
-      t('mock_result.traits.1'),
-      t('mock_result.traits.2')
-    ],
-    care: [
-      t('mock_result.care.0'),
-      t('mock_result.care.1')
-    ],
-  });
+  const confidenceToAccuracy = (confidence: string): number => {
+    switch (confidence?.toLowerCase()) {
+      case 'high': return 92;
+      case 'medium': return 70;
+      case 'low': return 45;
+      default: return 60;
+    }
+  };
 
-  const handleFile = (file: File) => {
+  const handleFile = async (file: File) => {
     const url = URL.createObjectURL(file);
     setPreview(url);
     setLoading(true);
     setResult(null);
-    setTimeout(() => {
-      setResult(getMockResult());
+    setError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${apiUrl}/api/v1/predict`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.detail || `Lỗi máy chủ (${response.status})`);
+      }
+
+      const data = await response.json();
+
+      // Map backend response to AIResult
+      const fabric = data.fabric;
+      const fabricName = fabric?.name?.vi || fabric?.name?.en || 'Không xác định';
+      const tags: string[] = fabric?.tags || [];
+      const careObj: Record<string, string> = fabric?.care_instructions || {};
+      const careList = Object.values(careObj).filter(Boolean) as string[];
+      const isEco = tags.some((tag: string) =>
+        ['cotton', 'linen', 'hemp', 'organic', 'sustainable', 'bông', 'lanh'].some(
+          eco => tag.toLowerCase().includes(eco)
+        )
+      );
+
+      setResult({
+        fabric: fabricName,
+        accuracy: confidenceToAccuracy(data.confidence_score),
+        ecoFriendly: isEco,
+        traits: tags.slice(0, 4),
+        care: careList.slice(0, 3),
+      });
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Không thể kết nối đến máy chủ';
+      setError(errorMessage);
+    } finally {
       setLoading(false);
-    }, 1800);
+    }
   };
 
   const onDrop = (e: React.DragEvent) => {
@@ -142,7 +177,14 @@ export default function AIScanner() {
               </div>
             )}
 
-            {!result && !loading && preview && (
+            {error && !loading && (
+              <div className={styles.infoBox} style={{ borderColor: '#e74c3c', color: '#e74c3c' }}>
+                <AlertCircle size={16} />
+                <p>{error}</p>
+              </div>
+            )}
+
+            {!result && !loading && preview && !error && (
               <div className={styles.infoBox}>
                 <AlertCircle size={16} />
                 <p>{t('info_message')}</p>
@@ -208,7 +250,7 @@ export default function AIScanner() {
                   <div className={styles.resultSection}>
                     <p className={styles.resultSub}>{t('traits_title')}</p>
                     <div className={styles.tagList}>
-                      {result.traits.map(t => <span key={t} className={styles.traitTag}>{t}</span>)}
+                      {result.traits.map(tr => <span key={tr} className={styles.traitTag}>{tr}</span>)}
                     </div>
                   </div>
                   <div className={styles.resultSection}>
