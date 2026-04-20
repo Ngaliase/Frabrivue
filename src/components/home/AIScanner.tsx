@@ -73,43 +73,78 @@ export default function AIScanner() {
       formData.append('file', file);
 
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const response = await fetch(`${apiUrl}/api/v1/predict`, {
+
+      // Bước 1: POST → nhận task_id ngay lập tức (<1s)
+      const startRes = await fetch(`${apiUrl}/api/v1/predict`, {
         method: 'POST',
         body: formData,
       });
 
-      if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(errData.detail || `Lỗi máy chủ (${response.status})`);
+      if (!startRes.ok) {
+        const errData = await startRes.json().catch(() => ({}));
+        throw new Error(errData.detail || `Lỗi máy chủ (${startRes.status})`);
       }
 
-      const data = await response.json();
+      const startData = await startRes.json();
+      const { task_id, status: initialStatus } = startData;
 
-      // Map backend response to AIResult
-      const fabric = data.fabric;
-      const fabricName = fabric?.name?.vi || fabric?.name?.en || 'Không xác định';
-      const tags: string[] = fabric?.tags || [];
-      const careObj: Record<string, string> = fabric?.care_instructions || {};
-      const careList = Object.values(careObj).filter(Boolean) as string[];
-      const isEco = tags.some((tag: string) =>
-        ['cotton', 'linen', 'hemp', 'organic', 'sustainable', 'bông', 'lanh'].some(
-          eco => tag.toLowerCase().includes(eco)
-        )
-      );
+      // Nếu từ cache thì status đã completed luôn
+      if (initialStatus === 'completed') {
+        const statusRes = await fetch(`${apiUrl}/api/v1/predict/status/${task_id}`);
+        const statusData = await statusRes.json();
+        applyResult(statusData);
+        return;
+      }
 
-      setResult({
-        fabric: fabricName,
-        accuracy: confidenceToAccuracy(data.confidence_score),
-        ecoFriendly: isEco,
-        traits: tags.slice(0, 4),
-        care: careList.slice(0, 3),
-      });
+      // Bước 2: Poll mỗi 3 giây cho đến khi AI xong (tối đa 120s)
+      const maxAttempts = 40;
+      for (let i = 0; i < maxAttempts; i++) {
+        await new Promise(r => setTimeout(r, 3000));
+
+        const statusRes = await fetch(`${apiUrl}/api/v1/predict/status/${task_id}`);
+        if (!statusRes.ok) continue;
+
+        const statusData = await statusRes.json();
+
+        if (statusData.status === 'completed') {
+          applyResult(statusData);
+          return;
+        }
+        if (statusData.status === 'failed') {
+          throw new Error(statusData.error_message || 'AI không thể nhận diện vải');
+        }
+        // still pending — keep polling
+      }
+
+      throw new Error('Quá thời gian chờ phản hồi từ AI. Vui lòng thử lại.');
+
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Không thể kết nối đến máy chủ';
       setError(errorMessage);
     } finally {
       setLoading(false);
     }
+  };
+
+  const applyResult = (statusData: { fabric?: { name?: { vi?: string; en?: string }; tags?: string[]; care_instructions?: Record<string, string> }; confidence_score?: string }) => {
+    const fabric = statusData.fabric;
+    const fabricName = fabric?.name?.vi || fabric?.name?.en || 'Không xác định';
+    const tags: string[] = fabric?.tags || [];
+    const careObj: Record<string, string> = fabric?.care_instructions || {};
+    const careList = Object.values(careObj).filter(Boolean) as string[];
+    const isEco = tags.some((tag: string) =>
+      ['cotton', 'linen', 'hemp', 'organic', 'sustainable', 'bông', 'lanh'].some(
+        eco => tag.toLowerCase().includes(eco)
+      )
+    );
+
+    setResult({
+      fabric: fabricName,
+      accuracy: confidenceToAccuracy(statusData.confidence_score || ''),
+      ecoFriendly: isEco,
+      traits: tags.slice(0, 4),
+      care: careList.slice(0, 3),
+    });
   };
 
   const onDrop = (e: React.DragEvent) => {
