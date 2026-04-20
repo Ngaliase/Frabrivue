@@ -143,5 +143,24 @@
         "inDepthExplanation": "Giải thích chuyên sâu",
         "fabricProperties": "Đặc tính cấu tạo",
         "careInstructions": "Hướng dẫn bảo quản"
+    },
+    "Categories": {
+        "all": "Tất cả",
+        "hang_ngay": "Hàng ngày",
+        "cong_so": "Công sở",
+        "di_hoc": "Đi học",
+        "the_thao": "Thể thao",
+        "su_kien": "Sự kiện",
+        "da_tiec": "Dạ tiệc",
+        "dam_cuoi": "Đám cưới"
+    },
+    "Concepts": {
+        "casual": "Thường ngày",
+        "formal": "Trang trọng",
+        "smart_casual": "Smart Casual",
+        "sporty": "Năng động",
+        "elegant": "Thanh lịch",
+        "bohemian": "Bohemian",
+        "streetwear": "Streetwear"
     }
 }

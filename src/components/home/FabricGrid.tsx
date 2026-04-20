@@ -7,53 +7,51 @@ import { useTranslations } from 'next-intl';
 import {
   ChevronLeft, ChevronRight, MoreHorizontal, BookMarked, RefreshCcw,
   Scissors, LayoutGrid, Briefcase, GraduationCap, Dumbbell,
-  PartyPopper, Moon, Heart, Sparkles, Search
+  PartyPopper, Moon, Heart, Sparkles, Search, Info
 } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { useLocale } from 'next-intl';
 import styles from './FabricGrid.module.css';
+import { Fabric } from '@/types/fabric';
+import { getLocaleValue } from '@/utils/fabric-utils';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 const PAGE_SIZE = 8;
 
-interface Fabric {
-  id: number;
-  name: string;
-  type: string | null;
-  image_url: string | null;
-  meta_description: string | null;
-  about_text: string | null;
-  tags: string[] | null;
-  categories: string[] | null;
-  style_concepts: string[] | null;
-  properties: Record<string, string> | null;
-  care_instructions: string | null;
-}
+// interface Fabric {
+//   id: number;
+//   name: string;
+//   type: string | null;
+//   image_url: string | null;
+//   meta_description: string | null;
+//   about_text: string | null;
+//   tags: string[] | null;
+//   categories: string[] | null;
+//   style_concepts: string[] | null;
+//   properties: Record<string, string> | null;
+//   care_instructions: string | null;
+// }
 
-// Category filter tabs — Lucide icons thay vì emoji
+// Category filter tabs
 const CATEGORY_TABS = [
-  { key: '', label: 'Tất cả', icon: LayoutGrid },
-  { key: 'hang_ngay', label: 'Hàng ngày', icon: Sparkles },
-  { key: 'cong_so', label: 'Công sở', icon: Briefcase },
-  { key: 'di_hoc', label: 'Đi học', icon: GraduationCap },
-  { key: 'the_thao', label: 'Thể thao', icon: Dumbbell },
-  { key: 'su_kien', label: 'Sự kiện', icon: PartyPopper },
-  { key: 'da_tiec', label: 'Dạ tiệc', icon: Moon },
-  { key: 'dam_cuoi', label: 'Đám cưới', icon: Heart },
+  { key: '', labelKey: 'all', icon: LayoutGrid },
+  { key: 'hang_ngay', labelKey: 'hang_ngay', icon: Sparkles },
+  { key: 'cong_so', labelKey: 'cong_so', icon: Briefcase },
+  { key: 'di_hoc', labelKey: 'di_hoc', icon: GraduationCap },
+  { key: 'the_thao', labelKey: 'the_thao', icon: Dumbbell },
+  { key: 'su_kien', labelKey: 'su_kien', icon: PartyPopper },
+  { key: 'da_tiec', labelKey: 'da_tiec', icon: Moon },
+  { key: 'dam_cuoi', labelKey: 'dam_cuoi', icon: Heart },
 ];
 
-const CONCEPT_LABELS: Record<string, string> = {
-  casual: 'Thường ngày',
-  formal: 'Trang trọng',
-  smart_casual: 'Smart Casual',
-  sporty: 'Năng động',
-  elegant: 'Thanh lịch',
-  bohemian: 'Bohemian',
-  streetwear: 'Streetwear',
-};
+// Localized labels will be handled by tCat and tConcept hooks
 
 export default function FabricGrid() {
   const t = useTranslations('FabricGrid');
+  const tCat = useTranslations('Categories');
+  const tConcept = useTranslations('Concepts');
+  const locale = useLocale();
   const searchParams = useSearchParams();
   const urlQuery = searchParams.get('q') || '';
   const urlSeason = searchParams.get('season') || '';
@@ -170,7 +168,7 @@ export default function FabricGrid() {
                 onClick={() => setActiveCategory(tab.key)}
               >
                 <Icon size={15} strokeWidth={2} />
-                <span>{tab.label}</span>
+                <span>{tCat(tab.labelKey)}</span>
               </button>
             );
           })}
@@ -207,7 +205,7 @@ export default function FabricGrid() {
                   {fabric.image_url ? (
                     <img
                       src={fabric.image_url}
-                      alt={fabric.name}
+                      alt={getLocaleValue(fabric.name, locale)}
                       className={styles.thumbImg}
                       loading="lazy"
                       onError={(e) => {
@@ -224,33 +222,34 @@ export default function FabricGrid() {
                   {/* Style concept badge */}
                   {fabric.style_concepts && fabric.style_concepts.length > 0 && (
                     <span className={styles.conceptBadge}>
-                      {CONCEPT_LABELS[fabric.style_concepts[0]] || fabric.style_concepts[0]}
+                      {tConcept.has(fabric.style_concepts[0]) ? tConcept(fabric.style_concepts[0]) : fabric.style_concepts[0].replace(/_/g, ' ')}
                     </span>
                   )}
                 </div>
 
                 {/* Info */}
                 <div className={styles.cardBody}>
-                  <h3 className={styles.cardName}>{fabric.name}</h3>
+                  <h3 className={styles.cardName}>{getLocaleValue(fabric.name, locale)}</h3>
                   <p className={styles.cardType}>{fabric.type === 'fiber' ? t('fiberType') : t('fabricType')}</p>
 
                   {fabric.categories && fabric.categories.length > 0 && (
                     <div className={styles.tags}>
                       {fabric.categories.slice(0, 2).map(cat => {
                         const tab = CATEGORY_TABS.find(tb => tb.key === cat);
-                        return tab ? (
+                        return (
                           <span key={cat} className={styles.catTag}>
-                            {tab.label}
+                            {tab ? tCat(tab.labelKey) : (cat.replace(/_/g, ' '))}
                           </span>
-                        ) : null;
+                        );
                       })}
                     </div>
                   )}
 
                   <p className={styles.cardDesc}>
-                    {fabric.meta_description
-                      ? fabric.meta_description.slice(0, 85) + (fabric.meta_description.length > 85 ? '...' : '')
-                      : (fabric.about_text ? fabric.about_text.slice(0, 85) + '...' : t('noDescription'))}
+                    <Info size={14} style={{ display: 'inline', marginRight: '4px', verticalAlign: 'text-bottom', opacity: 0.7 }} />
+                    {fabric.about_text
+                      ? getLocaleValue(fabric.about_text, locale).slice(0, 100) + (getLocaleValue(fabric.about_text, locale).length > 100 ? '...' : '')
+                      : (fabric.meta_description ? getLocaleValue(fabric.meta_description, locale).slice(0, 100) + '...' : t('noDescription'))}
                   </p>
 
                   <Link href={`/fabrics/${fabric.id}`} className={styles.infoBtn}>

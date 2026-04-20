@@ -6,26 +6,29 @@ import { BookMarked, ArrowLeft, Trash2, LogIn, Scissors, ExternalLink } from 'lu
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import styles from './page.module.css';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import { MoodItem } from '@/types/fabric';
+import { getLocaleValue } from '@/utils/fabric-utils';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
-interface Fabric {
-  id: number;
-  name: string;
-  type: string | null;
-  meta_description: string | null;
-  tags: string[] | null;
-}
-interface MoodItem {
-  id: number;
-  fabric: Fabric;
-  note: string | null;
-  added_at: string;
-}
+// interface Fabric {
+//   id: number;
+//   name: string;
+//   type: string | null;
+//   meta_description: string | null;
+//   tags: string[] | null;
+// }
+// interface MoodItem {
+//   id: number;
+//   fabric: Fabric;
+//   note: string | null;
+//   added_at: string;
+// }
 
 export default function MoodboardPage() {
   const t = useTranslations('MoodboardPage');
+  const locale = useLocale();
   const [items, setItems] = useState<MoodItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [authed, setAuthed] = useState(false);
@@ -131,7 +134,7 @@ export default function MoodboardPage() {
                   <Scissors size={24} strokeWidth={1.4} className={styles.thumbIcon} />
                 </div>
                 <div className={styles.cardBody}>
-                  <h3 className={styles.cardName}>{item.fabric.name}</h3>
+                  <h3 className={styles.cardName}>{getLocaleValue(item.fabric.name, locale)}</h3>
                   <p className={styles.cardType}>{item.fabric.type === 'fiber' ? t('fiber') : t('fabricType')}</p>
                   {item.fabric.tags && (
                     <div className={styles.tags}>

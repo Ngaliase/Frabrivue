@@ -31,8 +31,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className={`${jakarta.variable} ${merriweather.variable}`}>
-      <body>
+    <html lang={locale} className={`${jakarta.variable} ${merriweather.variable}`} suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <NextIntlClientProvider messages={messages} locale={locale}>
           {children}
         </NextIntlClientProvider>

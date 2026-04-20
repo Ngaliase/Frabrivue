@@ -7,53 +7,40 @@ import { ArrowLeft, BookMarked, Scissors, Info, Sparkles, Droplets } from 'lucid
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import styles from './page.module.css';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import { Fabric } from '@/types/fabric';
+import { getLocaleValue, getLocalizedPropLabel, getLocalizedPropValue } from '@/utils/fabric-utils';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
-interface FabricDetail {
-  id: number;
-  type: string | null;
-  name: string;
-  image_url: string | null;
-  meta_description: string | null;
-  about_text: string | null;
-  tags: string[] | null;
-  categories: string[] | null;
-  age_groups: string[] | null;
-  style_concepts: string[] | null;
-  seasons: string[] | null;
-  properties: Record<string, string> | null;
-  care_instructions: string | null;
-  additional_info: string | null;
-}
+// interface FabricDetail {
+//   id: number;
+//   type: string | null;
+//   name: string;
+//   image_url: string | null;
+//   meta_description: string | null;
+//   about_text: string | null;
+//   tags: string[] | null;
+//   categories: string[] | null;
+//   age_groups: string[] | null;
+//   style_concepts: string[] | null;
+//   seasons: string[] | null;
+//   properties: Record<string, string> | null;
+//   care_instructions: string | null;
+//   additional_info: string | null;
+// }
 
-const CATEGORY_LABELS: Record<string, string> = {
-  hang_ngay: 'Hàng ngày',
-  cong_so: 'Công sở',
-  di_hoc: 'Đi học',
-  the_thao: 'Thể thao',
-  su_kien: 'Sự kiện',
-  da_tiec: 'Dạ tiệc',
-  dam_cuoi: 'Đám cưới',
-};
-
-const CONCEPT_LABELS: Record<string, string> = {
-  casual: 'Casual',
-  formal: 'Formal',
-  smart_casual: 'Smart Casual',
-  sporty: 'Sporty',
-  elegant: 'Elegant',
-  bohemian: 'Bohemian',
-  streetwear: 'Streetwear',
-};
+// Localized labels will be handled by tCat and tConcept hooks
 
 export default function FabricDetailPage() {
   const t = useTranslations('FabricDetailPage');
+  const tCat = useTranslations('Categories');
+  const tConcept = useTranslations('Concepts');
+  const locale = useLocale();
   const { id } = useParams();
   const router = useRouter();
 
-  const [fabric, setFabric] = useState<FabricDetail | null>(null);
+  const [fabric, setFabric] = useState<Fabric | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
@@ -133,7 +120,7 @@ export default function FabricDetailPage() {
     );
   }
 
-  const propEntries = fabric.properties ? Object.entries(fabric.properties) : [];
+  const propEntries = fabric.technical_properties ? Object.entries(fabric.technical_properties) : [];
 
   return (
     <div className={styles.page} ref={containerRef}>
@@ -160,7 +147,7 @@ export default function FabricDetailPage() {
         <div className={styles.graphicCard}>
           <div className={styles.graphicBox}>
             {fabric.image_url ? (
-               <img src={fabric.image_url} alt={fabric.name} className={styles.fabricImg} />
+               <img src={fabric.image_url} alt={getLocaleValue(fabric.name, locale)} className={styles.fabricImg} />
             ) : (
               <>
                 <div className={styles.graphicPattern} />
@@ -179,21 +166,29 @@ export default function FabricDetailPage() {
         {/* Right Side: Content */}
         <div className={styles.contentArea}>
           <div>
-            <h1 className={styles.fabricName}>{fabric.name}</h1>
+            <h1 className={styles.fabricName}>{getLocaleValue(fabric.name, locale)}</h1>
             
             {/* New Badges Section */}
             {(fabric.categories || fabric.style_concepts) && (
-              <div className={styles.badgeRow}>
-                {fabric.categories?.map(cat => (
-                  <span key={cat} className={styles.catBadge}>
-                    {CATEGORY_LABELS[cat] || cat}
-                  </span>
-                ))}
-                {fabric.style_concepts?.map(concept => (
-                  <span key={concept} className={styles.conceptBadge}>
-                    {CONCEPT_LABELS[concept] || concept}
-                  </span>
-                ))}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '12px' }}>
+                {fabric.categories && fabric.categories.length > 0 && (
+                  <div className={styles.badgeRow}>
+                    {fabric.categories.map(cat => (
+                      <span key={cat} className={styles.catBadge}>
+                        {tCat.has(cat) ? tCat(cat) : cat.replace(/_/g, ' ')}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {fabric.style_concepts && fabric.style_concepts.length > 0 && (
+                  <div className={styles.badgeRow}>
+                    {fabric.style_concepts.map(concept => (
+                      <span key={concept} className={styles.conceptBadge}>
+                        {tConcept.has(concept) ? tConcept(concept) : concept.replace(/_/g, ' ')}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 
@@ -212,7 +207,7 @@ export default function FabricDetailPage() {
                 <Info size={18} /> {t('inDepthExplanation')}
               </h2>
               <p className={styles.descText}>
-                {fabric.about_text || fabric.meta_description}
+                {getLocaleValue(fabric.about_text, locale) || getLocaleValue(fabric.meta_description, locale)}
               </p>
             </div>
           )}
@@ -225,8 +220,10 @@ export default function FabricDetailPage() {
               <div className={styles.propGrid}>
                 {propEntries.map(([key, val]) => (
                   <div key={key} className={styles.propItem}>
-                    <span className={styles.propLabel}>{key.replace(/_/g, ' ')}</span>
-                    <span className={styles.propValue}>{typeof val === 'string' ? val : JSON.stringify(val)}</span>
+                    <span className={styles.propLabel}>{getLocalizedPropLabel(key, locale)}</span>
+                    <span className={styles.propValue}>
+                      {getLocalizedPropValue(val, locale)}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -239,7 +236,7 @@ export default function FabricDetailPage() {
                 <Droplets size={18} /> {t('careInstructions')}
               </h2>
               <div className={styles.careBox}>
-                {fabric.care_instructions}
+                {getLocaleValue(fabric.care_instructions, locale)}
               </div>
             </div>
           )}

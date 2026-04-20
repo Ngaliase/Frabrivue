@@ -143,5 +143,24 @@
         "inDepthExplanation": "In-depth explanation",
         "fabricProperties": "Construction properties",
         "careInstructions": "Care instructions"
+    },
+    "Categories": {
+        "all": "All",
+        "hang_ngay": "Everyday",
+        "cong_so": "Office",
+        "di_hoc": "School",
+        "the_thao": "Sports",
+        "su_kien": "Events",
+        "da_tiec": "Gala",
+        "dam_cuoi": "Wedding"
+    },
+    "Concepts": {
+        "casual": "Casual",
+        "formal": "Formal",
+        "smart_casual": "Smart Casual",
+        "sporty": "Sporty",
+        "elegant": "Elegant",
+        "bohemian": "Bohemian",
+        "streetwear": "Streetwear"
     }
 }
