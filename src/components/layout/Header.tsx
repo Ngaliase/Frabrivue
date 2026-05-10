@@ -32,7 +32,7 @@ export default function Header({ transparent = false }: { transparent?: boolean 
   }, { scope: headerRef, dependencies: [transparent] });
 
   useEffect(() => {
-    const token = localStorage.getItem('fabrivo_token');
+    const token = localStorage.getItem('frabrivue_token');
     if (token) setIsLoggedIn(true);
   }, []);
 
@@ -43,7 +43,7 @@ export default function Header({ transparent = false }: { transparent?: boolean 
   }, [isSearchOpen]);
 
   const handleLogout = () => {
-    localStorage.removeItem('fabrivo_token');
+    localStorage.removeItem('frabrivue_token');
     setIsLoggedIn(false);
   };
 
@@ -73,8 +73,8 @@ export default function Header({ transparent = false }: { transparent?: boolean 
       <div className={`container ${styles.inner}`}>
         {/* Logo */}
         <Link href="/" className={styles.logo}>
-          <img src="/logo.png" alt="Fabrivo Logo" className={styles.logoIcon} />
-          Fabri<span>vo</span>
+          <img src="/logo.png" alt="Frabrivue Logo" className={styles.logoIcon} />
+          Frabrivue
         </Link>
 
         {/* Language Toggle */}

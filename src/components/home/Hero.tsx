@@ -67,6 +67,15 @@ export default function Hero() {
 
   return (
     <section className={styles.hero} ref={containerRef}>
+      <video
+        className={styles.heroVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
+        src="/images/background.mp4"
+      />
+      <div className={styles.overlay}></div>
       <div className={`container ${styles.content}`}>
         <div className={styles.mainText}>
           <h1 className={styles.title}>{t('title')}</h1>

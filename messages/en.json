@@ -1,6 +1,6 @@
 {
     "Layout": {
-        "title": "Fabrivo – Smart Fabric Search & AI Recognition",
+        "title": "Frabrivue – Smart Fabric Search & AI Recognition",
         "description": "Look up over 300 types of fabric using AI. Get details, care instructions, and seasonal style suggestions."
     },
     "Header": {
@@ -18,7 +18,7 @@
     "Home": {},
     "Hero": {
         "title": "Wear Your Power",
-        "subtitle": "Fabrivo creates bold fabrics for confident everyday style.",
+        "subtitle": "Frabrivue creates bold fabrics for confident everyday style.",
         "shopNow": "Shop now",
         "newArrivals": "Suitable for current season",
         "popularStyles": "Popular Styles",
