@@ -6,6 +6,7 @@
     "Header": {
         "searchPlaceholder": "Search >300 fabrics",
         "moodboardTitle": "Moodboard",
+        "feedTitle": "Posts",
         "login": "Login",
         "account": "Account",
         "logout": "Logout",
@@ -162,5 +163,26 @@
         "elegant": "Elegant",
         "bohemian": "Bohemian",
         "streetwear": "Streetwear"
+    },
+    "FeedPage": {
+        "home": "Home",
+        "feedTitle": "Posts",
+        "placeholder": "Share what's on your mind...",
+        "addImages": "Add images",
+        "posting": "Posting...",
+        "post": "Post",
+        "likes": "like",
+        "comments": "comment",
+        "writeComment": "Write a comment...",
+        "emptyFeed": "No posts yet. Be the first to share!",
+        "justNow": "Just now",
+        "minutesAgo": "{n}m ago",
+        "hoursAgo": "{n}h ago",
+        "postNotFound": "Post not found",
+        "backToFeed": "Back to feed",
+        "back": "Back",
+        "postTitle": "Post Detail",
+        "commentsTitle": "Comments",
+        "noComments": "No comments yet."
     }
 }

@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
-import { Search, Globe, Sparkles, BookMarked, LogIn, User, LogOut, X } from 'lucide-react';
+import { Search, Globe, Sparkles, BookMarked, LogIn, User, LogOut, X, MessageCircle } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import styles from './Header.module.css';
@@ -32,7 +32,7 @@ export default function Header({ transparent = false }: { transparent?: boolean 
   }, { scope: headerRef, dependencies: [transparent] });
 
   useEffect(() => {
-    const token = localStorage.getItem('frabrivue_token');
+    const token = localStorage.getItem('fabrivo_token');
     if (token) setIsLoggedIn(true);
   }, []);
 
@@ -43,7 +43,7 @@ export default function Header({ transparent = false }: { transparent?: boolean 
   }, [isSearchOpen]);
 
   const handleLogout = () => {
-    localStorage.removeItem('frabrivue_token');
+    localStorage.removeItem('fabrivo_token');
     setIsLoggedIn(false);
   };
 
@@ -126,6 +126,10 @@ export default function Header({ transparent = false }: { transparent?: boolean 
         <div className={styles.navActions}>
           <Link href="/moodboard" className={styles.iconNavBtn} title={t('moodboardTitle')}>
             <BookMarked size={18} />
+          </Link>
+
+          <Link href="/feed" className={styles.iconNavBtn} title={t('feedTitle')}>
+            <MessageCircle size={18} />
           </Link>
 
           {isLoggedIn ? (

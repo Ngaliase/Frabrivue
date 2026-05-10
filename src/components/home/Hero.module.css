@@ -130,6 +130,15 @@
   background-position: center;
 }
 
+.cardImg {
+  width: 46px;
+  height: 60px;
+  border-radius: 6px;
+  object-fit: cover;
+  background-size: cover;
+  background-position: center;
+}
+
 .cardImgPlaceholder1 {
   background-color: #d1c8c1;
 }

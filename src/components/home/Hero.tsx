@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -9,11 +9,21 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import styles from './Hero.module.css';
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
+interface HeroImage {
+  id: number;
+  image_url: string | null;
+  name: string;
+}
+
 export default function Hero() {
   const t = useTranslations('Hero');
   const router = useRouter();
   const containerRef = useRef<HTMLElement>(null);
   const aiBtnRef = useRef<HTMLAnchorElement>(null);
+  const [heroImages, setHeroImages] = useState<HeroImage[]>([]);
+  const [imgLoading, setImgLoading] = useState(true);
 
   useGSAP(() => {
     // 1. Staggered text slide sequence
@@ -46,6 +56,25 @@ export default function Hero() {
       });
     }
   }, { scope: containerRef });
+
+  // Fetch hero images from API
+  useEffect(() => {
+    const fetchHeroImages = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/v1/fabrics/?limit=20`);
+        if (res.ok) {
+          const data: HeroImage[] = await res.json();
+          const imagesWithUrl = data.filter(f => f.image_url);
+          setHeroImages(imagesWithUrl);
+        }
+      } catch {
+        // silently fail - keep placeholder colors
+      } finally {
+        setImgLoading(false);
+      }
+    };
+    fetchHeroImages();
+  }, []);
 
   const scrollToGrid = () => {
     const grid = document.getElementById('fabric-grid-section');
@@ -88,14 +117,36 @@ export default function Hero() {
         <div className={styles.bottomArea}>
           <div className={styles.cards}>
             <div className={styles.card} onClick={handleSeasonalClick}>
-              <div className={styles.cardImgPlaceholder1}></div>
+              {heroImages[0]?.image_url ? (
+                <img
+                  src={heroImages[0].image_url}
+                  alt={t('newArrivals')}
+                  className={styles.cardImg}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+              ) : (
+                <div className={styles.cardImgPlaceholder1}></div>
+              )}
               <div className={styles.cardInfo}>
                 <span className={styles.cardTitle}>{t('newArrivals')}</span>
                 <button className={styles.cardLink}>&bull; {t('shopNow')}</button>
               </div>
             </div>
             <div className={styles.card}>
-              <div className={styles.cardImgPlaceholder2}></div>
+              {heroImages[1]?.image_url ? (
+                <img
+                  src={heroImages[1].image_url}
+                  alt={t('popularStyles')}
+                  className={styles.cardImg}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+              ) : (
+                <div className={styles.cardImgPlaceholder2}></div>
+              )}
               <div className={styles.cardInfo}>
                 <span className={styles.cardTitle}>{t('popularStyles')}</span>
                 <button className={styles.cardLink} onClick={scrollToGrid}>&bull; {t('shopNow')}</button>

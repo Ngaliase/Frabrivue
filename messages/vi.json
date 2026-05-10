@@ -6,6 +6,7 @@
     "Header": {
         "searchPlaceholder": "Tra cứu >300 loại vải",
         "moodboardTitle": "Bộ sưu tập",
+        "feedTitle": "Bài viết",
         "login": "Đăng nhập",
         "account": "Tài khoản",
         "logout": "Đăng xuất",
@@ -162,5 +163,26 @@
         "elegant": "Thanh lịch",
         "bohemian": "Bohemian",
         "streetwear": "Streetwear"
+    },
+    "FeedPage": {
+        "home": "Trang chủ",
+        "feedTitle": "Bài viết",
+        "placeholder": "Chia sẻ điều bạn đang nghĩ...",
+        "addImages": "Thêm ảnh",
+        "posting": "Đang đăng...",
+        "post": "Đăng",
+        "likes": "thích",
+        "comments": "bình luận",
+        "writeComment": "Viết bình luận...",
+        "emptyFeed": "Chưa có bài viết nào. Hãy là người đầu tiên chia sẻ!",
+        "justNow": "Vừa xong",
+        "minutesAgo": "{n} phút trước",
+        "hoursAgo": "{n} giờ trước",
+        "postNotFound": "Không tìm thấy bài viết",
+        "backToFeed": "Quay lại",
+        "back": "Quay lại",
+        "postTitle": "Chi tiết bài viết",
+        "commentsTitle": "Bình luận",
+        "noComments": "Chưa có bình luận nào."
     }
 }
