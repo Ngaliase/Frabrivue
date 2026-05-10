@@ -25,3 +25,41 @@ export interface MoodItem {
   note: string | null;
   added_at: string;
 }
+
+// ── Posts Types ─────────────────────────────────────────────────────────────
+
+export interface UserSummary {
+  id: number;
+  full_name: string;
+}
+
+export interface PostImage {
+  id: number;
+  image_url: string;
+  position: number;
+  created_at: string;
+}
+
+export interface Post {
+  id: number;
+  user: UserSummary;
+  content: string | null;
+  images: PostImage[];
+  likes_count: number;
+  comments_count: number;
+  is_liked: boolean;
+  created_at: string;
+}
+
+export interface Comment {
+  id: number;
+  user: UserSummary;
+  content: string;
+  created_at: string;
+}
+
+export interface LikeResponse {
+  post_id: number;
+  liked: boolean;
+  likes_count: number;
+}

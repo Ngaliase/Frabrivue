@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Upload, Camera, Leaf, Loader2, Snowflake, Flame, Sun, Wind, Scan, AlertCircle, FileText } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import styles from './AIScanner.module.css';
@@ -24,6 +25,7 @@ const SEASONS = [
 
 export default function AIScanner() {
   const t = useTranslations('AIScanner');
+  const locale = useLocale();
   const [preview, setPreview] = useState<string | null>(null);
   const [result, setResult] = useState<AIResult | null>(null);
   const [loading, setLoading] = useState(false);
