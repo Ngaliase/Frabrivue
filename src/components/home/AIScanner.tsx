@@ -179,7 +179,7 @@ export default function AIScanner() {
       }
     }
 
-    const allTags = Array.isArray(rawTags) ? rawTags : Object.values(rawTags).flatMap(v => Array.isArray(v) ? v : Object.values(v));
+    const allTags = Array.isArray(rawTags) ? tags : Object.values(rawTags as Record<string, unknown>).flatMap(v => Array.isArray(v) ? v : Object.values(v as Record<string, unknown>));
     const isEco = allTags.some((tag: string) =>
       ['cotton', 'linen', 'hemp', 'organic', 'sustainable', 'bông', 'lanh'].some(
         eco => tag.toLowerCase().includes(eco)
