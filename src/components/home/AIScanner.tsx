@@ -98,8 +98,8 @@ export default function AIScanner() {
         return;
       }
 
-      // Bước 2: Poll mỗi 3 giây cho đến khi AI xong (tối đa 120s)
-      const maxAttempts = 40;
+      // Bước 2: Poll mỗi 3 giây cho đến khi AI xong (tối đa 300s = 5 phút)
+      const maxAttempts = 100;
       for (let i = 0; i < maxAttempts; i++) {
         await new Promise(r => setTimeout(r, 3000));
 
@@ -130,11 +130,39 @@ export default function AIScanner() {
 
   const applyResult = (statusData: { fabric?: { name?: { vi?: string; en?: string }; tags?: string[]; care_instructions?: Record<string, string> }; confidence_score?: string }) => {
     const fabric = statusData.fabric;
-    const fabricName = fabric?.name?.vi || fabric?.name?.en || 'Không xác định';
-    const tags: string[] = fabric?.tags || [];
-    const careObj: Record<string, string> = fabric?.care_instructions || {};
-    const careList = Object.values(careObj).filter(Boolean) as string[];
-    const isEco = tags.some((tag: string) =>
+    const isVi = locale === 'vi';
+
+    // Get localized fabric name
+    const fabricName = isVi
+      ? (fabric?.name?.vi || fabric?.name?.en || 'Không xác định')
+      : (fabric?.name?.en || fabric?.name?.vi || 'Unknown');
+
+    // Tags are stored with language keys in DB (e.g., { "vi": "Mềm mại", "en": "Soft" })
+    const rawTags: Record<string, string> | string[] = fabric?.tags || [];
+    let tags: string[];
+    if (Array.isArray(rawTags)) {
+      // Legacy: flat array - use as-is
+      tags = rawTags;
+    } else {
+      // New format: { "vi": "...", "en": "..." } - pick current locale
+      tags = Object.entries(rawTags)
+        .filter(([key]) => isVi ? key === 'vi' : key === 'en')
+        .map(([, val]) => val);
+    }
+
+    // Care instructions: { "vi": { "wash": "..." }, "en": { "wash": "..." } }
+    const rawCare: Record<string, Record<string, string>> = fabric?.care_instructions || {};
+    let careList: string[];
+    const localeCare = isVi ? rawCare.vi : rawCare.en;
+    if (localeCare) {
+      careList = Object.values(localeCare).filter(Boolean);
+    } else {
+      // Fallback: try other language or flat values
+      careList = Object.values(rawCare).flatMap(v => Object.values(v)).filter(Boolean);
+    }
+
+    const allTags = Array.isArray(rawTags) ? rawTags : Object.values(rawTags).flatMap(v => Array.isArray(v) ? v : Object.values(v));
+    const isEco = allTags.some((tag: string) =>
       ['cotton', 'linen', 'hemp', 'organic', 'sustainable', 'bông', 'lanh'].some(
         eco => tag.toLowerCase().includes(eco)
       )
