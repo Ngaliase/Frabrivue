@@ -137,28 +137,46 @@ export default function AIScanner() {
       ? (fabric?.name?.vi || fabric?.name?.en || 'Không xác định')
       : (fabric?.name?.en || fabric?.name?.vi || 'Unknown');
 
-    // Tags are stored with language keys in DB (e.g., { "vi": "Mềm mại", "en": "Soft" })
-    const rawTags: Record<string, string> | string[] = fabric?.tags || [];
+    // Tags: string[] or { "vi": [...], "en": [...] } or { "vi": "val", "en": "val" }
+    const rawTags: unknown = fabric?.tags || [];
     let tags: string[];
     if (Array.isArray(rawTags)) {
-      // Legacy: flat array - use as-is
-      tags = rawTags;
+      tags = rawTags.filter(Boolean).map(t => String(t));
+    } else if (typeof rawTags === 'object' && rawTags) {
+      const localeTags = isVi ? (rawTags as Record<string, unknown>).vi : (rawTags as Record<string, unknown>).en;
+      if (Array.isArray(localeTags)) {
+        tags = localeTags.filter(Boolean).map(t => String(t));
+      } else if (typeof localeTags === 'string') {
+        tags = [localeTags];
+      } else {
+        tags = Object.values(rawTags as Record<string, unknown>).flatMap(v =>
+          Array.isArray(v) ? v.map(String) : [String(v)]
+        );
+      }
     } else {
-      // New format: { "vi": "...", "en": "..." } - pick current locale
-      tags = Object.entries(rawTags)
-        .filter(([key]) => isVi ? key === 'vi' : key === 'en')
-        .map(([, val]) => val);
+      tags = [];
     }
 
-    // Care instructions: { "vi": { "wash": "..." }, "en": { "wash": "..." } }
-    const rawCare: Record<string, Record<string, string>> = fabric?.care_instructions || {};
-    let careList: string[];
-    const localeCare = isVi ? rawCare.vi : rawCare.en;
-    if (localeCare) {
-      careList = Object.values(localeCare).filter(Boolean);
-    } else {
-      // Fallback: try other language or flat values
-      careList = Object.values(rawCare).flatMap(v => Object.values(v)).filter(Boolean);
+    // Care instructions: { "en": "...", "vi": "..." } or { "en": {...}, "vi": {...} } or array or string
+    const rawCare: unknown = fabric?.care_instructions || {};
+    let careList: string[] = [];
+
+    if (typeof rawCare === 'string') {
+      // String format: split by comma or period
+      careList = rawCare.split(/[,.]/).map(s => s.trim()).filter(Boolean);
+    } else if (Array.isArray(rawCare)) {
+      // Array format
+      careList = rawCare.filter(Boolean).map(item => String(item));
+    } else if (typeof rawCare === 'object') {
+      // Language-keyed format: { "en": "...", "vi": "..." } or { "en": {...}, "vi": {...} }
+      const localeCare = isVi ? (rawCare as Record<string, unknown>).vi : (rawCare as Record<string, unknown>).en;
+      if (typeof localeCare === 'string') {
+        // Simple string per language: "Giặt máy..."
+        careList = localeCare.split(/[,.]/).map(s => s.trim()).filter(Boolean);
+      } else if (typeof localeCare === 'object' && localeCare) {
+        // Object per language: { "wash": "..." }
+        careList = Object.values(localeCare as Record<string, unknown>).filter(Boolean).map(v => String(v));
+      }
     }
 
     const allTags = Array.isArray(rawTags) ? rawTags : Object.values(rawTags).flatMap(v => Array.isArray(v) ? v : Object.values(v));
