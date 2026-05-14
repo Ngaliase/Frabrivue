@@ -81,7 +81,6 @@ export default function AboutPage() {
           />
           <div className={styles.overlay}></div>
           <div className={styles.heroContent}>
-            <span className={styles.badge}>About Us</span>
             <h1 className={styles.heroTitle}>{t('pageTitle')}</h1>
             <p className={styles.heroSubtitle}>{t('pageSubtitle')}</p>
             <div className={styles.heroLine} />
