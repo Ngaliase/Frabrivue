@@ -20,6 +20,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  gap: 16px;
   flex: 1;
 }
 
@@ -48,7 +49,7 @@
 }
 
 .logoIcon {
-  height: 28px;
+  height: 40px;
   width: auto;
   object-fit: contain;
 }
@@ -186,8 +187,14 @@
   align-items: center;
   transition: color var(--transition-fast);
 }
-.searchClear:hover { color: var(--text-primary); }
-.searchInputContainer { position: relative; }
+
+.searchClear:hover {
+  color: var(--text-primary);
+}
+
+.searchInputContainer {
+  position: relative;
+}
 
 .navActions {
   display: flex;
@@ -242,6 +249,7 @@
   background-clip: text;
   color: transparent;
 }
+
 .header.transparent .logo span {
   color: rgba(255, 255, 255, 0.8);
 }
@@ -284,35 +292,70 @@
 }
 
 @media (max-width: 1024px) {
-  .navLabel { display: none; }
+  .navLabel {
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
-  .inner { 
-    padding: 0 16px; 
-    height: 64px; 
+  .inner {
+    padding: 0 16px;
+    height: 64px;
     display: flex;
     justify-content: space-between;
   }
-  .headerCenter { 
-    position: static; 
+
+  .headerCenter {
+    position: static;
     transform: none;
-    order: 1; 
-    justify-content: flex-start; 
+    order: 1;
+    justify-content: flex-start;
   }
-  .headerRight { order: 2; flex: 0; }
-  .headerLeft { display: none; }
-  
-  .logo { font-size: 1.1rem; gap: 8px; }
-  .logoIcon { height: 24px; }
-  .navActions { gap: 2px; }
-  .textNavBtn { padding: 4px 6px; font-size: 0.8rem; }
-  .searchWrap { max-width: 160px; }
-  .langSwitch { display: none; }
+
+  .headerRight {
+    order: 2;
+    flex: 0;
+  }
+
+  .headerLeft {
+    display: none;
+  }
+
+  .logo {
+    font-size: 1.1rem;
+    gap: 8px;
+  }
+
+  .logoIcon {
+    height: 24px;
+  }
+
+  .navActions {
+    gap: 2px;
+  }
+
+  .textNavBtn {
+    padding: 4px 6px;
+    font-size: 0.8rem;
+  }
+
+  .searchWrap {
+    max-width: 160px;
+  }
+
+  .langSwitch {
+    display: none;
+  }
 }
 
 @media (max-width: 480px) {
-  .searchWrap { max-width: 120px; }
-  .logo span { display: none; } /* Shorten logo on very small screens */
+  .searchWrap {
+    max-width: 120px;
+  }
+
+  .logo span {
+    display: none;
+  }
+
+  /* Shorten logo on very small screens */
 }
-
