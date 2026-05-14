@@ -58,7 +58,8 @@
   color: var(--brand-indigo);
   border: 1.5px solid var(--brand-indigo);
   padding: 8px 20px;
-  border-radius: 0; /* Sharp corners */
+  border-radius: 0;
+  /* Sharp corners */
   background: #fff;
   margin-bottom: 32px;
 }
@@ -71,18 +72,18 @@
   margin-bottom: 24px;
   line-height: 1.05;
   letter-spacing: -0.03em;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .heroSubtitle {
   font-family: var(--font-jakarta), sans-serif;
   font-size: 1rem;
-  color: rgba(255,255,255,0.9);
+  color: rgba(255, 255, 255, 0.9);
   letter-spacing: 3px;
   text-transform: uppercase;
   margin-bottom: 40px;
   font-weight: 600;
-  text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .heroLine {
@@ -126,7 +127,7 @@
   left: 0;
   font-size: 6rem;
   font-weight: 800;
-  color: rgba(0,0,0,0.03);
+  color: rgba(0, 0, 0, 0.03);
   line-height: 1;
   user-select: none;
   font-family: var(--font-jakarta);
@@ -202,9 +203,10 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 1px; /* Grid style */
-  background: rgba(0,0,0,0.1);
-  border: 1px solid rgba(0,0,0,0.1);
+  gap: 1px;
+  /* Grid style */
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .missionItem {
@@ -240,20 +242,22 @@
 .whyGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0;
-  border: 1px solid rgba(0,0,0,0.1);
+  gap: 24px;
 }
 
 .whyCard {
   background: #fff;
-  border: 1px solid rgba(0,0,0,0.05);
-  border-radius: 0;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 24px;
   padding: 48px;
-  transition: background 0.3s;
+  transition: all 0.4s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
 }
 
 .whyCard:hover {
-  background: #fafafa;
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08);
+  border-color: var(--brand-indigo);
 }
 
 .whyCard p {
@@ -280,12 +284,12 @@
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
 }
 
 .featureCard:hover {
   transform: translateY(-10px);
-  box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
   border-color: var(--brand-indigo);
   background: #fff;
 }
@@ -299,7 +303,7 @@
   justify-content: center;
   color: #fff;
   margin-bottom: 32px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .featureTitle {
@@ -323,7 +327,7 @@
    VISION SECTION
    =========================== */
 .visionCard {
-  background: var(--brand-indigo);
+  background: #1a2654;
   border-radius: 0;
   padding: 80px 60px;
   text-align: center;
@@ -398,8 +402,8 @@
   .whyCard {
     padding: 32px;
   }
-  
+
   .sectionTitle {
     font-size: 1.8rem;
   }
-}
+}

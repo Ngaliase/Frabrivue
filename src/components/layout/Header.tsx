@@ -71,11 +71,11 @@ export default function Header({ transparent = false }: { transparent?: boolean 
 
   useGSAP(() => {
     const btns = document.querySelectorAll(`.${styles.textNavBtn}`);
-    
+
     btns.forEach(btn => {
       const label = btn.querySelector(`.${styles.navLabel}`);
       const icon = btn.querySelector(`.${styles.navIcon}`);
-      
+
       if (!label) return;
 
       const tl = gsap.timeline({ paused: true });
@@ -90,15 +90,17 @@ export default function Header({ transparent = false }: { transparent?: boolean 
   return (
     <header className={`${styles.header} ${transparent ? styles.transparent : ''}`} ref={headerRef}>
       <div className={`container ${styles.inner}`}>
+        {/* Mobile Menu Toggle */}
+        <button
+          className={styles.mobileMenuToggle}
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle Menu"
+        >
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
         {/* Left Side: Empty or Mobile Toggle */}
         <div className={styles.headerLeft}>
-          <button
-            className={styles.mobileMenuToggle}
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle Menu"
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
         </div>
 
         {/* Right Side: Consolidated Dock */}
