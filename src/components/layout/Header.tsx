@@ -85,17 +85,7 @@ export default function Header({ transparent = false }: { transparent?: boolean 
               onClick={() => changeLocale('en')}
             >EN</button>
           </div>
-        </div>
 
-        {/* Center Logo */}
-        <div className={styles.headerCenter}>
-          <Link href="/" className={styles.logo}>
-            <img src="/logo1.png" alt="Frabrivue Logo" className={styles.logoIcon} />
-          </Link>
-        </div>
-
-        {/* Right Side */}
-        <div className={styles.headerRight}>
           <form
             className={`${styles.searchWrap} ${isSearchOpen ? styles.searchOpen : ''}`}
             onSubmit={handleSearch}
@@ -125,7 +115,17 @@ export default function Header({ transparent = false }: { transparent?: boolean 
               )}
             </div>
           </form>
+        </div>
 
+        {/* Center Logo */}
+        <div className={styles.headerCenter}>
+          <Link href="/" className={styles.logo}>
+            <img src="/logo1.png" alt="Frabrivue Logo" className={styles.logoIcon} />
+          </Link>
+        </div>
+
+        {/* Right Side */}
+        <div className={styles.headerRight}>
           <div className={styles.navActions}>
             <Link href="/moodboard" className={styles.textNavBtn}>
               {t('moodboardTitle')}
