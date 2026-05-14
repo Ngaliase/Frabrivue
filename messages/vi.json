@@ -5,13 +5,13 @@
     },
     "Header": {
         "searchPlaceholder": "Tra cứu >300 loại vải",
-        "moodboardTitle": "Đã lưu",
-        "feedTitle": "Bài viết",
+        "moodboardTitle": "Bộ sưu tập",
+        "feedTitle": "Feed",
         "login": "Đăng nhập",
         "account": "Tài khoản",
         "logout": "Đăng xuất",
-        "quiz": "Quiz Cá Nhân",
-        "aboutTitle": "Giới thiệu"
+        "quiz": "Quiz",
+        "aboutTitle": "Về Frabrivue"
     },
     "Footer": {
         "help": "Trợ giúp",
@@ -191,9 +191,9 @@
         "noComments": "Chưa có bình luận nào."
     },
     "AboutPage": {
-        "pageTitle": "Về FABRIVUE",
+        "pageTitle": "Về FRABRIVUE",
         "pageSubtitle": "Nền Tảng Nhận Diện Vải Được Hỗ Trợ Bởi AI",
-        "aboutTitle": "Về chúng tôi",
+        "aboutTitle": "Về Frabrivue",
         "aboutP1": "FABRIVUE là nền tảng được hỗ trợ bởi AI, được thiết kế để đơn giản hóa việc nhận diện vải và giáo dục dệt may cho tất cả mọi người. Bằng cách tích hợp trí tuệ nhân tạo với kiến thức dệt may, trang web của chúng tôi giúp người dùng nhận biết các loại vải qua hình ảnh, đồng thời cung cấp thông tin thiết yếu về đặc tính chất liệu, hướng dẫn bảo quản và tính bền vững.",
         "aboutP2": "Dù bạn là người yêu thời trang, học sinh, nhà thiết kế, người mua sắm trực tuyến hay người học dệt may, FABRIVUE hướng đến việc giúp việc hiểu về vải trở nên dễ dàng hơn, nhanh hơn và dễ tiếp cận hơn.",
         "missionTitle": "Sứ Mệnh Của Chúng Tôi",
