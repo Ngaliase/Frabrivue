@@ -62,6 +62,13 @@ export default function FabricGrid() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [activeCategory, setActiveCategory] = useState('');
+  const [weatherInfo, setWeatherInfo] = useState<{
+    temperature: number;
+    location: string;
+    season: string;
+    suggestion: string;
+    description: string;
+  } | null>(null);
 
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -80,20 +87,45 @@ export default function FabricGrid() {
   const fetchFabrics = useCallback(async (p: number, category: string, query: string, season: string) => {
     setLoading(true);
     setError('');
+    setWeatherInfo(null);
     try {
       const skip = (p - 1) * PAGE_SIZE;
       const params = new URLSearchParams({ skip: String(skip), limit: String(PAGE_SIZE) });
       if (category) params.set('category', category);
       if (query) params.set('search', query);
-      if (season) params.set('season', season);
-      const res = await fetch(`${API_BASE}/api/v1/fabrics/?${params}`);
+
+      let url = `${API_BASE}/api/v1/fabrics/?${params}`;
+      
+      // If seasonal view (coming from Hero or URL param)
+      if (season && !category && !query) {
+        url = `${API_BASE}/api/v1/fabrics/current-season`;
+      } else if (season) {
+        params.set('season', season);
+        url = `${API_BASE}/api/v1/fabrics/?${params}`;
+      }
+
+      const res = await fetch(url);
       if (!res.ok) throw new Error(t('serverError') as string);
-      const data: Fabric[] = await res.json();
-      setFabrics(data);
-      if (data.length < PAGE_SIZE) {
-        setTotal((p - 1) * PAGE_SIZE + data.length);
+      
+      const data = await res.json();
+      
+      if (Array.isArray(data)) {
+        setFabrics(data);
+        if (data.length < PAGE_SIZE) {
+          setTotal((p - 1) * PAGE_SIZE + data.length);
+        } else {
+          setTotal(Math.max(total, p * PAGE_SIZE + 1));
+        }
       } else {
-        setTotal(Math.max(total, p * PAGE_SIZE + 1));
+        // SeasonalFabricResponse format
+        setFabrics(data.fabrics);
+        setWeatherInfo(data.weather);
+        const fabricCount = data.fabrics.length;
+        if (fabricCount < PAGE_SIZE) {
+          setTotal((p - 1) * PAGE_SIZE + fabricCount);
+        } else {
+          setTotal(Math.max(total, p * PAGE_SIZE + 1));
+        }
       }
     } catch {
       setError(t('connectionError') as string);
@@ -163,8 +195,26 @@ export default function FabricGrid() {
         {urlSeason && (
           <div className={`${styles.searchBanner} ${styles.seasonalBanner}`}>
             <Sparkles size={15} className={styles.seasonalIcon} />
-            <span>Gợi ý cho <strong>{getSeasonLabel(urlSeason)}</strong></span>
+            <span>Gợi ý cho <strong>{weatherInfo ? weatherInfo.season : getSeasonLabel(urlSeason)}</strong></span>
             <span className={styles.searchCount}>{total} loại vải phù hợp</span>
+          </div>
+        )}
+
+        {/* Weather Suggestion Box */}
+        {weatherInfo && (
+          <div className={styles.weatherBox}>
+            <div className={styles.weatherHeader}>
+              <div className={styles.weatherTemp}>
+                <span className={styles.tempVal}>{weatherInfo.temperature}°C</span>
+                <span className={styles.location}>{weatherInfo.location}</span>
+              </div>
+              <div className={styles.weatherTitle}>
+                <h3>Dự báo thời tiết & Gợi ý trang phục</h3>
+              </div>
+            </div>
+            <p className={styles.weatherDesc}>{weatherInfo.description}</p>
+            <div className={styles.suggestionDivider}></div>
+            <p className={styles.suggestionText}>{weatherInfo.suggestion}</p>
           </div>
         )}
 
