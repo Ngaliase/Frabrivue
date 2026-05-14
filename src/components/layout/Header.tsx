@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
-import { Search, Globe, Sparkles, BookMarked, LogIn, User, LogOut, X, MessageCircle } from 'lucide-react';
+import { Search, Globe, Sparkles, BookMarked, LogIn, User, LogOut, X, MessageCircle, Menu, Info } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import styles from './Header.module.css';
@@ -18,6 +18,7 @@ export default function Header({ transparent = false }: { transparent?: boolean 
   const [search, setSearch] = useState(searchParams.get('q') || '');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(!!searchParams.get('q'));
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -71,6 +72,15 @@ export default function Header({ transparent = false }: { transparent?: boolean 
   return (
     <header className={`${styles.header} ${transparent ? styles.transparent : ''}`} ref={headerRef}>
       <div className={`container ${styles.inner}`}>
+        {/* Mobile Menu Toggle */}
+        <button
+          className={styles.mobileMenuToggle}
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle Menu"
+        >
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
         {/* Left Side */}
         <div className={styles.headerLeft}>
           <div className={styles.navLinksLeft}>
@@ -160,6 +170,76 @@ export default function Header({ transparent = false }: { transparent?: boolean 
             ) : (
               <Link href="/auth" className={styles.textNavBtn}>
                 <LogIn size={16} className={styles.navIcon} />
+                {t('login')}
+              </Link>
+            )}
+          </div>
+        </div>
+
+        {/* Mobile Menu Overlay & Drawer */}
+        <div className={`${styles.mobileMenuOverlay} ${isMobileMenuOpen ? styles.mobileMenuOpen : ''}`} onClick={() => setIsMobileMenuOpen(false)} />
+        <div className={`${styles.mobileMenuDrawer} ${isMobileMenuOpen ? styles.mobileMenuOpen : ''}`}>
+          <div className={styles.mobileMenuHeader}>
+            <Link href="/" className={styles.logo} onClick={() => setIsMobileMenuOpen(false)}>
+              <img src="/logo1.png" alt="Logo" className={styles.logoIcon} />
+            </Link>
+            <button className={styles.mobileMenuClose} onClick={() => setIsMobileMenuOpen(false)}>
+              <X size={24} />
+            </button>
+          </div>
+
+          <nav className={styles.mobileNav}>
+            <Link href="/moodboard" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
+              <BookMarked size={20} />
+              {t('moodboardTitle')}
+            </Link>
+            <Link href="/quiz" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
+              <Sparkles size={20} />
+              {t('quiz')}
+            </Link>
+            <Link href="/feed" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
+              <MessageCircle size={20} />
+              {t('feedTitle')}
+            </Link>
+            <Link href="/about" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
+              <Info size={20} />
+              {t('aboutTitle')}
+            </Link>
+          </nav>
+
+          <div className={styles.mobileMenuFooter}>
+            <div className={styles.langSwitchMobile}>
+              <Globe size={16} />
+              <button
+                className={locale === 'vi' ? styles.langActive : styles.langBtn}
+                onClick={() => changeLocale('vi')}
+              >VI</button>
+              <button
+                className={locale === 'en' ? styles.langActive : styles.langBtn}
+                onClick={() => changeLocale('en')}
+              >EN</button>
+            </div>
+
+            {isLoggedIn ? (
+              <div className={styles.mobileAuth}>
+                <Link href="/moodboard" className={styles.mobileAuthBtn} onClick={() => setIsMobileMenuOpen(false)}>
+                  <User size={18} />
+                  {t('account')}
+                </Link>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className={styles.mobileAuthBtn}
+                >
+                  <LogOut size={18} />
+                  {t('logout')}
+                </button>
+              </div>
+            ) : (
+              <Link href="/auth" className={styles.mobileAuthBtn} onClick={() => setIsMobileMenuOpen(false)}>
+                <LogIn size={18} />
                 {t('login')}
               </Link>
             )}

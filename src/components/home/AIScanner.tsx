@@ -143,7 +143,7 @@ export default function AIScanner() {
 
   const handleTryOn = async () => {
     if (!uploadedImageUrl) return;
-    
+
     setTryOnLoading(true);
     setTryOnResult(null);
     setError(null);
@@ -170,7 +170,7 @@ export default function AIScanner() {
       }
 
       const { task_id, status: initialStatus } = await startRes.json();
-      
+
       if (initialStatus === 'completed') {
         // Cache hit case
         const statusRes = await fetch(`${apiUrl}/api/v1/try-on/status/${task_id}`);
@@ -185,7 +185,7 @@ export default function AIScanner() {
         try {
           const statusRes = await fetch(`${apiUrl}/api/v1/try-on/status/${task_id}`);
           if (!statusRes.ok) return;
-          
+
           const statusData = await statusRes.json();
           if (statusData.status === 'completed') {
             setTryOnResult(statusData.result_image_url);
@@ -217,13 +217,13 @@ export default function AIScanner() {
     }
   };
 
-  const applyResult = (statusData: { 
-    image_url?: string; 
-    fabric?: { 
-      name?: { vi?: string; en?: string }; 
-      tags?: string[]; 
-      care_instructions?: Record<string, string> 
-    }; 
+  const applyResult = (statusData: {
+    image_url?: string;
+    fabric?: {
+      name?: { vi?: string; en?: string };
+      tags?: string[];
+      care_instructions?: Record<string, string>
+    };
     confidence_score?: string;
     durability?: number;
     breathability?: number;
@@ -398,7 +398,7 @@ export default function AIScanner() {
               <div className={styles.modelSilhouette}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={MODEL_URLS[activeSeason]} alt={`${activeSeason} fashion model`} className={styles.modelImg} />
-                
+
                 {(tryOnResult || tryOnLoading) && (
                   <div className={styles.tryOnOverlay}>
                     {tryOnLoading ? (
@@ -519,9 +519,9 @@ export default function AIScanner() {
                     </ul>
                   </div>
 
-                  <button 
-                    className={styles.tryOnButton} 
-                    onClick={handleTryOn} 
+                  <button
+                    className={styles.tryOnButton}
+                    onClick={handleTryOn}
                     disabled={tryOnLoading || !uploadedImageUrl}
                   >
                     {tryOnLoading ? <Loader2 size={18} className={styles.spinner} /> : <Shirt size={18} />}
@@ -540,7 +540,7 @@ export default function AIScanner() {
           </div>
           <div className={styles.seasonTabs}>
             {SEASONS.map(({ key, Icon }) => (
-               <button
+              <button
                 key={key}
                 className={`${styles.seasonTab} ${activeSeason === key ? styles.seasonActive : ''}`}
                 onClick={() => {
