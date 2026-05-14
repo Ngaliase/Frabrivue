@@ -3,13 +3,41 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Heart, MessageCircle, Send, Trash2, Loader2 } from 'lucide-react';
+import { ArrowLeft, Heart, MessageCircle, Send, Trash2, Loader2, Calendar, User } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { useTranslations, useLocale } from 'next-intl';
 import styles from './page.module.css';
-import { Post, Comment } from '@/types/fabric';
+import { Post, Comment, PostBlock } from '@/types/fabric';
 import { postsApi } from '@/utils/api';
+
+// ── Block Renderer ──────────────────────────────────────────────────────────
+function BlockRenderer({ blocks }: { blocks: PostBlock[] }) {
+  return (
+    <div className={styles.articleBody}>
+      {blocks.map((block, i) => {
+        if (block.type === 'text') {
+          return (
+            <p key={i} className={styles.articleParagraph}>
+              {block.content}
+            </p>
+          );
+        }
+        if (block.type === 'image' && block.url) {
+          return (
+            <figure key={i} className={styles.articleFigure}>
+              <img src={block.url} alt={block.caption || ''} className={styles.articleImage} />
+              {block.caption && (
+                <figcaption className={styles.figCaption}>{block.caption}</figcaption>
+              )}
+            </figure>
+          );
+        }
+        return null;
+      })}
+    </div>
+  );
+}
 
 export default function PostDetailPage() {
   const t = useTranslations('FeedPage');
@@ -47,8 +75,8 @@ export default function PostDetailPage() {
 
   useGSAP(() => {
     if (!loading && post && containerRef.current) {
-      gsap.fromTo(`.${styles.postCard}`,
-        { y: 20, opacity: 0 },
+      gsap.fromTo(`.${styles.articleCard}`,
+        { y: 24, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out' }
       );
     }
@@ -79,14 +107,10 @@ export default function PostDetailPage() {
     }
   };
 
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString(locale === 'vi' ? 'vi-VN' : 'en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+  const formatDate = (dateStr: string) =>
+    new Date(dateStr).toLocaleDateString(locale === 'vi' ? 'vi-VN' : 'en-US', {
+      year: 'numeric', month: 'long', day: 'numeric',
     });
-  };
 
   if (loading) {
     return (
@@ -107,72 +131,100 @@ export default function PostDetailPage() {
     );
   }
 
+  const hasBlocks = post.blocks && post.blocks.length > 0;
+
   return (
     <div className={styles.page} ref={containerRef}>
+
+      {/* Sticky back bar */}
       <div className={styles.topBar}>
-        <div className="container" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 24px' }}>
+        <div className="container" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '14px 24px' }}>
           <button onClick={() => router.back()} className={styles.backBtn}>
             <ArrowLeft size={16} /> {t('back')}
           </button>
           <div className={styles.pageTitle}>
-            <MessageCircle size={20} strokeWidth={1.8} />
+            <MessageCircle size={18} strokeWidth={1.8} />
             <h1>{t('postTitle')}</h1>
           </div>
         </div>
       </div>
 
-      <div className="container" style={{ padding: '24px', maxWidth: '680px', margin: '0 auto' }}>
-        {/* Post */}
-        <div className={styles.postCard}>
-          <div className={styles.postHeader}>
-            <div className={styles.avatar}>
-              {post.user.full_name.charAt(0).toUpperCase()}
-            </div>
-            <div className={styles.meta}>
-              <span className={styles.userName}>{post.user.full_name}</span>
-              <span className={styles.postTime}>{formatDate(post.created_at)}</span>
-            </div>
-            {authed && currentUserId === post.user.id && (
-              <button className={styles.deleteBtn} onClick={handleDeletePost}>
-                <Trash2 size={14} />
-              </button>
-            )}
-          </div>
+      <div className={styles.articleWrap}>
+        <article className={styles.articleCard}>
 
-          {post.content && <p className={styles.postContent}>{post.content}</p>}
+          {/* Author / meta */}
+          <header className={styles.articleHeader}>
+            <div className={styles.authorRow}>
+              <div className={styles.avatar}>{post.user.full_name.charAt(0).toUpperCase()}</div>
+              <div className={styles.authorInfo}>
+                <span className={styles.authorName}>{post.user.full_name}</span>
+                <span className={styles.articleDate}>
+                  <Calendar size={12} /> {formatDate(post.created_at)}
+                </span>
+              </div>
+              {authed && currentUserId === post.user.id && (
+                <button className={styles.deleteBtn} onClick={handleDeletePost}>
+                  <Trash2 size={14} />
+                </button>
+              )}
+            </div>
+          </header>
 
-          {post.images && post.images.length > 0 && (
-            <div className={`${styles.imageGrid} ${styles[`imgGrid${Math.min(post.images.length, 4)}`]}`}>
-              {post.images.map(img => (
-                <img key={img.id} src={img.image_url} alt="" className={styles.postImg} />
-              ))}
+          {/* Main content */}
+          {hasBlocks ? (
+            <BlockRenderer blocks={post.blocks!} />
+          ) : (
+            <div className={styles.articleBody}>
+              {post.content && <p className={styles.articleParagraph}>{post.content}</p>}
+              {post.images && post.images.length > 0 && (
+                <div className={styles.legacyImages}>
+                  {post.images.map(img => (
+                    <figure key={img.id} className={styles.articleFigure}>
+                      <img src={img.image_url} alt="" className={styles.articleImage} />
+                    </figure>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
+          {/* Actions */}
           <div className={styles.postFooter}>
             <button
               className={`${styles.actionBtn} ${post.is_liked ? styles.liked : ''}`}
               onClick={handleLike}
             >
-              <Heart size={16} fill={post.is_liked ? 'currentColor' : 'none'} />
+              <Heart size={18} fill={post.is_liked ? 'currentColor' : 'none'} />
               <span>{post.likes_count} {t('likes')}</span>
             </button>
             <span className={styles.commentCount}>
-              <MessageCircle size={16} />
+              <MessageCircle size={18} />
               <span>{comments.length} {t('comments')}</span>
             </span>
           </div>
-        </div>
+        </article>
 
         {/* Comments */}
-        <div className={styles.commentsSection}>
-          <h2 className={styles.commentsTitle}>{t('commentsTitle')}</h2>
-          {comments.length === 0 && <p className={styles.noComments}>{t('noComments')}</p>}
+        <section className={styles.commentsSection}>
+          <h2 className={styles.commentsTitle}>
+            <MessageCircle size={18} />
+            {t('commentsTitle')} ({comments.length})
+          </h2>
+
+          {comments.length === 0 && (
+            <p className={styles.noComments}>{t('noComments')}</p>
+          )}
+
           {comments.map(comment => (
             <div key={comment.id} className={styles.comment}>
               <div className={styles.commentHeader}>
                 <div className={styles.commentAvatar}>{comment.user.full_name.charAt(0).toUpperCase()}</div>
-                <span className={styles.commentAuthor}>{comment.user.full_name}</span>
+                <div>
+                  <span className={styles.commentAuthor}>{comment.user.full_name}</span>
+                  <span className={styles.commentDate}>
+                    {new Date(comment.created_at).toLocaleDateString(locale === 'vi' ? 'vi-VN' : 'en-US')}
+                  </span>
+                </div>
               </div>
               <p className={styles.commentText}>{comment.content}</p>
             </div>
@@ -188,11 +240,11 @@ export default function PostDetailPage() {
                 onKeyDown={e => e.key === 'Enter' && submitComment()}
               />
               <button onClick={submitComment} disabled={postingComment}>
-                <Send size={15} />
+                {postingComment ? <Loader2 size={14} className={styles.spin} /> : <Send size={15} />}
               </button>
             </div>
           )}
-        </div>
+        </section>
       </div>
     </div>
   );

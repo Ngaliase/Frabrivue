@@ -10,7 +10,8 @@
         "login": "Đăng nhập",
         "account": "Tài khoản",
         "logout": "Đăng xuất",
-        "quiz": "Quiz Cá Nhân"
+        "quiz": "Quiz Cá Nhân",
+        "aboutTitle": "Giới thiệu"
     },
     "Footer": {
         "help": "Trợ giúp",
@@ -184,5 +185,33 @@
         "postTitle": "Chi tiết bài viết",
         "commentsTitle": "Bình luận",
         "noComments": "Chưa có bình luận nào."
+    },
+    "AboutPage": {
+        "pageTitle": "Về FABRIVUE",
+        "pageSubtitle": "Nền Tảng Nhận Diện Vải Được Hỗ Trợ Bởi AI",
+        "aboutTitle": "Về chúng tôi",
+        "aboutP1": "FABRIVUE là nền tảng được hỗ trợ bởi AI, được thiết kế để đơn giản hóa việc nhận diện vải và giáo dục dệt may cho tất cả mọi người. Bằng cách tích hợp trí tuệ nhân tạo với kiến thức dệt may, trang web của chúng tôi giúp người dùng nhận biết các loại vải qua hình ảnh, đồng thời cung cấp thông tin thiết yếu về đặc tính chất liệu, hướng dẫn bảo quản và tính bền vững.",
+        "aboutP2": "Dù bạn là người yêu thời trang, học sinh, nhà thiết kế, người mua sắm trực tuyến hay người học dệt may, FABRIVUE hướng đến việc giúp việc hiểu về vải trở nên dễ dàng hơn, nhanh hơn và dễ tiếp cận hơn.",
+        "missionTitle": "Sứ Mệnh Của Chúng Tôi",
+        "missionP1": "Tại FABRIVUE, sứ mệnh của chúng tôi là thu hẹp khoảng cách giữa công nghệ và kiến thức dệt may bằng cách cung cấp nền tảng thông minh, thân thiện với người dùng để nhận diện và giáo dục về vải.",
+        "missionStrive": "Chúng tôi nỗ lực để:",
+        "missionItem1": "Nâng cao hiểu biết của công chúng về các loại vật liệu dệt may",
+        "missionItem2": "Giúp người dùng đưa ra quyết định thời trang và mua sắm sáng suốt",
+        "missionItem3": "Giảm bất ổn trong việc nhận diện vải khi mua sắm trực tuyến",
+        "missionItem4": "Thúc đẩy tiêu dùng thời trang bền vững và có trách nhiệm thông qua nhận thức tốt hơn về chất liệu",
+        "whyTitle": "Tại Sao Chọn FABRIVUE?",
+        "whyP1": "Chọn đúng loại vải có thể ảnh hưởng đến sự thoải mái, độ bền, cách bảo quản và tác động môi trường. Tuy nhiên, nhiều người gặp khó khăn trong việc phân biệt chính xác các loại vải, đặc biệt trong môi trường mua sắm trực tuyến.",
+        "whyP2": "FABRIVUE giải quyết thách thức này bằng cách tận dụng công nghệ AI để cung cấp khả năng nhận diện vải nhanh chóng và dễ tiếp cận, giúp người dùng hiểu rõ hơn về các chất liệu họ mặc và sử dụng hàng ngày.",
+        "featuresTitle": "Tính Năng Nổi Bật",
+        "feature1Title": "Nhận Diện Vải bằng AI",
+        "feature1Desc": "Tải ảnh lên và nhận kết quả nhận diện vải được hỗ trợ bởi AI sử dụng công nghệ học máy tiên tiến để nhận diện nhanh hơn và thuận tiện hơn.",
+        "feature2Title": "Trung Tâm Giáo Dục Vải",
+        "feature2Desc": "Truy cập thông tin dễ hiểu về đặc tính vải, kết cấu, độ thoáng khí, độ bền, hướng dẫn bảo quản và các ứng dụng phù hợp.",
+        "feature3Title": "Nhận Thức Thời Trang Bền Vững",
+        "feature3Desc": "Tìm hiểu về các vật liệu thân thiện với môi trường và đưa ra lựa chọn thời trang có trách nhiệm hơn thông qua hiểu biết tốt hơn về dệt may.",
+        "feature4Title": "Trải Nghiệm Người Dùng Tương Tác",
+        "feature4Desc": "Được thiết kế với giao diện đơn giản và dễ tiếp cận, FABRIVUE khuyến khích người dùng khám phá, học hỏi và tương tác với kiến thức dệt may một cách dễ dàng.",
+        "visionTitle": "Tầm Nhìn Của Chúng Tôi",
+        "visionP1": "Chúng tôi hướng đến một tương lai nơi kiến thức về vải trở nên dễ tiếp cận với tất cả mọi người, giúp người tiêu dùng, học sinh và cộng đồng thời trang đưa ra những quyết định thông minh hơn, bền vững hơn thông qua học tập dựa trên công nghệ."
     }
 }
