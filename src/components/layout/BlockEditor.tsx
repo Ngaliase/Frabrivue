@@ -15,6 +15,8 @@ interface BlockEditorProps {
 export default function BlockEditor({ blocks, onChange, disabled }: BlockEditorProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const pendingImageIndex = useRef<number | null>(null);
+  const blocksRef = useRef(blocks);
+  blocksRef.current = blocks;
 
   const addTextBlock = () => {
     onChange([...blocks, { type: 'text', content: '' }]);
@@ -41,12 +43,13 @@ export default function BlockEditor({ blocks, onChange, disabled }: BlockEditorP
     // Upload to Cloudinary in background
     try {
       const result = await uploadImage(file);
-      // Replace blob URL with Cloudinary URL
-      onChange(newBlocks.map((b, i) =>
+      // Replace blob URL with Cloudinary URL using latest state
+      onChange(blocksRef.current.map((b, i) =>
         i === insertAt ? { ...b, url: result.url } : b
       ));
     } catch (err) {
       console.error('Upload failed', err);
+      alert('Tải ảnh lên thất bại. Vui lòng kiểm tra lại cấu hình upload trên server.');
     }
   };
 
