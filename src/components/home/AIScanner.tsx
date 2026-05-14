@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
-import { Upload, Camera, Leaf, Loader2, Snowflake, Flame, Sun, Wind, Scan, AlertCircle, FileText } from 'lucide-react';
+import { Upload, Camera, Leaf, Loader2, Snowflake, Flame, Sun, Wind, Scan, AlertCircle, FileText, Shirt, RotateCcw } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
 import gsap from 'gsap';
@@ -14,6 +14,9 @@ interface AIResult {
   ecoFriendly: boolean;
   traits: string[];
   care: string[];
+  durability?: number;
+  breathability?: number;
+  comfort?: number;
 }
 
 const SEASONS = [
@@ -22,6 +25,13 @@ const SEASONS = [
   { key: 'autumn', Icon: Flame },
   { key: 'winter', Icon: Snowflake },
 ];
+
+const MODEL_URLS: Record<string, string> = {
+  spring: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779561/fabrivo_models/spring.jpg',
+  summer: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779562/fabrivo_models/summer.jpg',
+  autumn: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779562/fabrivo_models/autumn.jpg',
+  winter: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779563/fabrivo_models/winter.jpg',
+};
 
 export default function AIScanner() {
   const t = useTranslations('AIScanner');
@@ -32,6 +42,9 @@ export default function AIScanner() {
   const [activeSeason, setActiveSeason] = useState('autumn');
   const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
+  const [tryOnResult, setTryOnResult] = useState<string | null>(null);
+  const [tryOnLoading, setTryOnLoading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const sectionRef = useRef<HTMLElement>(null);
@@ -128,14 +141,114 @@ export default function AIScanner() {
     }
   };
 
-  const applyResult = (statusData: { fabric?: { name?: { vi?: string; en?: string }; tags?: string[]; care_instructions?: Record<string, string> }; confidence_score?: string }) => {
+  const handleTryOn = async () => {
+    if (!uploadedImageUrl) return;
+    
+    setTryOnLoading(true);
+    setTryOnResult(null);
+    setError(null);
+
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const personImageUrl = MODEL_URLS[activeSeason];
+
+      // 1. Start Task
+      const startRes = await fetch(`${apiUrl}/api/v1/try-on/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          clothing_image_url: uploadedImageUrl,
+          person_image_url: personImageUrl,
+        }),
+      });
+
+      if (!startRes.ok) {
+        const errData = await startRes.json().catch(() => ({}));
+        throw new Error(errData.detail || `Lỗi máy chủ (${startRes.status})`);
+      }
+
+      const { task_id, status: initialStatus } = await startRes.json();
+      
+      if (initialStatus === 'completed') {
+        // Cache hit case
+        const statusRes = await fetch(`${apiUrl}/api/v1/try-on/status/${task_id}`);
+        const statusData = await statusRes.json();
+        setTryOnResult(statusData.result_image_url);
+        setTryOnLoading(false);
+        return;
+      }
+
+      // 2. Poll Status
+      const pollInterval = setInterval(async () => {
+        try {
+          const statusRes = await fetch(`${apiUrl}/api/v1/try-on/status/${task_id}`);
+          if (!statusRes.ok) return;
+          
+          const statusData = await statusRes.json();
+          if (statusData.status === 'completed') {
+            setTryOnResult(statusData.result_image_url);
+            setTryOnLoading(false);
+            clearInterval(pollInterval);
+          } else if (statusData.status === 'failed') {
+            setError(statusData.error_message || 'AI gặp lỗi khi xử lý');
+            setTryOnLoading(false);
+            clearInterval(pollInterval);
+          }
+        } catch (err) {
+          console.error('Polling error:', err);
+        }
+      }, 3000);
+
+      // Cleanup interval after 2 minutes (timeout)
+      setTimeout(() => {
+        clearInterval(pollInterval);
+        if (tryOnLoading) {
+          setTryOnLoading(false);
+          setError('Hết thời gian chờ xử lý AI');
+        }
+      }, 120000);
+
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Không thể thực hiện Try-On';
+      setError(errorMessage);
+      setTryOnLoading(false);
+    }
+  };
+
+  const applyResult = (statusData: { 
+    image_url?: string; 
+    fabric?: { 
+      name?: { vi?: string; en?: string }; 
+      tags?: string[]; 
+      care_instructions?: Record<string, string> 
+    }; 
+    confidence_score?: string;
+    durability?: number;
+    breathability?: number;
+    comfort?: number;
+    predicted_label?: string;
+  }) => {
+    if (statusData.image_url) {
+      setUploadedImageUrl(statusData.image_url);
+    }
     const fabric = statusData.fabric;
     const isVi = locale === 'vi';
 
     // Get localized fabric name
-    const fabricName = isVi
-      ? (fabric?.name?.vi || fabric?.name?.en || 'Không xác định')
-      : (fabric?.name?.en || fabric?.name?.vi || 'Unknown');
+    let fabricName = isVi
+      ? (fabric?.name?.vi || fabric?.name?.en)
+      : (fabric?.name?.en || fabric?.name?.vi);
+
+    // Fallback to predicted_label if no DB match found
+    if (!fabricName && statusData.predicted_label) {
+      fabricName = statusData.predicted_label;
+    }
+
+    if (!fabricName) {
+      fabricName = isVi ? 'Không xác định' : 'Unknown';
+    }
 
     // Tags: string[] or { "vi": [...], "en": [...] } or { "vi": "val", "en": "val" }
     const rawTags: unknown = fabric?.tags || [];
@@ -192,6 +305,9 @@ export default function AIScanner() {
       ecoFriendly: isEco,
       traits: tags.slice(0, 4),
       care: careList.slice(0, 3),
+      durability: statusData.durability,
+      breathability: statusData.breathability,
+      comfort: statusData.comfort,
     });
   };
 
@@ -281,7 +397,25 @@ export default function AIScanner() {
               <div className={styles.mirrorLight}></div>
               <div className={styles.modelSilhouette}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`/models/${activeSeason}.png`} alt={`${activeSeason} fashion model`} className={styles.modelImg} />
+                <img src={MODEL_URLS[activeSeason]} alt={`${activeSeason} fashion model`} className={styles.modelImg} />
+                
+                {(tryOnResult || tryOnLoading) && (
+                  <div className={styles.tryOnOverlay}>
+                    {tryOnLoading ? (
+                      <div className={styles.tryOnLoading}>
+                        <Loader2 size={32} className={styles.spinner} />
+                        <p>AI đang thiết kế...</p>
+                      </div>
+                    ) : (
+                      <div className={styles.tryOnResult}>
+                        <img src={tryOnResult!} alt="Try-On Result" className={styles.resultImg} />
+                        <button className={styles.resetTryOn} onClick={() => setTryOnResult(null)}>
+                          <RotateCcw size={16} />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
               <div className={styles.mirrorStand}></div>
             </div>
@@ -328,6 +462,48 @@ export default function AIScanner() {
                         ? <span className={styles.ecoYes}><Leaf size={14} /> {t('eco_friendly')}</span>
                         : <span className={styles.ecoNo}>{t('eco_not_certified')}</span>}
                     </div>
+                    <div className={styles.resultRow}>
+                      <span className={styles.resultLabel}>{t('eco_index_label')}</span>
+                      <span className={result.ecoFriendly ? styles.ecoYes : styles.ecoNo}>
+                        {result.ecoFriendly ? t('eco_status_friendly') : t('eco_status_unfriendly')}
+                      </span>
+                    </div>
+
+                    {result.durability !== undefined && (
+                      <div className={styles.resultRow}>
+                        <span className={styles.resultLabel}>Độ bền</span>
+                        <div className={styles.accuracyWrap}>
+                          <div className={styles.accuracyBar}>
+                            <div className={styles.accuracyFill} style={{ width: `${result.durability * 10}%`, backgroundColor: '#3498db' }} />
+                          </div>
+                          <span className={styles.accuracyNum}>{result.durability}/10</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {result.breathability !== undefined && (
+                      <div className={styles.resultRow}>
+                        <span className={styles.resultLabel}>Độ thoáng khí</span>
+                        <div className={styles.accuracyWrap}>
+                          <div className={styles.accuracyBar}>
+                            <div className={styles.accuracyFill} style={{ width: `${result.breathability * 10}%`, backgroundColor: '#2ecc71' }} />
+                          </div>
+                          <span className={styles.accuracyNum}>{result.breathability}/10</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {result.comfort !== undefined && (
+                      <div className={styles.resultRow}>
+                        <span className={styles.resultLabel}>Cảm giác mặc</span>
+                        <div className={styles.accuracyWrap}>
+                          <div className={styles.accuracyBar}>
+                            <div className={styles.accuracyFill} style={{ width: `${result.comfort * 10}%`, backgroundColor: '#f1c40f' }} />
+                          </div>
+                          <span className={styles.accuracyNum}>{result.comfort}/10</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   <div className={styles.resultSection}>
@@ -342,6 +518,15 @@ export default function AIScanner() {
                       {result.care.map(c => <li key={c}>{c}</li>)}
                     </ul>
                   </div>
+
+                  <button 
+                    className={styles.tryOnButton} 
+                    onClick={handleTryOn} 
+                    disabled={tryOnLoading || !uploadedImageUrl}
+                  >
+                    {tryOnLoading ? <Loader2 size={18} className={styles.spinner} /> : <Shirt size={18} />}
+                    {t('try_on_button') || 'Thử trang phục ngay'}
+                  </button>
                 </div>
               )}
             </div>
@@ -358,7 +543,11 @@ export default function AIScanner() {
                <button
                 key={key}
                 className={`${styles.seasonTab} ${activeSeason === key ? styles.seasonActive : ''}`}
-                onClick={() => setActiveSeason(key)}
+                onClick={() => {
+                  setActiveSeason(key);
+                  setTryOnResult(null);
+                  setTryOnLoading(false);
+                }}
                 data-season={key}
               >
                 <div className={styles.seasonIconWrap}>

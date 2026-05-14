@@ -20,8 +20,24 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 16px;
+  gap: 24px;
   flex: 1;
+}
+
+.navLinksLeft {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.navIcon {
+  margin-right: 6px;
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+}
+
+.textNavBtn:hover .navIcon {
+  color: var(--brand-indigo);
 }
 
 .headerCenter {
@@ -49,7 +65,7 @@
 }
 
 .logoIcon {
-  height: 40px;
+  height: 46px;
   width: auto;
   object-fit: contain;
 }
