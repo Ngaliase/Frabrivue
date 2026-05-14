@@ -1,4 +1,4 @@
-import { Post, Comment, LikeResponse } from '@/types/fabric';
+import { Post, Comment, LikeResponse, PostBlock } from '@/types/fabric';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
@@ -42,7 +42,7 @@ export const postsApi = {
   getFeed: () => request<Post[]>('/api/v1/posts/'),
   getMyPosts: () => request<Post[]>('/api/v1/posts/me'),
   getPost: (id: number) => request<Post>(`/api/v1/posts/${id}`),
-  createPost: (data: { content?: string; image_urls: string[] }) =>
+  createPost: (data: { content?: string; image_urls?: string[]; blocks?: PostBlock[] }) =>
     request<Post>('/api/v1/posts/', { method: 'POST', body: JSON.stringify(data) }),
   deletePost: (id: number) =>
     request<{ message: string }>('/api/v1/posts/' + id, { method: 'DELETE' }),
@@ -60,3 +60,16 @@ export const postsApi = {
       { method: 'DELETE' }
     ),
 };
+
+export async function uploadImage(file: File): Promise<{ url: string }> {
+  const token = localStorage.getItem('fabrivo_token');
+  const formData = new FormData();
+  formData.append('file', file);
+  const res = await fetch(`${API_BASE}/api/v1/upload/image`, {
+    method: 'POST',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    body: formData,
+  });
+  if (!res.ok) throw new Error(`Upload failed: HTTP ${res.status}`);
+  return res.json();
+}

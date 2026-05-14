@@ -40,10 +40,18 @@ export interface PostImage {
   created_at: string;
 }
 
+export interface PostBlock {
+  type: 'text' | 'image';
+  content?: string;   // text block
+  url?: string;       // image block
+  caption?: string;   // image block
+}
+
 export interface Post {
   id: number;
   user: UserSummary;
   content: string | null;
+  blocks: PostBlock[] | null;
   images: PostImage[];
   likes_count: number;
   comments_count: number;

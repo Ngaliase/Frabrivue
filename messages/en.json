@@ -10,7 +10,8 @@
         "login": "Login",
         "account": "Account",
         "logout": "Logout",
-        "quiz": "Style Quiz"
+        "quiz": "Style Quiz",
+        "aboutTitle": "About"
     },
     "Footer": {
         "help": "Help",
@@ -184,5 +185,33 @@
         "postTitle": "Post Detail",
         "commentsTitle": "Comments",
         "noComments": "No comments yet."
+    },
+    "AboutPage": {
+        "pageTitle": "About FABRIVUE",
+        "pageSubtitle": "AI-Powered Fabric Recognition Platform",
+        "aboutTitle": "About us",
+        "aboutP1": "FABRIVUE is an AI-powered platform designed to simplify fabric identification and textile education for everyone. By integrating artificial intelligence with textile knowledge, our website helps users recognize fabric types through images while providing essential information about material characteristics, care instructions, and sustainability.",
+        "aboutP2": "Whether you are a fashion enthusiast, student, designer, online shopper, or textile learner, FABRIVUE aims to make fabric understanding easier, faster, and more accessible.",
+        "missionTitle": "Our Mission",
+        "missionP1": "At FABRIVUE, our mission is to bridge the gap between technology and textile knowledge by providing an intelligent, user-friendly platform for fabric recognition and education.",
+        "missionStrive": "We strive to:",
+        "missionItem1": "Enhance public understanding of textile materials",
+        "missionItem2": "Help users make informed fashion and purchasing decisions",
+        "missionItem3": "Reduce uncertainty in identifying fabrics during online shopping",
+        "missionItem4": "Promote sustainable and responsible fashion consumption through better material awareness",
+        "whyTitle": "Why FABRIVUE?",
+        "whyP1": "Choosing the right fabric can influence comfort, durability, care, and environmental impact. However, many people struggle to distinguish textiles accurately, especially in digital shopping environments.",
+        "whyP2": "FABRIVUE addresses this challenge by leveraging AI technology to provide quick and accessible fabric recognition, empowering users to better understand the materials they wear and use every day.",
+        "featuresTitle": "Key Features",
+        "feature1Title": "AI Fabric Recognition",
+        "feature1Desc": "Upload an image and receive AI-assisted fabric identification using advanced machine learning technology for faster and more convenient recognition.",
+        "feature2Title": "Fabric Education Hub",
+        "feature2Desc": "Access easy-to-understand information about fabric properties, textures, breathability, durability, care instructions, and suitable applications.",
+        "feature3Title": "Sustainable Fashion Awareness",
+        "feature3Desc": "Learn about environmentally friendly materials and make more responsible fashion choices through better textile understanding.",
+        "feature4Title": "Interactive User Experience",
+        "feature4Desc": "Designed with a simple and accessible interface, FABRIVUE encourages users to explore, learn, and engage with textile knowledge effortlessly.",
+        "visionTitle": "Our Vision",
+        "visionP1": "We envision a future where fabric knowledge becomes accessible to everyone, helping consumers, students, and fashion communities make smarter, more sustainable decisions through technology-driven learning."
     }
 }

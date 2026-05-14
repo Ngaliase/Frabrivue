@@ -3,15 +3,14 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
-import { ImagePlus, Heart, MessageCircle, Send, Trash2, ArrowLeft, Loader2 } from 'lucide-react';
+import { Heart, MessageCircle, Send, Trash2, ArrowLeft, Loader2, PenSquare, X } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import Link from 'next/link';
 import styles from './page.module.css';
-import { Post, Comment, UserSummary } from '@/types/fabric';
+import { Post, Comment, PostBlock } from '@/types/fabric';
 import { postsApi, usersApi } from '@/utils/api';
-
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+import BlockEditor from '@/components/layout/BlockEditor';
 
 function getCurrentUserId(): number | null {
   try {
@@ -32,11 +31,11 @@ export default function FeedPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [authed, setAuthed] = useState(false);
-  const [newContent, setNewContent] = useState('');
-  const [newImages, setNewImages] = useState<string[]>([]);
-  const [posting, setPosting] = useState(false);
-  const [currentUserId, setCurrentUserId] = useState<number | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState<number | null>(null);
+  const [showEditor, setShowEditor] = useState(false);
+  const [editorBlocks, setEditorBlocks] = useState<PostBlock[]>([]);
+  const [posting, setPosting] = useState(false);
 
   const feedRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -69,13 +68,16 @@ export default function FeedPage() {
   }, { scope: containerRef, dependencies: [loading, posts] });
 
   const handlePost = async () => {
-    if (!newContent.trim() && newImages.length === 0) return;
+    const validBlocks = editorBlocks.filter(b =>
+      (b.type === 'text' && b.content?.trim()) || (b.type === 'image' && b.url)
+    );
+    if (validBlocks.length === 0) return;
     setPosting(true);
     try {
-      const post = await postsApi.createPost({ content: newContent, image_urls: newImages });
+      const post = await postsApi.createPost({ blocks: validBlocks });
       setPosts(prev => [post, ...prev]);
-      setNewContent('');
-      setNewImages([]);
+      setEditorBlocks([]);
+      setShowEditor(false);
     } finally {
       setPosting(false);
     }
@@ -93,10 +95,6 @@ export default function FeedPage() {
   const handleDelete = async (postId: number) => {
     await postsApi.deletePost(postId);
     setPosts(prev => prev.filter(p => p.id !== postId));
-  };
-
-  const handleDeleteComment = async (postId: number, commentId: number) => {
-    await postsApi.deleteComment(postId, commentId);
   };
 
   const formatDate = (dateStr: string) => {
@@ -121,52 +119,40 @@ export default function FeedPage() {
             <MessageCircle size={20} strokeWidth={1.8} />
             <h1>{t('feedTitle')}</h1>
           </div>
+          {authed && isAdmin && (
+            <button
+              className={styles.newPostBtn}
+              onClick={() => setShowEditor(v => !v)}
+            >
+              {showEditor ? <X size={15} /> : <PenSquare size={15} />}
+              {showEditor ? 'Huỷ' : 'Bài viết mới'}
+            </button>
+          )}
         </div>
       </div>
 
-      <div className="container" style={{ padding: '24px', maxWidth: '680px', margin: '0 auto' }}>
-        {/* Create Post Form - Admin only */}
-        {authed && isAdmin && (
+      <div className="container" style={{ padding: '24px', maxWidth: '780px', margin: '0 auto' }}>
+
+        {/* Block Editor (Admin) */}
+        {authed && isAdmin && showEditor && (
           <div className={styles.createCard}>
-            <textarea
-              className={styles.postInput}
-              placeholder={t('placeholder')}
-              value={newContent}
-              onChange={e => setNewContent(e.target.value)}
-              rows={3}
+            <div className={styles.createHeader}>
+              <PenSquare size={18} />
+              <span>Soạn bài viết</span>
+            </div>
+            <BlockEditor
+              blocks={editorBlocks}
+              onChange={setEditorBlocks}
+              disabled={posting}
             />
-            {newImages.length > 0 && (
-              <div className={styles.imagePreviewRow}>
-                {newImages.map((url, i) => (
-                  <div key={i} className={styles.imgThumb}>
-                    <img src={url} alt="" />
-                    <button
-                      className={styles.removeImgBtn}
-                      onClick={() => setNewImages(prev => prev.filter((_, idx) => idx !== i))}
-                    >x</button>
-                  </div>
-                ))}
-              </div>
-            )}
             <div className={styles.postActions}>
-              <label className={styles.attachBtn} title={t('addImages')}>
-                <ImagePlus size={16} />
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  style={{ display: 'none' }}
-                  onChange={e => {
-                    const files = Array.from(e.target.files || []);
-                    const urls = files.map(f => URL.createObjectURL(f));
-                    setNewImages(prev => [...prev, ...urls]);
-                  }}
-                />
-              </label>
+              <span className={styles.blockCount}>{editorBlocks.length} blocks</span>
               <button
                 className={styles.postBtn}
                 onClick={handlePost}
-                disabled={posting || (!newContent.trim() && newImages.length === 0)}
+                disabled={posting || editorBlocks.filter(b =>
+                  (b.type === 'text' && b.content?.trim()) || (b.type === 'image' && b.url)
+                ).length === 0}
               >
                 {posting ? <Loader2 size={14} className={styles.spin} /> : <Send size={14} />}
                 {posting ? t('posting') : t('post')}
@@ -198,7 +184,6 @@ export default function FeedPage() {
                 currentUserId={currentUserId}
                 onLike={handleLike}
                 onDelete={handleDelete}
-                onDeleteComment={handleDeleteComment}
                 formatDate={formatDate}
                 t={t}
               />
@@ -210,14 +195,40 @@ export default function FeedPage() {
   );
 }
 
-function PostCard({ post, locale, authed, currentUserId, onLike, onDelete, onDeleteComment, formatDate, t }: {
+// ── Block Renderer ─────────────────────────────────────────────────────────────
+function BlockRenderer({ blocks, preview }: { blocks: PostBlock[]; preview?: boolean }) {
+  return (
+    <div className={preview ? styles.previewBlocks : styles.articleBlocks}>
+      {blocks.map((block, i) => {
+        if (block.type === 'text') {
+          return (
+            <p key={i} className={preview ? styles.previewText : styles.articleText}>
+              {block.content}
+            </p>
+          );
+        }
+        if (block.type === 'image' && block.url) {
+          return (
+            <figure key={i} className={preview ? styles.previewFigure : styles.articleFigure}>
+              <img src={block.url} alt={block.caption || ''} className={preview ? styles.previewImg : styles.articleImg} />
+              {block.caption && <figcaption className={styles.caption}>{block.caption}</figcaption>}
+            </figure>
+          );
+        }
+        return null;
+      })}
+    </div>
+  );
+}
+
+// ── Post Card ─────────────────────────────────────────────────────────────────
+function PostCard({ post, locale, authed, currentUserId, onLike, onDelete, formatDate, t }: {
   post: Post;
   locale: string;
   authed: boolean;
   currentUserId: number | null;
   onLike: (id: number) => void;
   onDelete: (id: number) => void;
-  onDeleteComment: (postId: number, commentId: number) => void;
   formatDate: (date: string) => string;
   t: ReturnType<typeof useTranslations>;
 }) {
@@ -226,6 +237,11 @@ function PostCard({ post, locale, authed, currentUserId, onLike, onDelete, onDel
   const [loadingComments, setLoadingComments] = useState(false);
   const [newComment, setNewComment] = useState('');
   const [postingComment, setPostingComment] = useState(false);
+
+  const hasBlocks = post.blocks && post.blocks.length > 0;
+
+  // For preview: show first text + first image only
+  const previewBlocks = hasBlocks ? post.blocks!.slice(0, 3) : null;
 
   const toggleComments = async () => {
     if (!showComments) {
@@ -253,7 +269,7 @@ function PostCard({ post, locale, authed, currentUserId, onLike, onDelete, onDel
   };
 
   return (
-    <div className={styles.postCard}>
+    <article className={styles.postCard}>
       {/* Header */}
       <div className={styles.postHeader}>
         <Link href={`/posts/${post.id}`} className={styles.avatar}>
@@ -270,21 +286,28 @@ function PostCard({ post, locale, authed, currentUserId, onLike, onDelete, onDel
         )}
       </div>
 
-      {/* Content */}
-      {post.content && <p className={styles.postContent}>{post.content}</p>}
+      {/* Article Preview */}
+      <Link href={`/posts/${post.id}`} className={styles.articleLink}>
+        {hasBlocks ? (
+          <BlockRenderer blocks={previewBlocks!} preview />
+        ) : (
+          <>
+            {post.content && <p className={styles.previewText}>{post.content}</p>}
+            {post.images && post.images.length > 0 && (
+              <div className={`${styles.imageGrid} ${styles[`imgGrid${Math.min(post.images.length, 4)}`]}`}>
+                {post.images.map(img => (
+                  <img key={img.id} src={img.image_url} alt="" className={styles.postImg} />
+                ))}
+              </div>
+            )}
+          </>
+        )}
+        {hasBlocks && post.blocks!.length > 3 && (
+          <span className={styles.readMore}>Đọc thêm →</span>
+        )}
+      </Link>
 
-      {/* Images */}
-      {post.images && post.images.length > 0 && (
-        <div className={`${styles.imageGrid} ${styles[`imgGrid${Math.min(post.images.length, 4)}`]}`}>
-          {post.images.map(img => (
-            <Link key={img.id} href={`/posts/${post.id}`}>
-              <img src={img.image_url} alt="" className={styles.postImg} />
-            </Link>
-          ))}
-        </div>
-      )}
-
-      {/* Actions */}
+      {/* Footer */}
       <div className={styles.postFooter}>
         <button
           className={`${styles.actionBtn} ${post.is_liked ? styles.liked : ''}`}
@@ -299,7 +322,7 @@ function PostCard({ post, locale, authed, currentUserId, onLike, onDelete, onDel
         </button>
       </div>
 
-      {/* Comments Section */}
+      {/* Comments */}
       {showComments && (
         <div className={styles.commentsSection}>
           {loadingComments ? (
@@ -310,12 +333,6 @@ function PostCard({ post, locale, authed, currentUserId, onLike, onDelete, onDel
                 <div key={comment.id} className={styles.comment}>
                   <span className={styles.commentAuthor}>{comment.user.full_name}</span>
                   <p className={styles.commentText}>{comment.content}</p>
-                  {authed && currentUserId === comment.user.id && (
-                    <button
-                      className={styles.deleteCommentBtn}
-                      onClick={() => onDeleteComment(post.id, comment.id)}
-                    >x</button>
-                  )}
                 </div>
               ))}
             </>
@@ -336,6 +353,6 @@ function PostCard({ post, locale, authed, currentUserId, onLike, onDelete, onDel
           )}
         </div>
       )}
-    </div>
+    </article>
   );
 }

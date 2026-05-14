@@ -132,6 +132,10 @@ export default function Header({ transparent = false }: { transparent?: boolean 
             {t('feedTitle')}
           </Link>
 
+          <Link href="/about" className={styles.textNavBtn}>
+            {t('aboutTitle')}
+          </Link>
+
           {isLoggedIn ? (
             <div className={styles.userMenu}>
               <Link href="/moodboard" className={styles.textNavBtn}>
