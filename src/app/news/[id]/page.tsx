@@ -40,9 +40,6 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ id
   const content = getLocalizedText(article.content);
   const category = getLocalizedText(article.category, 'NEWS');
 
-  // Format content to have paragraphs
-  const paragraphs = content.split('\n').filter(p => p.trim() !== '');
-
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.container}>
@@ -82,11 +79,10 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ id
             />
           </div>
 
-          <div className={styles.content}>
-            {paragraphs.map((p, idx) => (
-              <p key={idx}>{p}</p>
-            ))}
-          </div>
+          <div 
+            className={styles.content}
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
         </article>
       </div>
     </div>
