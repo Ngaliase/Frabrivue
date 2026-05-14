@@ -168,11 +168,12 @@
 }
 .postCardMain .previewText {
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: 500;
   font-family: var(--font-merriweather), 'Merriweather', serif;
   color: var(--text-primary);
   margin-top: 16px;
   -webkit-line-clamp: unset;
+  line-clamp: unset;
 }
 
 /* List Variant */
@@ -235,6 +236,7 @@
   font-weight: 600;
   color: var(--text-primary);
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   margin-bottom: 0;
   line-height: 1.4;
 }
@@ -257,7 +259,7 @@
 .avatar:hover { transform: scale(1.1); }
 
 .meta { display: flex; flex-direction: column; flex: 1; }
-.userName { font-size: 0.88rem; font-weight: 700; color: var(--text-primary); text-decoration: none; }
+.userName { font-size: 0.88rem; font-weight: 600; color: var(--text-primary); text-decoration: none; }
 .userName:hover { color: #7c3aed; }
 .postTime { font-size: 0.72rem; color: var(--text-muted); }
 
@@ -290,6 +292,7 @@
   margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 4;
+  line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -359,7 +362,7 @@
   padding: 8px 0;
   border-bottom: 1px solid rgba(0,0,0,0.04);
 }
-.commentAuthor { font-size: 0.8rem; font-weight: 700; color: #7c3aed; margin-right: 8px; }
+.commentAuthor { font-size: 0.8rem; font-weight: 600; color: #7c3aed; margin-right: 8px; }
 .commentText { font-size: 0.85rem; color: var(--text-primary); margin-top: 2px; }
 
 .commentInput {
