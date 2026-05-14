@@ -340,3 +340,96 @@
 @media (max-width: 480px) {
   .grid, .loadingGrid { grid-template-columns: 1fr; }
 }
+
+/* Weather Suggestion Box */
+.weatherBox {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(245, 240, 230, 0.8) 100%);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(139, 94, 60, 0.15);
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+.weatherBox::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--brand-indigo), var(--brand-brown));
+}
+
+.weatherHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.weatherTemp {
+  display: flex;
+  flex-direction: column;
+}
+
+.tempVal {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--brand-indigo);
+  line-height: 1;
+}
+
+.location {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 6px;
+}
+
+.weatherTitle h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--brand-brown);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: right;
+}
+
+.weatherDesc {
+  font-size: 1rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.suggestionDivider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+  margin: 16px 0;
+  width: 60px;
+}
+
+.suggestionText {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  position: relative;
+}
+
+@media (max-width: 600px) {
+  .weatherHeader {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .weatherTitle h3 {
+    text-align: left;
+  }
+}
