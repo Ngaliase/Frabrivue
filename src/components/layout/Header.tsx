@@ -69,110 +69,138 @@ export default function Header({ transparent = false }: { transparent?: boolean 
     router.push('/');
   };
 
+  useGSAP(() => {
+    const btns = document.querySelectorAll(`.${styles.textNavBtn}`);
+    
+    btns.forEach(btn => {
+      const label = btn.querySelector(`.${styles.navLabel}`);
+      const icon = btn.querySelector(`.${styles.navIcon}`);
+      
+      if (!label) return;
+
+      const tl = gsap.timeline({ paused: true });
+      tl.to(label, { width: 'auto', opacity: 1, marginLeft: 8, duration: 0.3, ease: 'power2.out' })
+        .to(icon, { scale: 1.1, duration: 0.3, ease: 'power2.out' }, 0);
+
+      btn.addEventListener('mouseenter', () => tl.play());
+      btn.addEventListener('mouseleave', () => tl.reverse());
+    });
+  }, { scope: headerRef });
+
   return (
     <header className={`${styles.header} ${transparent ? styles.transparent : ''}`} ref={headerRef}>
       <div className={`container ${styles.inner}`}>
-        {/* Mobile Menu Toggle */}
-        <button
-          className={styles.mobileMenuToggle}
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label="Toggle Menu"
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-
-        {/* Left Side */}
+        {/* Left Side: Empty or Mobile Toggle */}
         <div className={styles.headerLeft}>
-          <div className={styles.navLinksLeft}>
-            <Link href="/moodboard" className={styles.textNavBtn}>
-              <BookMarked size={16} className={styles.navIcon} />
-              {t('moodboardTitle')}
-            </Link>
-            <Link href="/quiz" className={styles.textNavBtn}>
-              <Sparkles size={16} className={styles.navIcon} />
-              {t('quiz')}
-            </Link>
-            <Link href="/feed" className={styles.textNavBtn}>
-              <MessageCircle size={16} className={styles.navIcon} />
-              {t('feedTitle')}
-            </Link>
-          </div>
-
-          <div className={styles.langSwitch}>
-            <Globe size={13} className={styles.globeIcon} />
-            <button
-              className={locale === 'vi' ? styles.langActive : styles.langBtn}
-              onClick={() => changeLocale('vi')}
-            >VI</button>
-            <span className={styles.langDivider}>|</span>
-            <button
-              className={locale === 'en' ? styles.langActive : styles.langBtn}
-              onClick={() => changeLocale('en')}
-            >EN</button>
-          </div>
-
-          <form
-            className={`${styles.searchWrap} ${isSearchOpen ? styles.searchOpen : ''}`}
-            onSubmit={handleSearch}
+          <button
+            className={styles.mobileMenuToggle}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle Menu"
           >
-            <button
-              type="button"
-              className={styles.searchToggle}
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-              title={t('searchPlaceholder')}
-            >
-              <Search size={18} />
-            </button>
-            <div className={styles.searchInputContainer}>
-              <input
-                ref={inputRef}
-                type="text"
-                className={styles.searchInput}
-                placeholder={t('searchPlaceholder')}
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                onKeyDown={e => e.key === 'Escape' && setIsSearchOpen(false)}
-              />
-              {search && (
-                <button type="button" className={styles.searchClear} onClick={handleClear}>
-                  <X size={14} />
-                </button>
-              )}
-            </div>
-          </form>
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
 
-        {/* Center Logo */}
-        <div className={styles.headerCenter}>
-          <Link href="/" className={styles.logo}>
-            <img src="/logo1.png" alt="Frabrivue Logo" className={styles.logoIcon} />
-          </Link>
-        </div>
-
-        {/* Right Side */}
+        {/* Right Side: Consolidated Dock */}
         <div className={styles.headerRight}>
           <div className={styles.navActions}>
+            {/* Logo in Dock */}
+            <Link href="/" className={styles.textNavBtn} style={{ padding: '6px 16px' }}>
+              <img src="/logo1.png" alt="Logo" style={{ height: '32px', width: 'auto' }} className={styles.navIcon} />
+              <span className={styles.navLabel} style={{ fontWeight: 800, fontSize: '1.2rem', letterSpacing: '-0.02em' }}>Frabrivue</span>
+            </Link>
+
+            <span className={styles.langDivider}>|</span>
+
+            {/* Main Nav Cluster */}
+            <div className={styles.navLinksLeft}>
+              <Link href="/moodboard" className={styles.textNavBtn}>
+                <BookMarked size={18} className={styles.navIcon} />
+                <span className={styles.navLabel}>{t('moodboardTitle')}</span>
+              </Link>
+              <Link href="/quiz" className={styles.textNavBtn}>
+                <Sparkles size={18} className={styles.navIcon} />
+                <span className={styles.navLabel}>{t('quiz')}</span>
+              </Link>
+              <Link href="/feed" className={styles.textNavBtn}>
+                <MessageCircle size={18} className={styles.navIcon} />
+                <span className={styles.navLabel}>{t('feedTitle')}</span>
+              </Link>
+            </div>
+
+            <span className={styles.langDivider}>|</span>
+
+            <div className={`${styles.textNavBtn} ${styles.langDockItem}`}>
+              <Globe size={18} className={styles.navIcon} />
+              <div className={styles.navLabel}>
+                <div className={styles.langSwitchInner}>
+                  <button
+                    className={locale === 'vi' ? styles.langActive : styles.langBtn}
+                    onClick={() => changeLocale('vi')}
+                  >VI</button>
+                  <span className={styles.langDivider}>|</span>
+                  <button
+                    className={locale === 'en' ? styles.langActive : styles.langBtn}
+                    onClick={() => changeLocale('en')}
+                  >EN</button>
+                </div>
+              </div>
+            </div>
+
+            <span className={styles.langDivider}>|</span>
+
             <Link href="/about" className={styles.textNavBtn}>
-              {t('aboutTitle')}
+              <Info size={18} className={styles.navIcon} />
+              <span className={styles.navLabel}>{t('aboutTitle')}</span>
             </Link>
 
             {isLoggedIn ? (
-              <div className={styles.userMenu}>
+              <>
                 <Link href="/moodboard" className={styles.textNavBtn}>
-                  <User size={16} className={styles.navIcon} />
-                  {t('account')}
+                  <User size={18} className={styles.navIcon} />
+                  <span className={styles.navLabel}>{t('account')}</span>
                 </Link>
                 <button onClick={handleLogout} className={styles.textNavBtn}>
-                  <LogOut size={16} className={styles.navIcon} />
-                  {t('logout')}
+                  <LogOut size={18} className={styles.navIcon} />
+                  <span className={styles.navLabel}>{t('logout')}</span>
                 </button>
-              </div>
+              </>
             ) : (
               <Link href="/auth" className={styles.textNavBtn}>
-                <LogIn size={16} className={styles.navIcon} />
-                {t('login')}
+                <LogIn size={18} className={styles.navIcon} />
+                <span className={styles.navLabel}>{t('login')}</span>
               </Link>
             )}
+
+            <form
+              className={`${styles.searchWrap} ${isSearchOpen ? styles.searchOpen : ''}`}
+              onSubmit={handleSearch}
+            >
+              <button
+                type="button"
+                className={styles.searchToggle}
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                title={t('searchPlaceholder')}
+              >
+                <Search size={18} />
+              </button>
+              <div className={styles.searchInputContainer}>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  className={styles.searchInput}
+                  placeholder={t('searchPlaceholder')}
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  onKeyDown={e => e.key === 'Escape' && setIsSearchOpen(false)}
+                />
+                {search && (
+                  <button type="button" className={styles.searchClear} onClick={handleClear}>
+                    <X size={14} />
+                  </button>
+                )}
+              </div>
+            </form>
           </div>
         </div>
 
