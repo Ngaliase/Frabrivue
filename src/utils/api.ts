@@ -3,7 +3,7 @@ import { Post, Comment, LikeResponse, PostBlock } from '@/types/fabric';
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 function getToken(): string | null {
-  return localStorage.getItem('fabrivo_token');
+  return localStorage.getItem('Frabrivue_token');
 }
 
 async function request<T>(
@@ -26,7 +26,7 @@ async function request<T>(
 
   if (!res.ok) {
     if (res.status === 401) {
-      localStorage.removeItem('fabrivo_token');
+      localStorage.removeItem('Frabrivue_token');
       window.location.href = '/auth';
     }
     throw new Error(`HTTP ${res.status}`);
@@ -62,7 +62,7 @@ export const postsApi = {
 };
 
 export async function uploadImage(file: File): Promise<{ url: string }> {
-  const token = localStorage.getItem('fabrivo_token');
+  const token = localStorage.getItem('Frabrivue_token');
   const formData = new FormData();
   formData.append('file', file);
   const res = await fetch(`${API_BASE}/api/v1/upload/image`, {
@@ -72,4 +72,4 @@ export async function uploadImage(file: File): Promise<{ url: string }> {
   });
   if (!res.ok) throw new Error(`Upload failed: HTTP ${res.status}`);
   return res.json();
-}
+}

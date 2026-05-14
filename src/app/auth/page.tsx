@@ -25,17 +25,17 @@ export default function AuthPage() {
 
   useGSAP(() => {
     // Left panel reveal
-    gsap.fromTo(`.${styles.brandArea} > *`, 
+    gsap.fromTo(`.${styles.brandArea} > *`,
       { y: 30, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out', delay: 0.2 }
     );
-    gsap.fromTo(`.${styles.decorCell}`, 
+    gsap.fromTo(`.${styles.decorCell}`,
       { scale: 0.8, opacity: 0 },
       { scale: 1, opacity: 1, duration: 0.6, stagger: 0.05, ease: 'back.out(1.7)', delay: 0.5 }
     );
 
     // Right panel reveal
-    gsap.fromTo(`.${styles.formCard}`, 
+    gsap.fromTo(`.${styles.formCard}`,
       { x: 40, opacity: 0 },
       { x: 0, opacity: 1, duration: 0.8, ease: 'power2.out', delay: 0.3 }
     );
@@ -68,7 +68,7 @@ export default function AuthPage() {
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.detail ?? t('loginFailed'));
-        localStorage.setItem('fabrivo_token', data.access_token);
+        localStorage.setItem('Frabrivue_token', data.access_token);
         setSuccess(t('loginSuccess'));
         setTimeout(() => { window.location.href = '/'; }, 1000);
       }

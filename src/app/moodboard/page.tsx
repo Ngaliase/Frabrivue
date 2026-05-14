@@ -36,7 +36,7 @@ export default function MoodboardPage() {
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('fabrivo_token');
+    const token = localStorage.getItem('Frabrivue_token');
     if (!token) { setLoading(false); return; }
     setAuthed(true);
     fetch(`${API_BASE}/api/v1/moodboards/`, {
@@ -56,7 +56,7 @@ export default function MoodboardPage() {
         { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: 'power2.out', delay: 0.2 }
       );
     }
-    
+
     if (!loading && !authed) {
       gsap.fromTo(`.${styles.emptyState} > *`,
         { y: 20, opacity: 0 },
@@ -66,7 +66,7 @@ export default function MoodboardPage() {
   }, { scope: containerRef, dependencies: [loading, items, authed] });
 
   const remove = async (id: number) => {
-    const token = localStorage.getItem('fabrivo_token');
+    const token = localStorage.getItem('Frabrivue_token');
     setItems(prev => prev.filter(i => i.id !== id));
     console.log('Remove moodboard item', id, token);
   };
