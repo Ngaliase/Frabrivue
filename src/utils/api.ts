@@ -34,6 +34,10 @@ async function request<T>(
   return res.json();
 }
 
+export const usersApi = {
+  getMe: () => request<{ id: number; email: string; full_name: string; is_admin: number }>('/api/v1/users/me'),
+};
+
 export const postsApi = {
   getFeed: () => request<Post[]>('/api/v1/posts/'),
   getMyPosts: () => request<Post[]>('/api/v1/posts/me'),

@@ -124,31 +124,31 @@ export default function Header({ transparent = false }: { transparent?: boolean 
 
         {/* Nav actions */}
         <div className={styles.navActions}>
-          <Link href="/moodboard" className={styles.iconNavBtn} title={t('moodboardTitle')}>
-            <BookMarked size={18} />
+          <Link href="/moodboard" className={styles.textNavBtn}>
+            {t('moodboardTitle')}
           </Link>
 
-          <Link href="/feed" className={styles.iconNavBtn} title={t('feedTitle')}>
-            <MessageCircle size={18} />
+          <Link href="/feed" className={styles.textNavBtn}>
+            {t('feedTitle')}
           </Link>
 
           {isLoggedIn ? (
             <div className={styles.userMenu}>
-              <Link href="/moodboard" className={styles.iconNavBtn} title={t('account')}>
-                <User size={18} />
+              <Link href="/moodboard" className={styles.textNavBtn}>
+                {t('account')}
               </Link>
-              <button onClick={handleLogout} className={styles.iconNavBtn} title={t('logout')}>
-                <LogOut size={18} />
+              <button onClick={handleLogout} className={styles.textNavBtn}>
+                {t('logout')}
               </button>
             </div>
           ) : (
-            <Link href="/auth" className={styles.iconNavBtn} title={t('login')}>
-              <LogIn size={18} />
+            <Link href="/auth" className={styles.textNavBtn}>
+              {t('login')}
             </Link>
           )}
 
-          <Link href="/quiz" className={styles.iconNavBtn} title={t('quiz')}>
-            <Sparkles size={18} />
+          <Link href="/quiz" className={styles.textNavBtn}>
+            {t('quiz')}
           </Link>
         </div>
       </div>

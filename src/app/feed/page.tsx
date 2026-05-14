@@ -9,7 +9,7 @@ import { useGSAP } from '@gsap/react';
 import Link from 'next/link';
 import styles from './page.module.css';
 import { Post, Comment, UserSummary } from '@/types/fabric';
-import { postsApi } from '@/utils/api';
+import { postsApi, usersApi } from '@/utils/api';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
@@ -36,6 +36,7 @@ export default function FeedPage() {
   const [newImages, setNewImages] = useState<string[]>([]);
   const [posting, setPosting] = useState(false);
   const [currentUserId, setCurrentUserId] = useState<number | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const feedRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -50,6 +51,7 @@ export default function FeedPage() {
     if (!checkAuth()) return;
     setAuthed(true);
     setCurrentUserId(getCurrentUserId());
+    usersApi.getMe().then(user => setIsAdmin(!!user.is_admin)).catch(() => {});
     postsApi.getFeed()
       .then(setPosts)
       .catch(() => {})
@@ -123,8 +125,8 @@ export default function FeedPage() {
       </div>
 
       <div className="container" style={{ padding: '24px', maxWidth: '680px', margin: '0 auto' }}>
-        {/* Create Post Form */}
-        {authed && (
+        {/* Create Post Form - Admin only */}
+        {authed && isAdmin && (
           <div className={styles.createCard}>
             <textarea
               className={styles.postInput}
