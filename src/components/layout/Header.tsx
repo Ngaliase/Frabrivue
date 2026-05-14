@@ -32,7 +32,7 @@ export default function Header({ transparent = false }: { transparent?: boolean 
   }, { scope: headerRef, dependencies: [transparent] });
 
   useEffect(() => {
-    const token = localStorage.getItem('fabrivo_token');
+    const token = localStorage.getItem('Frabrivue_token');
     if (token) setIsLoggedIn(true);
   }, []);
 
@@ -43,7 +43,7 @@ export default function Header({ transparent = false }: { transparent?: boolean 
   }, [isSearchOpen]);
 
   const handleLogout = () => {
-    localStorage.removeItem('fabrivo_token');
+    localStorage.removeItem('Frabrivue_token');
     setIsLoggedIn(false);
   };
 
@@ -71,89 +71,94 @@ export default function Header({ transparent = false }: { transparent?: boolean 
   return (
     <header className={`${styles.header} ${transparent ? styles.transparent : ''}`} ref={headerRef}>
       <div className={`container ${styles.inner}`}>
-        {/* Logo */}
-        <Link href="/" className={styles.logo}>
-          <img src="/logo.png" alt="Frabrivue Logo" className={styles.logoIcon} />
-          Frabrivue
-        </Link>
-
-        {/* Language Toggle */}
-        <div className={styles.langSwitch}>
-          <Globe size={13} className={styles.globeIcon} />
-          <button
-            className={locale === 'vi' ? styles.langActive : styles.langBtn}
-            onClick={() => changeLocale('vi')}
-          >VI</button>
-          <span className={styles.langDivider}>|</span>
-          <button
-            className={locale === 'en' ? styles.langActive : styles.langBtn}
-            onClick={() => changeLocale('en')}
-          >EN</button>
+        {/* Left Side */}
+        <div className={styles.headerLeft}>
+          <div className={styles.langSwitch}>
+            <Globe size={13} className={styles.globeIcon} />
+            <button
+              className={locale === 'vi' ? styles.langActive : styles.langBtn}
+              onClick={() => changeLocale('vi')}
+            >VI</button>
+            <span className={styles.langDivider}>|</span>
+            <button
+              className={locale === 'en' ? styles.langActive : styles.langBtn}
+              onClick={() => changeLocale('en')}
+            >EN</button>
+          </div>
         </div>
 
-        {/* Search */}
-        <form
-          className={`${styles.searchWrap} ${isSearchOpen ? styles.searchOpen : ''}`}
-          onSubmit={handleSearch}
-        >
-          <button
-            type="button"
-            className={styles.searchToggle}
-            onClick={() => setIsSearchOpen(!isSearchOpen)}
-            title={t('searchPlaceholder')}
+        {/* Center Logo */}
+        <div className={styles.headerCenter}>
+          <Link href="/" className={styles.logo}>
+            <img src="/logo1.png" alt="Frabrivue Logo" className={styles.logoIcon} />
+            Frabrivue
+          </Link>
+        </div>
+
+        {/* Right Side */}
+        <div className={styles.headerRight}>
+          <form
+            className={`${styles.searchWrap} ${isSearchOpen ? styles.searchOpen : ''}`}
+            onSubmit={handleSearch}
           >
-            <Search size={18} />
-          </button>
-          <div className={styles.searchInputContainer}>
-            <input
-              ref={inputRef}
-              type="text"
-              className={styles.searchInput}
-              placeholder={t('searchPlaceholder')}
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              onKeyDown={e => e.key === 'Escape' && setIsSearchOpen(false)}
-            />
-            {search && (
-              <button type="button" className={styles.searchClear} onClick={handleClear}>
-                <X size={14} />
-              </button>
-            )}
-          </div>
-        </form>
-
-        {/* Nav actions */}
-        <div className={styles.navActions}>
-          <Link href="/moodboard" className={styles.textNavBtn}>
-            {t('moodboardTitle')}
-          </Link>
-
-          <Link href="/feed" className={styles.textNavBtn}>
-            {t('feedTitle')}
-          </Link>
-
-          <Link href="/about" className={styles.textNavBtn}>
-            {t('aboutTitle')}
-          </Link>
-
-          {isLoggedIn ? (
-            <div className={styles.userMenu}>
-              <Link href="/moodboard" className={styles.textNavBtn}>
-                {t('account')}
-              </Link>
-              <button onClick={handleLogout} className={styles.textNavBtn}>
-                {t('logout')}
-              </button>
+            <button
+              type="button"
+              className={styles.searchToggle}
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              title={t('searchPlaceholder')}
+            >
+              <Search size={18} />
+            </button>
+            <div className={styles.searchInputContainer}>
+              <input
+                ref={inputRef}
+                type="text"
+                className={styles.searchInput}
+                placeholder={t('searchPlaceholder')}
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                onKeyDown={e => e.key === 'Escape' && setIsSearchOpen(false)}
+              />
+              {search && (
+                <button type="button" className={styles.searchClear} onClick={handleClear}>
+                  <X size={14} />
+                </button>
+              )}
             </div>
-          ) : (
-            <Link href="/auth" className={styles.textNavBtn}>
-              {t('login')}
-            </Link>
-          )}
+          </form>
 
-          <Link href="/quiz" className={styles.textNavBtn}>
-            {t('quiz')}
-          </Link>
+          <div className={styles.navActions}>
+            <Link href="/moodboard" className={styles.textNavBtn}>
+              {t('moodboardTitle')}
+            </Link>
+
+            <Link href="/feed" className={styles.textNavBtn}>
+              {t('feedTitle')}
+            </Link>
+
+            <Link href="/about" className={styles.textNavBtn}>
+              {t('aboutTitle')}
+            </Link>
+
+            {isLoggedIn ? (
+              <div className={styles.userMenu}>
+                <Link href="/moodboard" className={styles.textNavBtn}>
+                  {t('account')}
+                </Link>
+                <button onClick={handleLogout} className={styles.textNavBtn}>
+                  {t('logout')}
+                </button>
+              </div>
+            ) : (
+              <Link href="/auth" className={styles.textNavBtn}>
+                {t('login')}
+              </Link>
+            )}
+
+            <Link href="/quiz" className={styles.textNavBtn}>
+              {t('quiz')}
+            </Link>
+          </div>
         </div>
       </div>
     </header>

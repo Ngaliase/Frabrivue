@@ -105,7 +105,19 @@
 .postBtn:disabled { opacity: 0.45; cursor: not-allowed; }
 
 /* ── Feed ──────────────────────────────────── */
-.feed { display: flex; flex-direction: column; gap: 20px; }
+.feedGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+@media (min-width: 1024px) {
+  .feedGrid {
+    grid-template-columns: 280px 1fr 300px;
+  }
+}
+.leftColumn { display: flex; flex-direction: column; gap: 24px; }
+.centerColumn { display: flex; flex-direction: column; gap: 24px; }
+.rightColumn { display: flex; flex-direction: column; gap: 24px; }
 
 .postSkeleton {
   height: 300px;
@@ -139,6 +151,93 @@
 .postCard:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.1); transform: translateY(-2px); }
 
 .postHeader { display: flex; align-items: center; gap: 10px; padding: 16px 20px 12px; }
+
+/* Main Variant */
+.postCardMain {
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+.postCardMain:hover {
+  transform: none;
+  box-shadow: none;
+}
+.postCardMain .previewImg {
+  max-height: 500px;
+  border-radius: 0;
+}
+.postCardMain .previewText {
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-family: var(--font-merriweather), 'Merriweather', serif;
+  color: var(--text-primary);
+  margin-top: 16px;
+  -webkit-line-clamp: unset;
+}
+
+/* List Variant */
+.postCardList {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 12px 0;
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  box-shadow: none;
+  border-radius: 0;
+  background: transparent;
+}
+.postCardList:hover {
+  transform: none;
+  box-shadow: none;
+}
+.postCardList .articleLink {
+  padding: 0;
+}
+
+.rightColumnHeader {
+  font-family: var(--font-merriweather), 'Merriweather', serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--text-primary);
+  padding-bottom: 8px;
+}
+
+.listVariantBlocks {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  gap: 16px;
+}
+.listTextWrap {
+  flex: 1;
+}
+.postCardList .previewFigure {
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+  margin: 0;
+}
+.postCardList .previewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.postCardList .previewText {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  -webkit-line-clamp: 3;
+  margin-bottom: 0;
+  line-height: 1.4;
+}
 
 .avatar {
   width: 38px;

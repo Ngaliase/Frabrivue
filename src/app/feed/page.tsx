@@ -14,7 +14,7 @@ import BlockEditor from '@/components/layout/BlockEditor';
 
 function getCurrentUserId(): number | null {
   try {
-    const token = localStorage.getItem('fabrivo_token');
+    const token = localStorage.getItem('Frabrivue_token');
     if (!token) return null;
     const payload = JSON.parse(atob(token.split('.')[1]));
     return payload.sub ? parseInt(payload.sub) : null;
@@ -41,7 +41,7 @@ export default function FeedPage() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const checkAuth = useCallback(() => {
-    const token = localStorage.getItem('fabrivo_token');
+    const token = localStorage.getItem('Frabrivue_token');
     if (!token) { router.push('/auth'); return false; }
     return true;
   }, [router]);
@@ -50,10 +50,10 @@ export default function FeedPage() {
     if (!checkAuth()) return;
     setAuthed(true);
     setCurrentUserId(getCurrentUserId());
-    usersApi.getMe().then(user => setIsAdmin(!!user.is_admin)).catch(() => {});
+    usersApi.getMe().then(user => setIsAdmin(!!user.is_admin)).catch(() => { });
     postsApi.getFeed()
       .then(setPosts)
-      .catch(() => {})
+      .catch(() => { })
       .finally(() => setLoading(false));
   }, [checkAuth]);
 
@@ -131,7 +131,7 @@ export default function FeedPage() {
         </div>
       </div>
 
-      <div className="container" style={{ padding: '24px', maxWidth: '780px', margin: '0 auto' }}>
+      <div className="container" style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
 
         {/* Block Editor (Admin) */}
         {authed && isAdmin && showEditor && (
@@ -163,10 +163,12 @@ export default function FeedPage() {
 
         {/* Feed */}
         {loading ? (
-          <div className={styles.feed}>
-            {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className={styles.postSkeleton} />
-            ))}
+          <div className={styles.feedGrid}>
+            <div className={styles.centerColumn}>
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className={styles.postSkeleton} />
+              ))}
+            </div>
           </div>
         ) : posts.length === 0 ? (
           <div className={styles.emptyFeed}>
@@ -174,20 +176,38 @@ export default function FeedPage() {
             <p>{t('emptyFeed')}</p>
           </div>
         ) : (
-          <div className={styles.feed} ref={feedRef}>
-            {posts.map(post => (
-              <PostCard
-                key={post.id}
-                post={post}
-                locale={locale}
-                authed={authed}
-                currentUserId={currentUserId}
-                onLike={handleLike}
-                onDelete={handleDelete}
-                formatDate={formatDate}
-                t={t}
-              />
-            ))}
+          <div className={styles.feedGrid} ref={feedRef}>
+            <div className={styles.leftColumn}>
+              {posts.slice(1, 3).map(post => (
+                <PostCard
+                  key={post.id} post={post} locale={locale} authed={authed} currentUserId={currentUserId}
+                  onLike={handleLike} onDelete={handleDelete} formatDate={formatDate} t={t} variant="side"
+                />
+              ))}
+            </div>
+            <div className={styles.centerColumn}>
+              {posts.slice(0, 1).map(post => (
+                <PostCard
+                  key={post.id} post={post} locale={locale} authed={authed} currentUserId={currentUserId}
+                  onLike={handleLike} onDelete={handleDelete} formatDate={formatDate} t={t} variant="main"
+                />
+              ))}
+              {posts.slice(7).map(post => (
+                <PostCard
+                  key={post.id} post={post} locale={locale} authed={authed} currentUserId={currentUserId}
+                  onLike={handleLike} onDelete={handleDelete} formatDate={formatDate} t={t} variant="side"
+                />
+              ))}
+            </div>
+            <div className={styles.rightColumn}>
+              <div className={styles.rightColumnHeader}>Nổi Bật</div>
+              {posts.slice(3, 7).map(post => (
+                <PostCard
+                  key={post.id} post={post} locale={locale} authed={authed} currentUserId={currentUserId}
+                  onLike={handleLike} onDelete={handleDelete} formatDate={formatDate} t={t} variant="list"
+                />
+              ))}
+            </div>
           </div>
         )}
       </div>
@@ -196,7 +216,24 @@ export default function FeedPage() {
 }
 
 // ── Block Renderer ─────────────────────────────────────────────────────────────
-function BlockRenderer({ blocks, preview }: { blocks: PostBlock[]; preview?: boolean }) {
+function BlockRenderer({ blocks, preview, variant }: { blocks: PostBlock[]; preview?: boolean; variant?: 'main' | 'side' | 'list' }) {
+  if (variant === 'list') {
+    const textBlock = blocks.find(b => b.type === 'text');
+    const imgBlock = blocks.find(b => b.type === 'image' && b.url);
+    return (
+      <div className={styles.listVariantBlocks}>
+        <div className={styles.listTextWrap}>
+          {textBlock && <p className={styles.previewText}>{textBlock.content}</p>}
+        </div>
+        {imgBlock && (
+          <figure className={styles.previewFigure}>
+            <img src={imgBlock.url} alt={imgBlock.caption || ''} className={styles.previewImg} />
+          </figure>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className={preview ? styles.previewBlocks : styles.articleBlocks}>
       {blocks.map((block, i) => {
@@ -222,7 +259,7 @@ function BlockRenderer({ blocks, preview }: { blocks: PostBlock[]; preview?: boo
 }
 
 // ── Post Card ─────────────────────────────────────────────────────────────────
-function PostCard({ post, locale, authed, currentUserId, onLike, onDelete, formatDate, t }: {
+function PostCard({ post, locale, authed, currentUserId, onLike, onDelete, formatDate, t, variant = 'side' }: {
   post: Post;
   locale: string;
   authed: boolean;
@@ -231,6 +268,7 @@ function PostCard({ post, locale, authed, currentUserId, onLike, onDelete, forma
   onDelete: (id: number) => void;
   formatDate: (date: string) => string;
   t: ReturnType<typeof useTranslations>;
+  variant?: 'main' | 'side' | 'list';
 }) {
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState<Comment[]>([]);
@@ -268,59 +306,71 @@ function PostCard({ post, locale, authed, currentUserId, onLike, onDelete, forma
     }
   };
 
+  const cardClassName = `${styles.postCard} ${variant === 'main' ? styles.postCardMain : variant === 'list' ? styles.postCardList : ''}`;
+
   return (
-    <article className={styles.postCard}>
+    <article className={cardClassName}>
       {/* Header */}
-      <div className={styles.postHeader}>
-        <Link href={`/posts/${post.id}`} className={styles.avatar}>
-          {post.user.full_name.charAt(0).toUpperCase()}
-        </Link>
-        <div className={styles.meta}>
-          <Link href={`/posts/${post.id}`} className={styles.userName}>{post.user.full_name}</Link>
-          <span className={styles.postTime}>{formatDate(post.created_at)}</span>
+      {variant !== 'list' && (
+        <div className={styles.postHeader}>
+          <Link href={`/posts/${post.id}`} className={styles.avatar}>
+            {post.user.full_name.charAt(0).toUpperCase()}
+          </Link>
+          <div className={styles.meta}>
+            <Link href={`/posts/${post.id}`} className={styles.userName}>{post.user.full_name}</Link>
+            <span className={styles.postTime}>{formatDate(post.created_at)}</span>
+          </div>
+          {authed && currentUserId === post.user.id && (
+            <button className={styles.deleteBtn} onClick={() => onDelete(post.id)}>
+              <Trash2 size={14} />
+            </button>
+          )}
         </div>
-        {authed && currentUserId === post.user.id && (
-          <button className={styles.deleteBtn} onClick={() => onDelete(post.id)}>
-            <Trash2 size={14} />
-          </button>
-        )}
-      </div>
+      )}
 
       {/* Article Preview */}
       <Link href={`/posts/${post.id}`} className={styles.articleLink}>
         {hasBlocks ? (
-          <BlockRenderer blocks={previewBlocks!} preview />
+          <BlockRenderer blocks={previewBlocks!} preview variant={variant} />
         ) : (
-          <>
-            {post.content && <p className={styles.previewText}>{post.content}</p>}
+          <div className={variant === 'list' ? styles.listVariantBlocks : ''}>
+            <div className={variant === 'list' ? styles.listTextWrap : ''}>
+              {post.content && <p className={styles.previewText}>{post.content}</p>}
+            </div>
             {post.images && post.images.length > 0 && (
               <div className={`${styles.imageGrid} ${styles[`imgGrid${Math.min(post.images.length, 4)}`]}`}>
-                {post.images.map(img => (
-                  <img key={img.id} src={img.image_url} alt="" className={styles.postImg} />
-                ))}
+                {variant === 'list' ? (
+                  <img src={post.images[0].image_url} alt="" className={styles.previewImg} style={{ width: 90, height: 90, objectFit: 'cover' }} />
+                ) : (
+                  post.images.map(img => (
+                    <img key={img.id} src={img.image_url} alt="" className={styles.postImg} />
+                  ))
+                )}
               </div>
             )}
-          </>
+          </div>
         )}
-        {hasBlocks && post.blocks!.length > 3 && (
+        {hasBlocks && post.blocks!.length > 3 && variant !== 'list' && (
           <span className={styles.readMore}>Đọc thêm →</span>
         )}
       </Link>
 
       {/* Footer */}
-      <div className={styles.postFooter}>
-        <button
-          className={`${styles.actionBtn} ${post.is_liked ? styles.liked : ''}`}
-          onClick={() => onLike(post.id)}
-        >
-          <Heart size={16} fill={post.is_liked ? 'currentColor' : 'none'} />
-          <span>{post.likes_count > 0 ? post.likes_count : ''} {t('likes')}</span>
-        </button>
-        <button className={styles.actionBtn} onClick={toggleComments}>
-          <MessageCircle size={16} />
-          <span>{post.comments_count > 0 ? post.comments_count : ''} {t('comments')}</span>
-        </button>
-      </div>
+      {variant !== 'list' && (
+        <div className={styles.postFooter}>
+          <button
+            className={`${styles.actionBtn} ${post.is_liked ? styles.liked : ''}`}
+            onClick={() => onLike(post.id)}
+          >
+            <Heart size={16} fill={post.is_liked ? 'currentColor' : 'none'} />
+            <span>{post.likes_count > 0 ? post.likes_count : ''} {t('likes')}</span>
+          </button>
+          <button className={styles.actionBtn} onClick={toggleComments}>
+            <MessageCircle size={16} />
+            <span>{post.comments_count > 0 ? post.comments_count : ''} {t('comments')}</span>
+          </button>
+        </div>
+      )}
 
       {/* Comments */}
       {showComments && (

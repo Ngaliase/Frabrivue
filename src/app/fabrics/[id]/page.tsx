@@ -59,7 +59,7 @@ export default function FabricDetailPage() {
 
   useGSAP(() => {
     if (!loading && fabric && containerRef.current) {
-      gsap.fromTo(`.${styles.graphicCard}`, 
+      gsap.fromTo(`.${styles.graphicCard}`,
         { x: -40, opacity: 0 },
         { x: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }
       );
@@ -72,7 +72,7 @@ export default function FabricDetailPage() {
   }, { scope: containerRef, dependencies: [loading, fabric] });
 
   const handleSaveToMoodboard = async () => {
-    const token = localStorage.getItem('fabrivo_token');
+    const token = localStorage.getItem('Frabrivue_token');
     if (!token) {
       alert(t('loginPrompt'));
       router.push('/auth');
@@ -147,7 +147,7 @@ export default function FabricDetailPage() {
         <div className={styles.graphicCard}>
           <div className={styles.graphicBox}>
             {fabric.image_url ? (
-               <img src={fabric.image_url} alt={getLocaleValue(fabric.name, locale)} className={styles.fabricImg} />
+              <img src={fabric.image_url} alt={getLocaleValue(fabric.name, locale)} className={styles.fabricImg} />
             ) : (
               <>
                 <div className={styles.graphicPattern} />
@@ -167,7 +167,7 @@ export default function FabricDetailPage() {
         <div className={styles.contentArea}>
           <div>
             <h1 className={styles.fabricName}>{getLocaleValue(fabric.name, locale)}</h1>
-            
+
             {/* New Badges Section */}
             {(fabric.categories || fabric.style_concepts) && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '12px' }}>
