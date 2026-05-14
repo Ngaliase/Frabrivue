@@ -18,7 +18,7 @@
   align-items: center;
   gap: 6px;
   padding: 7px 16px;
-  border-radius: 30px;
+  border-radius: 0;
   border: 1.5px solid rgba(0, 0, 0, 0.08);
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(4px);
@@ -60,7 +60,7 @@
   padding: 10px 16px;
   background: linear-gradient(135deg, rgba(30, 45, 90, 0.06) 0%, rgba(139, 94, 60, 0.04) 100%);
   border: 1px solid rgba(30, 45, 90, 0.1);
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   margin-bottom: 16px;
   font-size: 0.85rem;
   color: var(--text-secondary);
@@ -114,7 +114,7 @@
   height: 220px;
   background: linear-gradient(90deg, var(--accent-cream) 25%, var(--accent-beige) 50%, var(--accent-cream) 75%);
   background-size: 200% 100%;
-  border-radius: var(--radius-md);
+  border-radius: 0;
   animation: shimmer 1.4s infinite;
 }
 @keyframes shimmer {
@@ -126,7 +126,7 @@
 .card {
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(8px);
-  border-radius: var(--radius-md);
+  border-radius: 0;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: var(--shadow-sm);
@@ -204,7 +204,7 @@
   color: var(--brand-indigo);
   font-size: 0.7rem;
   padding: 2px 8px;
-  border-radius: 12px;
+  border-radius: 0;
   font-weight: 600;
   border: 1px solid rgba(30, 45, 90, 0.1);
 }
@@ -219,7 +219,7 @@
   font-size: 0.65rem;
   font-weight: 700;
   padding: 3px 8px;
-  border-radius: 20px;
+  border-radius: 0;
   letter-spacing: 0.3px;
   text-transform: uppercase;
 }
@@ -238,7 +238,7 @@
   background: linear-gradient(135deg, var(--brand-indigo) 0%, #3a5099 100%);
   color: white;
   padding: 7px 14px;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   font-size: 0.78rem;
   font-weight: 600;
   text-align: center;
@@ -256,7 +256,7 @@
   background: #fde8e8;
   color: #c0392b;
   padding: 12px 16px;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   margin-bottom: 16px;
   font-size: 0.88rem;
   border: 1px solid #f5c6c6;
@@ -280,7 +280,7 @@
 .pageBtn {
   width: 34px;
   height: 34px;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   border: 1px solid var(--border);
   background: var(--bg-white);
   font-size: 0.85rem;
@@ -308,7 +308,7 @@
   background: var(--accent-beige);
   color: var(--brand-indigo);
   padding: 9px 18px;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   font-size: 0.85rem;
   font-weight: 600;
   border: 1px solid var(--border);
@@ -323,7 +323,7 @@
   background: linear-gradient(135deg, var(--brand-indigo) 0%, #3a5099 100%);
   color: white;
   padding: 9px 18px;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   font-size: 0.85rem;
   font-weight: 600;
   transition: all var(--transition-base);
