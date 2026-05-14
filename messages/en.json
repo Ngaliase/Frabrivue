@@ -23,7 +23,7 @@
         "shopNow": "Explore now",
         "newArrivals": "Suitable for current season",
         "popularStyles": "Popular Styles",
-        "tryAILbl": "Try AI Stylist"
+        "tryAILbl": "AI Fabric Recognition"
     },
     "FabricGrid": {
         "serverError": "Server error",
