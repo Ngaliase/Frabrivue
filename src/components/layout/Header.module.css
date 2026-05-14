@@ -248,7 +248,8 @@
   overflow: hidden;
   white-space: nowrap;
   display: inline-block;
-  transition: none; /* Controlled by GSAP */
+  transition: none;
+  /* Controlled by GSAP */
 }
 
 .navIcon {
@@ -341,6 +342,8 @@
   cursor: pointer;
   padding: 8px;
   z-index: 300;
+  position: relative;
+  order: -1;
 }
 
 .header.transparent .mobileMenuToggle {
@@ -484,7 +487,8 @@
     position: static;
     transform: none;
     order: 1;
-    margin-left: -40px; /* Offset for toggle width to keep logo centered */
+    margin-left: -40px;
+    /* Offset for toggle width to keep logo centered */
     flex: 1;
     display: flex;
     justify-content: center;

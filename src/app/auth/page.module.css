@@ -6,7 +6,7 @@
 
 /* LEFT PANEL */
 .leftPanel {
-  background: var(--brand-indigo);
+  background: #F5F7FB;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -18,13 +18,13 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: rgba(255,255,255,0.7);
+  color: rgba(0,0,0,0.6);
   font-size: 0.84rem;
   font-weight: 500;
   transition: color var(--transition-fast);
   width: fit-content;
 }
-.backBtn:hover { color: white; opacity: 1; }
+.backBtn:hover { color: #000; opacity: 1; }
 
 .brandArea {
   flex: 1;
@@ -38,12 +38,12 @@
 .brandLogo {
   width: 64px;
   height: 64px;
-  background: rgba(255,255,255,0.12);
+  background: rgba(0,85,255,0.1);
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--brand-indigo);
   backdrop-filter: blur(8px);
 }
 
@@ -51,17 +51,14 @@
   font-family: var(--font-merriweather), 'Merriweather', serif;
   font-size: 2.6rem;
   font-weight: 700;
-  color: transparent;
-  background: linear-gradient(90deg, #ffffff 0%, var(--accent-beige) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
+  color: #1a1a1a;
   line-height: 1;
 }
-.brandName span { color: rgba(255,255,255,0.8); }
+.brandName span { color: rgba(0,0,0,0.6); }
 
 .brandTagline {
   font-size: 0.95rem;
-  color: rgba(255,255,255,0.72);
+  color: rgba(0,0,0,0.6);
   max-width: 280px;
   line-height: 1.6;
 }
@@ -74,12 +71,12 @@
 }
 .decorCell {
   height: 70px;
-  background: rgba(255,255,255,0.06);
+  background: rgba(0,85,255,0.08);
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(0,85,255,0.15);
   transition: background var(--transition-slow);
 }
-.decorCell:hover { background: rgba(255,255,255,0.12); }
+.decorCell:hover { background: rgba(0,85,255,0.15); }
 
 /* RIGHT PANEL */
 .rightPanel {
@@ -130,8 +127,8 @@
   transition: all var(--transition-base);
 }
 .modeActive {
-  background: linear-gradient(135deg, var(--brand-indigo) 0%, #3a5099 100%);
-  color: white;
+  background: #E8EBFF;
+  color: var(--brand-indigo);
   box-shadow: var(--shadow-sm);
 }
 .modeTab:hover:not(.modeActive) { color: var(--text-secondary); }
@@ -184,9 +181,9 @@
   transition: border-color var(--transition-base), box-shadow var(--transition-base), background var(--transition-fast);
 }
 .inputWrap:focus-within {
-  border-color: var(--brand-indigo);
+  border-color: #999999;
   background: white;
-  box-shadow: 0 0 0 3px rgba(30,45,90,0.08);
+  box-shadow: 0 0 0 3px rgba(200,200,200,0.1);
 }
 
 .inputIcon { color: var(--text-muted); flex-shrink: 0; }
@@ -218,13 +215,13 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: linear-gradient(135deg, var(--brand-indigo) 0%, #3a5099 100%);
-  color: white;
+  background: #E8EBFF;
+  color: var(--brand-indigo);
   padding: 13px;
   border-radius: var(--radius-sm);
   font-size: 0.95rem;
   font-weight: 700;
-  border: none;
+  border: 2px solid var(--brand-indigo);
   cursor: pointer;
   margin-top: 4px;
   transition: background var(--transition-base),
@@ -234,9 +231,10 @@
   overflow: hidden;
 }
 .submitBtn:hover:not(:disabled) {
-  background: var(--brand-brown);
+  background: var(--brand-indigo);
+  color: white;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(139,94,60,0.3);
+  box-shadow: 0 6px 20px rgba(0,85,255,0.2);
 }
 .submitBtn:active { transform: translateY(0); }
 .submitBtn:disabled { opacity: 0.65; cursor: not-allowed; }
