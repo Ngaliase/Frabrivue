@@ -161,6 +161,7 @@ export default function AIScanner() {
         body: JSON.stringify({
           clothing_image_url: uploadedImageUrl,
           person_image_url: personImageUrl,
+          season: activeSeason,
         }),
       });
 
