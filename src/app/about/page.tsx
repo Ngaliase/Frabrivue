@@ -66,23 +66,25 @@ export default function AboutPage() {
 
   return (
     <>
-      <Header />
+      <Header transparent={true} />
       <main className={styles.main}>
 
         {/* Hero */}
         <section className={styles.hero}>
-          <div className={styles.heroGlow} />
-          <div className={styles.heroBg} />
+          <video
+            className={styles.heroVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            src="/images/background.mp4"
+          />
+          <div className={styles.overlay}></div>
           <div className={styles.heroContent}>
             <span className={styles.badge}>About Us</span>
             <h1 className={styles.heroTitle}>{t('pageTitle')}</h1>
             <p className={styles.heroSubtitle}>{t('pageSubtitle')}</p>
             <div className={styles.heroLine} />
-          </div>
-          <div className={styles.heroOrbs}>
-            <div className={styles.orb1} />
-            <div className={styles.orb2} />
-            <div className={styles.orb3} />
           </div>
         </section>
 
