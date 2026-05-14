@@ -69,7 +69,7 @@ export default function FeedPage() {
 
   const handlePost = async () => {
     const validBlocks = editorBlocks.filter(b =>
-      (b.type === 'text' && b.content?.trim()) || (b.type === 'image' && b.url)
+      (b.type === 'text' && b.content?.trim()) || (b.type === 'image' && b.url && !b.url.startsWith('blob:'))
     );
     if (validBlocks.length === 0) return;
     setPosting(true);
@@ -151,8 +151,8 @@ export default function FeedPage() {
                 className={styles.postBtn}
                 onClick={handlePost}
                 disabled={posting || editorBlocks.filter(b =>
-                  (b.type === 'text' && b.content?.trim()) || (b.type === 'image' && b.url)
-                ).length === 0}
+                  (b.type === 'text' && b.content?.trim()) || (b.type === 'image' && b.url && !b.url.startsWith('blob:'))
+                ).length === 0 || editorBlocks.some(b => b.type === 'image' && b.url?.startsWith('blob:'))}
               >
                 {posting ? <Loader2 size={14} className={styles.spin} /> : <Send size={14} />}
                 {posting ? t('posting') : t('post')}

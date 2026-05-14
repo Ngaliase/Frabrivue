@@ -91,7 +91,6 @@ export default function Header({ transparent = false }: { transparent?: boolean 
         <div className={styles.headerCenter}>
           <Link href="/" className={styles.logo}>
             <img src="/logo1.png" alt="Frabrivue Logo" className={styles.logoIcon} />
-            Frabrivue
           </Link>
         </div>
 
