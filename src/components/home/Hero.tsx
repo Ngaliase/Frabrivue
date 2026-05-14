@@ -21,7 +21,6 @@ export default function Hero() {
   const t = useTranslations('Hero');
   const router = useRouter();
   const containerRef = useRef<HTMLElement>(null);
-  const aiBtnRef = useRef<HTMLAnchorElement>(null);
   const [heroImages, setHeroImages] = useState<HeroImage[]>([]);
   const [imgLoading, setImgLoading] = useState(true);
 
@@ -40,21 +39,7 @@ export default function Hero() {
       { x: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power2.out', delay: 0.6 }
     );
 
-    // 3. AI Float Animation
-    if (aiBtnRef.current) {
-      gsap.fromTo(aiBtnRef.current, 
-        { scale: 0.8, opacity: 0 }, 
-        { scale: 1, opacity: 1, duration: 0.7, delay: 0.8, ease: 'back.out(1.7)' }
-      );
-      gsap.to(aiBtnRef.current, {
-        y: -10,
-        duration: 2,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-        delay: 1.5
-      });
-    }
+    // 3. AI Float Animation removed as per user request to integrate into main button
   }, { scope: containerRef });
 
   // Fetch hero images from API
@@ -109,9 +94,10 @@ export default function Hero() {
         <div className={styles.mainText}>
           <h1 className={styles.title}>{t('title')}</h1>
           <p className={styles.subtitle}>{t('subtitle')}</p>
-          <button className={styles.shopBtn} onClick={scrollToGrid}>
-            {t('shopNow')}
-          </button>
+          <Link href="/studio" className={styles.shopBtn}>
+            <Sparkles size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+            {t('tryAILbl')}
+          </Link>
         </div>
 
         <div className={styles.bottomArea}>
@@ -131,7 +117,7 @@ export default function Hero() {
               )}
               <div className={styles.cardInfo}>
                 <span className={styles.cardTitle}>{t('newArrivals')}</span>
-                <button className={styles.cardLink}>&bull; {t('shopNow')}</button>
+                <button className={styles.cardLink} onClick={scrollToGrid}>&bull; {t('shopNow')}</button>
               </div>
             </div>
             <div className={styles.card}>
@@ -153,13 +139,6 @@ export default function Hero() {
               </div>
             </div>
           </div>
-          
-          <Link href="/studio" className={styles.aiBtn} ref={aiBtnRef}>
-            <span className={styles.aiBtnText}>{t('tryAILbl')}</span>
-            <div className={styles.aiIconWrap}>
-              <Sparkles size={16} className={styles.aiIcon} />
-            </div>
-          </Link>
         </div>
       </div>
     </section>
