@@ -5,7 +5,7 @@
     },
     "Header": {
         "searchPlaceholder": "Tra cứu >300 loại vải",
-        "moodboardTitle": "Bộ sưu tập",
+        "moodboardTitle": "Đã lưu",
         "feedTitle": "Bài viết",
         "login": "Đăng nhập",
         "account": "Tài khoản",
@@ -24,7 +24,7 @@
         "shopNow": "Khám phá ngay",
         "newArrivals": "Phù hợp với mùa hiện tại",
         "popularStyles": "Kiểu Dáng Thịnh Hành",
-        "tryAILbl": "Nhận diện vải AI"
+        "tryAILbl": "Thử nhận diện vải ngay"
     },
     "FabricGrid": {
         "serverError": "Lỗi máy chủ",
@@ -52,11 +52,15 @@
         "model_material": "Áp dụng chất liệu:",
         "analysis_header": "Bảng Phân Tích Chất Liệu",
         "empty_state": "Bảng phân tích trống. Hãy quét một mẫu vải để AI trích xuất thông tin chất liệu.",
+        "try_on_button": "Thử trang phục ngay",
         "fabric_type_label": "Loại vải phát hiện:",
         "accuracy_label": "Độ chính xác AI:",
         "eco_label": "Môi trường:",
         "eco_friendly": "Thân thiện Eco",
         "eco_not_certified": "Chưa chứng nhận Eco",
+        "eco_index_label": "Mức độ thân thiện môi trường:",
+        "eco_status_friendly": "Thân thiện",
+        "eco_status_unfriendly": "Không thân thiện",
         "traits_title": "Đặc Tính Chất Liệu",
         "care_title": "Khuyến Nghị Bảo Quản",
         "wardrobe_header": "Tủ Vải Theo Mùa (Chọn để thay đổi người mẫu)",

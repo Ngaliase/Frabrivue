@@ -5,7 +5,7 @@
     },
     "Header": {
         "searchPlaceholder": "Search >300 fabrics",
-        "moodboardTitle": "Moodboard",
+        "moodboardTitle": "Saved",
         "feedTitle": "Posts",
         "login": "Login",
         "account": "Account",
@@ -24,7 +24,7 @@
         "shopNow": "Explore now",
         "newArrivals": "Suitable for current season",
         "popularStyles": "Popular Styles",
-        "tryAILbl": "AI Fabric Recognition"
+        "tryAILbl": "Try AI Recognition Now"
     },
     "FabricGrid": {
         "serverError": "Server error",
@@ -50,6 +50,7 @@
         "info_message": "Click the image to upload another sample.",
         "model_label": "Fashion Model",
         "model_material": "Apply material:",
+        "try_on_button": "Try on now",
         "analysis_header": "Material Analysis Report",
         "empty_state": "Analysis panel is empty. Scan a fabric sample for AI to extract material information.",
         "fabric_type_label": "Detected fabric type:",
@@ -57,6 +58,9 @@
         "eco_label": "Environment:",
         "eco_friendly": "Eco Friendly",
         "eco_not_certified": "Not Eco Certified",
+        "eco_index_label": "Eco-friendliness Level:",
+        "eco_status_friendly": "Friendly",
+        "eco_status_unfriendly": "Not Friendly",
         "traits_title": "Material Characteristics",
         "care_title": "Care Recommendations",
         "wardrobe_header": "Fabric Wardrobe by Season (Select to change model)",

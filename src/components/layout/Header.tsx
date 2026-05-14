@@ -73,6 +73,21 @@ export default function Header({ transparent = false }: { transparent?: boolean 
       <div className={`container ${styles.inner}`}>
         {/* Left Side */}
         <div className={styles.headerLeft}>
+          <div className={styles.navLinksLeft}>
+            <Link href="/moodboard" className={styles.textNavBtn}>
+              <BookMarked size={16} className={styles.navIcon} />
+              {t('moodboardTitle')}
+            </Link>
+            <Link href="/quiz" className={styles.textNavBtn}>
+              <Sparkles size={16} className={styles.navIcon} />
+              {t('quiz')}
+            </Link>
+            <Link href="/feed" className={styles.textNavBtn}>
+              <MessageCircle size={16} className={styles.navIcon} />
+              {t('feedTitle')}
+            </Link>
+          </div>
+
           <div className={styles.langSwitch}>
             <Globe size={13} className={styles.globeIcon} />
             <button
@@ -127,14 +142,6 @@ export default function Header({ transparent = false }: { transparent?: boolean 
         {/* Right Side */}
         <div className={styles.headerRight}>
           <div className={styles.navActions}>
-            <Link href="/moodboard" className={styles.textNavBtn}>
-              {t('moodboardTitle')}
-            </Link>
-
-            <Link href="/feed" className={styles.textNavBtn}>
-              {t('feedTitle')}
-            </Link>
-
             <Link href="/about" className={styles.textNavBtn}>
               {t('aboutTitle')}
             </Link>
@@ -142,21 +149,20 @@ export default function Header({ transparent = false }: { transparent?: boolean 
             {isLoggedIn ? (
               <div className={styles.userMenu}>
                 <Link href="/moodboard" className={styles.textNavBtn}>
+                  <User size={16} className={styles.navIcon} />
                   {t('account')}
                 </Link>
                 <button onClick={handleLogout} className={styles.textNavBtn}>
+                  <LogOut size={16} className={styles.navIcon} />
                   {t('logout')}
                 </button>
               </div>
             ) : (
               <Link href="/auth" className={styles.textNavBtn}>
+                <LogIn size={16} className={styles.navIcon} />
                 {t('login')}
               </Link>
             )}
-
-            <Link href="/quiz" className={styles.textNavBtn}>
-              {t('quiz')}
-            </Link>
           </div>
         </div>
       </div>
