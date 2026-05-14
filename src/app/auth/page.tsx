@@ -90,7 +90,7 @@ export default function AuthPage() {
           <div className={styles.brandLogo}>
             <Scissors size={32} strokeWidth={1.5} />
           </div>
-          <h1 className={styles.brandName}>Fabri<span>vo</span></h1>
+          <h1 className={styles.brandName}>Frabri<span>vue</span></h1>
           <p className={styles.brandTagline}>{t('brandTagline')}</p>
         </div>
         <div className={styles.decorGrid}>
