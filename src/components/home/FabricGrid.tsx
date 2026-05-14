@@ -106,11 +106,22 @@ export default function FabricGrid() {
   useEffect(() => {
     setPage(1);
     fetchFabrics(1, activeCategory, urlQuery, urlSeason);
-  }, [urlQuery, activeCategory, urlSeason]); // eslint-disable-line
+
+    // Auto-scroll to results when search or filter is applied
+    if (urlQuery || urlSeason || activeCategory) {
+      const element = document.getElementById('fabric-grid-section');
+      if (element) {
+        // Small delay to allow the grid to start rendering/loading
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    }
+  }, [urlQuery, activeCategory, urlSeason, fetchFabrics]);
 
   useEffect(() => {
     fetchFabrics(page, activeCategory, urlQuery, urlSeason);
-  }, [page]); // eslint-disable-line
+  }, [page, activeCategory, urlQuery, urlSeason, fetchFabrics]);
 
   const getPageNumbers = () => {
     const pages: (number | '...')[] = [];

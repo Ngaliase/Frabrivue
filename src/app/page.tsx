@@ -3,16 +3,16 @@ import Footer from '@/components/layout/Footer';
 import Hero from '@/components/home/Hero';
 import FabricGrid from '@/components/home/FabricGrid';
 import FeedSection from '@/components/home/FeedSection';
+import NewsSection from '@/components/home/NewsSection';
 
 export default function Home() {
   return (
     <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Header transparent={true} />
       <Hero />
+      <FabricGrid />
+      <NewsSection />
       <FeedSection />
-      <div id="fabric-grid-section">
-        <FabricGrid />
-      </div>
       <Footer />
     </main>
   );
