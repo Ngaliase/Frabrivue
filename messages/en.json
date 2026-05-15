@@ -11,7 +11,8 @@
         "account": "Account",
         "logout": "Logout",
         "quiz": "Style Quiz",
-        "aboutTitle": "About"
+        "aboutTitle": "About",
+        "magazineTitle": "Magazine"
     },
     "Footer": {
         "help": "Help",

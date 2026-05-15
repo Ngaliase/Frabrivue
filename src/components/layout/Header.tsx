@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
-import { Search, Globe, Sparkles, BookMarked, LogIn, User, LogOut, X, MessageCircle, Menu, Info } from 'lucide-react';
+import { Search, Globe, Sparkles, BookMarked, LogIn, User, LogOut, X, MessageCircle, Menu, Info, Newspaper } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import styles from './Header.module.css';
@@ -127,6 +127,10 @@ export default function Header({ transparent = false }: { transparent?: boolean 
                 <MessageCircle size={18} className={styles.navIcon} />
                 <span className={styles.navLabel}>{t('feedTitle')}</span>
               </Link>
+              <Link href="/news" className={styles.textNavBtn}>
+                <Newspaper size={18} className={styles.navIcon} />
+                <span className={styles.navLabel}>{t('magazineTitle')}</span>
+              </Link>
             </div>
 
             <span className={styles.langDivider}>|</span>
@@ -229,6 +233,10 @@ export default function Header({ transparent = false }: { transparent?: boolean 
             <Link href="/feed" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
               <MessageCircle size={20} />
               {t('feedTitle')}
+            </Link>
+            <Link href="/news" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
+              <Newspaper size={20} />
+              {t('magazineTitle')}
             </Link>
             <Link href="/about" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
               <Info size={20} />
