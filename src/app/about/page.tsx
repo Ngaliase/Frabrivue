@@ -157,7 +157,7 @@ export default function AboutPage() {
           <div ref={addToRefs} className={`${styles.section} ${styles.fadeUp}`}>
             <div className={styles.visionCard}>
               <Eye className={styles.visionIcon} size={44} />
-              <div className={styles.sectionLabel} style={{ position: 'static', marginBottom: '8px' }}>05</div>
+              <div className={styles.visionSectionLabel}>05</div>
               <h2 className={styles.sectionTitle}>{t('visionTitle')}</h2>
               <p className={styles.visionText}>{t('visionP1')}</p>
             </div>

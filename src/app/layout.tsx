@@ -1,7 +1,7 @@
 import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import { NextIntlClientProvider } from 'next-intl';
 import type { Metadata } from 'next';
-import { Plus_Jakarta_Sans, Merriweather } from 'next/font/google';
+import { Plus_Jakarta_Sans, Merriweather, Playfair_Display } from 'next/font/google';
 import './globals.css';
 
 const jakarta = Plus_Jakarta_Sans({
@@ -18,6 +18,12 @@ const merriweather = Merriweather({
   variable: '--font-merriweather',
 });
 
+const playfair = Playfair_Display({
+  subsets: ['latin', 'vietnamese'],
+  display: 'swap',
+  variable: '--font-playfair',
+});
+
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Layout');
   return {
@@ -31,7 +37,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className={`${jakarta.variable} ${merriweather.variable}`} suppressHydrationWarning>
+    <html lang={locale} className={`${jakarta.variable} ${merriweather.variable} ${playfair.variable}`} suppressHydrationWarning>
       <body suppressHydrationWarning>
         <NextIntlClientProvider messages={messages} locale={locale}>
           {children}
