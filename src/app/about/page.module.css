@@ -127,7 +127,7 @@
   left: 0;
   font-size: 6rem;
   font-weight: 800;
-  color: rgba(0, 0, 0, 0.03);
+  color: rgba(0, 0, 0, 0.15);
   line-height: 1;
   user-select: none;
   font-family: var(--font-jakarta);
@@ -338,6 +338,17 @@
   color: #fff;
   margin-bottom: 32px;
   opacity: 0.8;
+}
+
+.visionSectionLabel {
+  color: #fff;
+  font-size: 6rem;
+  font-weight: 800;
+  line-height: 1;
+  user-select: none;
+  font-family: var(--font-jakarta);
+  pointer-events: none;
+  margin-bottom: 8px;
 }
 
 .visionCard .sectionTitle {

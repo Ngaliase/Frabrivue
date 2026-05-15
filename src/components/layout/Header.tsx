@@ -108,8 +108,7 @@ export default function Header({ transparent = false }: { transparent?: boolean 
           <div className={styles.navActions}>
             {/* Logo in Dock */}
             <Link href="/" className={styles.textNavBtn} style={{ padding: '6px 16px' }}>
-              <img src="/logo1.png" alt="Logo" style={{ height: '32px', width: 'auto' }} className={styles.navIcon} />
-              <span className={styles.navLabel} style={{ fontWeight: 800, fontSize: '1.2rem', letterSpacing: '-0.02em' }}>Frabrivue</span>
+              <span className={styles.navLabel} style={{ fontFamily: 'var(--font-playfair)', fontWeight: 700, fontSize: '1.3rem', letterSpacing: '-0.01em', fontStyle: 'italic' }}>Frabrivue</span>
             </Link>
 
             <span className={styles.langDivider}>|</span>
