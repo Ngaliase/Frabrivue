@@ -27,10 +27,10 @@ const SEASONS = [
 ];
 
 const MODEL_URLS: Record<string, string> = {
-  spring: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779561/fabrivo_models/spring.jpg',
-  summer: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779562/fabrivo_models/summer.jpg',
-  autumn: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779562/fabrivo_models/autumn.jpg',
-  winter: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779563/fabrivo_models/winter.jpg',
+  spring: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779561/frabrivue_models/spring.jpg',
+  summer: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779562/frabrivue_models/summer.jpg',
+  autumn: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779562/frabrivue_models/autumn.jpg',
+  winter: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779563/frabrivue_models/winter.jpg',
 };
 
 export default function AIScanner() {
