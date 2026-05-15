@@ -1,0 +1,239 @@
+.pageWrapper {
+  min-height: 100vh;
+  background: #fdfcfb;
+  color: #1a1a1a;
+  padding-bottom: 5rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Hero Section */
+.hero {
+  padding: 8rem 0 4rem;
+  background: linear-gradient(180deg, #fff 0%, #fdfcfb 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.heroContent {
+  max-width: 800px;
+}
+
+.tagLine {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #3b82f6;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+.heroTitle {
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+  color: #000;
+}
+
+.heroSubtitle {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: #666;
+  max-width: 600px;
+}
+
+/* Magazine Grid */
+.archiveSection {
+  padding: 4rem 0;
+}
+
+.magazineGrid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2rem;
+}
+
+.articleCard {
+  grid-column: span 4;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 1px; /* Sharp edges for magazine feel */
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.articleCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.featuredCard {
+  grid-column: span 8;
+  flex-direction: row;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.featuredCard .imageWrapper {
+  width: 60%;
+  aspect-ratio: auto;
+  height: 100%;
+}
+
+.articleImage {
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.articleCard:hover .articleImage {
+  transform: scale(1.05);
+}
+
+.categoryBadge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: #000;
+  color: #fff;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  z-index: 2;
+}
+
+.cardBody {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.featuredCard .cardBody {
+  width: 40%;
+  padding: 2.5rem;
+  justify-content: center;
+}
+
+.cardMeta {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #999;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 1rem;
+  color: #000;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.featuredCard .cardTitle {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.cardSnippet {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 1.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.featuredCard .cardSnippet {
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+}
+
+.readMore {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #000;
+  transition: gap 0.3s ease;
+}
+
+.articleCard:hover .readMore {
+  gap: 0.75rem;
+}
+
+.noData {
+  text-align: center;
+  padding: 5rem 0;
+  color: #999;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+  .articleCard {
+    grid-column: span 6;
+  }
+  .featuredCard {
+    grid-column: span 12;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 6rem 0 3rem;
+  }
+  
+  .magazineGrid {
+    gap: 1.5rem;
+  }
+  
+  .articleCard, .featuredCard {
+    grid-column: span 12;
+    flex-direction: column;
+  }
+  
+  .featuredCard .imageWrapper, .featuredCard .cardBody {
+    width: 100%;
+  }
+  
+  .featuredCard .imageWrapper {
+    aspect-ratio: 16 / 9;
+  }
+  
+  .featuredCard .cardBody {
+    padding: 1.5rem;
+  }
+  
+  .featuredCard .cardTitle {
+    font-size: 1.5rem;
+  }
+}
