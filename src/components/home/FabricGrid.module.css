@@ -43,10 +43,10 @@
 }
 
 .filterTabActive {
-  background: linear-gradient(135deg, var(--brand-indigo) 0%, #3a5099 100%);
+  background: #1a2654;
   border-color: transparent;
   color: white;
-  box-shadow: 0 4px 12px rgba(30, 45, 90, 0.2);
+  box-shadow: 0 4px 12px rgba(26,38,84,0.25);
 }
 
 .filterTabActive:hover {
@@ -241,7 +241,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: linear-gradient(135deg, var(--brand-indigo) 0%, #3a5099 100%);
+  background: #1a2654;
   color: white;
   padding: 7px 14px;
   border-radius: 0;
@@ -252,7 +252,7 @@
   margin-top: 4px;
   align-self: flex-start;
 }
-.infoBtn:hover { background: var(--brand-brown); opacity: 1; transform: translateY(-1px); }
+.infoBtn:hover { background: #233275; opacity: 1; transform: translateY(-1px); }
 
 .error,
 .errorBanner {
@@ -297,10 +297,10 @@
   cursor: pointer;
   transition: all 0.15s;
 }
-.pageBtn:hover:not(:disabled) { border-color: var(--brand-indigo); color: var(--brand-indigo); }
+.pageBtn:hover:not(:disabled) { border-color: #1a2654; color: #1a2654; }
 .pageBtn:disabled { opacity: 0.4; cursor: not-allowed; }
 .pageActive {
-  background: linear-gradient(135deg, var(--brand-indigo) 0%, #3a5099 100%) !important;
+  background: #1a2654 !important;
   color: white !important;
   border-color: transparent !important;
 }
@@ -312,7 +312,7 @@
   align-items: center;
   gap: 7px;
   background: var(--accent-beige);
-  color: var(--brand-indigo);
+  color: #1a2654;
   padding: 9px 18px;
   border-radius: 0;
   font-size: 0.85rem;
@@ -320,13 +320,13 @@
   border: 1px solid var(--border);
   transition: all var(--transition-base);
 }
-.dbBtn:hover { background: var(--brand-indigo); color: white; transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+.dbBtn:hover { background: #1a2654; color: white; transform: translateY(-1px); box-shadow: var(--shadow-sm); }
 
 .moodBtn {
   display: flex;
   align-items: center;
   gap: 7px;
-  background: linear-gradient(135deg, var(--brand-indigo) 0%, #3a5099 100%);
+  background: #1a2654;
   color: white;
   padding: 9px 18px;
   border-radius: 0;
@@ -334,7 +334,7 @@
   font-weight: 600;
   transition: all var(--transition-base);
 }
-.moodBtn:hover { background: var(--brand-brown); opacity: 1; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(139,94,60,0.3); }
+.moodBtn:hover { background: #233275; opacity: 1; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(26,38,84,0.3); }
 
 @media (max-width: 1100px) {
   .grid, .loadingGrid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
