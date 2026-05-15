@@ -69,7 +69,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, var(--brand-indigo) 0%, #3a5099 100%);
+  background: #1a2654;
   color: white;
   padding: 11px 24px;
   border-radius: var(--radius-sm);
@@ -79,9 +79,9 @@
   transition: all var(--transition-base);
 }
 .authLink:hover {
-  background: var(--brand-brown);
+  background: #233275;
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(139,94,60,0.3);
+  box-shadow: 0 6px 18px rgba(26,38,84,0.3);
   opacity: 1;
 }
 
@@ -172,7 +172,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  background: linear-gradient(135deg, var(--brand-indigo) 0%, #3a5099 100%);
+  background: #1a2654;
   color: white;
   padding: 6px 12px;
   border-radius: var(--radius-sm);
@@ -182,7 +182,7 @@
   flex: 1;
   justify-content: center;
 }
-.viewBtn:hover { background: var(--brand-brown); opacity: 1; transform: translateY(-1px); }
+.viewBtn:hover { background: #233275; opacity: 1; transform: translateY(-1px); }
 
 .removeBtn {
   display: flex;

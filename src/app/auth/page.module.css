@@ -215,13 +215,13 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: #E8EBFF;
-  color: var(--brand-indigo);
+  background: #1a2654;
+  color: white;
   padding: 13px;
   border-radius: var(--radius-sm);
   font-size: 0.95rem;
   font-weight: 700;
-  border: 2px solid var(--brand-indigo);
+  border: 2px solid #1a2654;
   cursor: pointer;
   margin-top: 4px;
   transition: background var(--transition-base),
@@ -231,10 +231,10 @@
   overflow: hidden;
 }
 .submitBtn:hover:not(:disabled) {
-  background: var(--brand-indigo);
+  background: #233275;
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0,85,255,0.2);
+  box-shadow: 0 6px 20px rgba(26,38,84,0.25);
 }
 .submitBtn:active { transform: translateY(0); }
 .submitBtn:disabled { opacity: 0.65; cursor: not-allowed; }
