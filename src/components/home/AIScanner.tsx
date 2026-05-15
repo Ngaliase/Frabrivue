@@ -422,7 +422,13 @@ export default function AIScanner() {
             </div>
             <div className={styles.modelLabel}>
               <strong>{t('model_label')} {t(`seasons.${activeSeason}.label`)}</strong>
-              <span>{t('model_material')} {t(`seasons.${activeSeason}.material`)}</span>
+              {tryOnResult && result ? (
+                <span className={styles.newMaterial}>
+                  {t('model_material')} <strong className={styles.highlightFabric}>{result.fabric}</strong>
+                </span>
+              ) : (
+                <span>{t('model_material')} {t(`seasons.${activeSeason}.material`)}</span>
+              )}
             </div>
           </div>
 
