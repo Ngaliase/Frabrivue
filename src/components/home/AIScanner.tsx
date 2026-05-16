@@ -26,11 +26,19 @@ const SEASONS = [
   { key: 'winter', Icon: Snowflake },
 ];
 
-const MODEL_URLS: Record<string, string> = {
-  spring: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779561/frabrivue_models/spring.jpg',
-  summer: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779562/frabrivue_models/summer.jpg',
-  autumn: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779562/frabrivue_models/autumn.jpg',
-  winter: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779563/frabrivue_models/winter.jpg',
+const MODEL_URLS: Record<string, Record<string, string>> = {
+  female: {
+    spring: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779561/frabrivue_models/spring.jpg',
+    summer: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779562/frabrivue_models/summer.jpg',
+    autumn: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779562/frabrivue_models/autumn.jpg',
+    winter: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778779563/frabrivue_models/winter.jpg',
+  },
+  male: {
+    spring: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778915148/frabrivue_models/male_spring.jpg',
+    summer: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778915149/frabrivue_models/male_summer.jpg',
+    autumn: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778915150/frabrivue_models/male_autumn.jpg',
+    winter: 'https://res.cloudinary.com/di39ls7dp/image/upload/v1778915150/frabrivue_models/male_winter.jpg',
+  }
 };
 
 export default function AIScanner() {
@@ -40,6 +48,7 @@ export default function AIScanner() {
   const [result, setResult] = useState<AIResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [activeSeason, setActiveSeason] = useState('autumn');
+  const [gender, setGender] = useState<'female' | 'male'>('female');
   const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
@@ -150,7 +159,7 @@ export default function AIScanner() {
 
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const personImageUrl = MODEL_URLS[activeSeason];
+      const personImageUrl = MODEL_URLS[gender][activeSeason];
 
       // 1. Start Task
       const startRes = await fetch(`${apiUrl}/api/v1/try-on/`, {
@@ -398,7 +407,7 @@ export default function AIScanner() {
               <div className={styles.mirrorLight}></div>
               <div className={styles.modelSilhouette}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={MODEL_URLS[activeSeason]} alt={`${activeSeason} fashion model`} className={styles.modelImg} />
+                <img src={MODEL_URLS[gender][activeSeason]} alt={`${activeSeason} fashion model`} className={styles.modelImg} />
 
                 {(tryOnResult || tryOnLoading) && (
                   <div className={styles.tryOnOverlay}>
@@ -544,6 +553,23 @@ export default function AIScanner() {
         <div className={styles.studioWardrobe}>
           <div className={styles.wardrobeHeader}>
             <h3>{t('wardrobe_header')}</h3>
+            <div className={styles.genderToggle}>
+              <span>{t('gender_selection')}</span>
+              <div className={styles.toggleGroup}>
+                <button 
+                  className={`${styles.toggleBtn} ${gender === 'female' ? styles.toggleActive : ''}`}
+                  onClick={() => { setGender('female'); setTryOnResult(null); }}
+                >
+                  {t('gender_female')}
+                </button>
+                <button 
+                  className={`${styles.toggleBtn} ${gender === 'male' ? styles.toggleActive : ''}`}
+                  onClick={() => { setGender('male'); setTryOnResult(null); }}
+                >
+                  {t('gender_male')}
+                </button>
+              </div>
+            </div>
           </div>
           <div className={styles.seasonTabs}>
             {SEASONS.map(({ key, Icon }) => (
