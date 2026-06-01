@@ -33,7 +33,7 @@
   font-size: 1.1rem;
   font-weight: 700;
   color: transparent;
-  background: linear-gradient(90deg, var(--brand-brown) 0%, var(--brand-indigo) 100%);
+  background: linear-gradient(90deg, #1a2654 0%, var(--brand-indigo) 100%);
   -webkit-background-clip: text;
   background-clip: text;
 }
@@ -132,8 +132,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
-.thumbIcon { color: var(--brand-brown); opacity: 0.7; }
+.cardImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+.card:hover .cardImg {
+  transform: scale(1.05);
+}
+.thumbIcon { color: var(--brand-indigo); opacity: 0.5; }
 
 .cardBody {
   padding: 14px 16px 16px;
@@ -147,16 +158,21 @@
   font-weight: 700;
   color: var(--text-primary);
 }
-.cardType { font-size: 0.74rem; color: var(--text-muted); }
+.cardType { font-size: 0.76rem; font-weight: 500; color: var(--text-secondary); }
 
-.tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
 .tag {
-  background: var(--accent-cream);
-  color: var(--brand-brown);
-  font-size: 0.7rem;
-  padding: 2px 8px;
+  background: var(--brand-brown);
+  color: var(--brand-indigo);
+  font-size: 0.72rem;
+  padding: 3px 10px;
   border-radius: 12px;
-  font-weight: 500;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+.tag:hover {
+  background: var(--brand-indigo);
+  color: white;
 }
 
 .note { font-size: 0.78rem; color: var(--text-secondary); font-style: italic; }

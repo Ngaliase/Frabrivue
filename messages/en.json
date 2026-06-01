@@ -1,6 +1,6 @@
 {
     "Layout": {
-        "title": "Frabrivue – Smart Fabric Search & AI Recognition",
+        "title": "Fabrivue – Smart Fabric Search & AI Recognition",
         "description": "Look up over 300 types of fabric using AI. Get details, care instructions, and seasonal style suggestions."
     },
     "Header": {
@@ -16,15 +16,16 @@
     },
     "Footer": {
         "help": "Help",
-        "settings": "Settings"
+        "settings": "Settings",
+        "facebook": "Facebook"
     },
     "Home": {},
     "Hero": {
-        "title": "Frabrivue",
+        "title": "Fabrivue",
         "subtitle": "Discover the fabric you are using through AI technology and understand the characteristics of each material better.",
         "shopNow": "Explore now",
         "newArrivals": "Suitable for current season",
-        "popularStyles": "Popular Styles",
+        "popularStyles": "Popular Fabrics",
         "tryAILbl": "Try AI Recognition Now"
     },
     "FabricGrid": {
@@ -220,6 +221,9 @@
         "feature4Title": "Interactive User Experience",
         "feature4Desc": "Designed with a simple and accessible interface, FABRIVUE encourages users to explore, learn, and engage with textile knowledge effortlessly.",
         "visionTitle": "Our Vision",
-        "visionP1": "We envision a future where fabric knowledge becomes accessible to everyone, helping consumers, students, and fashion communities make smarter, more sustainable decisions through technology-driven learning."
+        "visionP1": "We envision a future where fabric knowledge becomes accessible to everyone, helping consumers, students, and fashion communities make smarter, more sustainable decisions through technology-driven learning.",
+        "contactTitle": "Contact Us",
+        "contactP1": "Connect with us on our Facebook page for updates, inquiries, or support. We are happy to assist you!",
+        "contactButton": "Connect on Facebook"
     }
 }

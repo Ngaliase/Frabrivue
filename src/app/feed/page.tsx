@@ -14,7 +14,7 @@ import BlockEditor from '@/components/layout/BlockEditor';
 
 function getCurrentUserId(): number | null {
   try {
-    const token = localStorage.getItem('Frabrivue_token');
+    const token = localStorage.getItem('Fabrivue_token');
     if (!token) return null;
     const payload = JSON.parse(atob(token.split('.')[1]));
     return payload.sub ? parseInt(payload.sub) : null;
@@ -41,7 +41,7 @@ export default function FeedPage() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const checkAuth = useCallback(() => {
-    const token = localStorage.getItem('Frabrivue_token');
+    const token = localStorage.getItem('Fabrivue_token');
     if (!token) { router.push('/auth'); return false; }
     return true;
   }, [router]);

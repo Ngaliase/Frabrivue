@@ -55,7 +55,7 @@ export default function PostDetailPage() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('Frabrivue_token');
+    const token = localStorage.getItem('Fabrivue_token');
     if (!token) { router.push('/auth'); return; }
     setAuthed(true);
 

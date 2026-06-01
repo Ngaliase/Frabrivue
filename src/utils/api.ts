@@ -4,7 +4,7 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 function getToken(): string | null {
   if (typeof window !== 'undefined') {
-    return localStorage.getItem('Frabrivue_token');
+    return localStorage.getItem('Fabrivue_token');
   }
   return null;
 }
@@ -30,7 +30,7 @@ async function request<T>(
   if (!res.ok) {
     if (res.status === 401) {
       if (typeof window !== 'undefined') {
-        localStorage.removeItem('Frabrivue_token');
+        localStorage.removeItem('Fabrivue_token');
         window.location.href = '/auth';
       }
     }

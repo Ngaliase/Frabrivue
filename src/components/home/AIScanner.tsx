@@ -309,11 +309,16 @@ export default function AIScanner() {
       )
     );
 
+    const filteredTags = tags.filter(tag => {
+      const normalizedTag = tag.toLowerCase().trim();
+      return !['cho bé', 'cho be', 'for kids'].includes(normalizedTag);
+    });
+
     setResult({
       fabric: fabricName,
       accuracy: confidenceToAccuracy(statusData.confidence_score || ''),
       ecoFriendly: isEco,
-      traits: tags.slice(0, 4),
+      traits: filteredTags.slice(0, 4),
       care: careList.slice(0, 3),
       durability: statusData.durability,
       breathability: statusData.breathability,
@@ -509,17 +514,6 @@ export default function AIScanner() {
                       </div>
                     )}
 
-                    {result.comfort !== undefined && (
-                      <div className={styles.resultRow}>
-                        <span className={styles.resultLabel}>Cảm giác mặc</span>
-                        <div className={styles.accuracyWrap}>
-                          <div className={styles.accuracyBar}>
-                            <div className={styles.accuracyFill} style={{ width: `${result.comfort * 10}%`, backgroundColor: '#f1c40f' }} />
-                          </div>
-                          <span className={styles.accuracyNum}>{result.comfort}/10</span>
-                        </div>
-                      </div>
-                    )}
                   </div>
 
                   <div className={styles.resultSection}>

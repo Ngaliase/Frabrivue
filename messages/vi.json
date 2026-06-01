@@ -1,6 +1,6 @@
 {
     "Layout": {
-        "title": "Frabrivue – Tra Cứu & Nhận Diện Vải Thông Minh",
+        "title": "Fabrivue – Tra Cứu & Nhận Diện Vải Thông Minh",
         "description": "Tra cứu hơn 300 loại vải bằng AI. Nhận thông tin chi tiết, hướng dẫn bảo quản và gợi ý phong cách theo mùa."
     },
     "Header": {
@@ -11,20 +11,21 @@
         "account": "Tài khoản",
         "logout": "Đăng xuất",
         "quiz": "Quiz",
-        "aboutTitle": "Về Frabrivue",
+        "aboutTitle": "Về Fabrivue",
         "magazineTitle": "Tin tức"
     },
     "Footer": {
         "help": "Trợ giúp",
-        "settings": "Cài đặt"
+        "settings": "Cài đặt",
+        "facebook": "Facebook"
     },
     "Home": {},
     "Hero": {
-        "title": "Frabrivue",
+        "title": "Fabrivue",
         "subtitle": "Khám phá loại vải bạn đang sử dụng thông qua công nghệ AI và hiểu rõ hơn về đặc tính của từng chất liệu.",
         "shopNow": "Khám phá ngay",
         "newArrivals": "Phù hợp với mùa hiện tại",
-        "popularStyles": "Kiểu Dáng Thịnh Hành",
+        "popularStyles": "Kiểu vải thịnh hành",
         "tryAILbl": "Thử nhận diện vải ngay"
     },
     "FabricGrid": {
@@ -195,9 +196,9 @@
         "noComments": "Chưa có bình luận nào."
     },
     "AboutPage": {
-        "pageTitle": "Về FRABRIVUE",
+        "pageTitle": "Về FABRIVUE",
         "pageSubtitle": "Nền Tảng Nhận Diện Vải Được Hỗ Trợ Bởi AI",
-        "aboutTitle": "Về Frabrivue",
+        "aboutTitle": "Về Fabrivue",
         "aboutP1": "FABRIVUE là nền tảng được hỗ trợ bởi AI, được thiết kế để đơn giản hóa việc nhận diện vải và giáo dục dệt may cho tất cả mọi người. Bằng cách tích hợp trí tuệ nhân tạo với kiến thức dệt may, trang web của chúng tôi giúp người dùng nhận biết các loại vải qua hình ảnh, đồng thời cung cấp thông tin thiết yếu về đặc tính chất liệu, hướng dẫn bảo quản và tính bền vững.",
         "aboutP2": "Dù bạn là người yêu thời trang, học sinh, nhà thiết kế, người mua sắm trực tuyến hay người học dệt may, FABRIVUE hướng đến việc giúp việc hiểu về vải trở nên dễ dàng hơn, nhanh hơn và dễ tiếp cận hơn.",
         "missionTitle": "Sứ Mệnh Của Chúng Tôi",
@@ -220,6 +221,9 @@
         "feature4Title": "Trải Nghiệm Người Dùng Tương Tác",
         "feature4Desc": "Được thiết kế với giao diện đơn giản và dễ tiếp cận, FABRIVUE khuyến khích người dùng khám phá, học hỏi và tương tác với kiến thức dệt may một cách dễ dàng.",
         "visionTitle": "Tầm Nhìn Của Chúng Tôi",
-        "visionP1": "Chúng tôi hướng đến một tương lai nơi kiến thức về vải trở nên dễ tiếp cận với tất cả mọi người, giúp người tiêu dùng, học sinh và cộng đồng thời trang đưa ra những quyết định thông minh hơn, bền vững hơn thông qua học tập dựa trên công nghệ."
+        "visionP1": "Chúng tôi hướng đến một tương lai nơi kiến thức về vải trở nên dễ tiếp cận với tất cả mọi người, giúp người tiêu dùng, học sinh và cộng đồng thời trang đưa ra những quyết định thông minh hơn, bền vững hơn thông qua học tập dựa trên công nghệ.",
+        "contactTitle": "Liên Hệ",
+        "contactP1": "Hãy kết nối với chúng tôi qua trang Facebook để được hỗ trợ nhanh nhất và cập nhật thêm các thông tin mới nhất.",
+        "contactButton": "Gửi tin nhắn qua Facebook"
     }
 }

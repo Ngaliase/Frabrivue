@@ -62,10 +62,10 @@
 
 .subtitle {
   font-family: var(--font-jakarta), sans-serif;
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   color: rgba(255, 255, 255, 0.95);
   line-height: 1.6;
-  margin-bottom: 30px;
+  margin: -6px 0 26px;
   max-width: 520px;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
   font-weight: 500;
@@ -74,9 +74,9 @@
 .shopBtn {
   background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
   color: #111;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 14px 28px;
+  font-weight: 700;
+  font-size: 1.3rem;
+  padding: 16px 32px;
   border-radius: 4px;
   border: none;
   cursor: pointer;
@@ -113,6 +113,7 @@
   align-items: center;
   gap: 16px;
   min-width: 200px;
+  cursor: pointer;
   transition: transform var(--transition-fast), background var(--transition-fast);
 }
 
@@ -176,33 +177,76 @@
 }
 
 @media (max-width: 1024px) {
-  .title { font-size: 3.5rem; }
+  .title {
+    font-size: 3.5rem;
+  }
 }
 
 @media (max-width: 768px) {
-  .hero { align-items: center; padding-bottom: 0; min-height: 100vh; }
-  .content { justify-content: center; padding: 0 20px; }
-  .mainText { margin-bottom: 40px; text-align: center; max-width: 100%; }
-  .title { font-size: 2.2rem; }
-  .subtitle { font-size: 1.1rem; margin: 0 auto 30px; }
-  
-  .bottomArea { flex-direction: column; align-items: center; gap: 40px; margin-top: 40px; }
-  .cards { flex-direction: column; width: 100%; }
-  .card { width: 100%; justify-content: center; }
-  .aiBtn { width: 100%; justify-content: space-between; }
+  .hero {
+    align-items: center;
+    padding-bottom: 0;
+    min-height: 100vh;
+  }
+
+  .content {
+    justify-content: center;
+    padding: 0 20px;
+  }
+
+  .mainText {
+    margin-bottom: 40px;
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .title {
+    font-size: 2.2rem;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+    margin: 0 auto 30px;
+  }
+
+  .bottomArea {
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    margin-top: 40px;
+  }
+
+  .cards {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .card {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .aiBtn {
+    width: 100%;
+    justify-content: space-between;
+  }
 }
 
 @media (max-width: 480px) {
-  .title { 
-    font-size: 2.2rem; 
+  .title {
+    font-size: 2.2rem;
     letter-spacing: -0.03em;
     line-height: 1.1;
   }
+
   .subtitle {
-    font-size: 1rem;
+    font-size: 0.9rem;
     line-height: 1.5;
     margin-bottom: 24px;
     padding: 0 10px;
   }
-  .hero { background-position: 35% center; }
+
+  .hero {
+    background-position: 35% center;
+  }
 }

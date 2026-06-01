@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
-import { Search, Globe, Sparkles, BookMarked, LogIn, User, LogOut, X, MessageCircle, Menu, Info, Newspaper } from 'lucide-react';
+import { Search, Globe, BookMarked, LogIn, User, LogOut, X, MessageCircle, Menu, Info, Newspaper } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import styles from './Header.module.css';
@@ -33,7 +33,7 @@ export default function Header({ transparent = false }: { transparent?: boolean 
   }, { scope: headerRef, dependencies: [transparent] });
 
   useEffect(() => {
-    const token = localStorage.getItem('Frabrivue_token');
+    const token = localStorage.getItem('Fabrivue_token');
     if (token) setIsLoggedIn(true);
   }, []);
 
@@ -44,7 +44,7 @@ export default function Header({ transparent = false }: { transparent?: boolean 
   }, [isSearchOpen]);
 
   const handleLogout = () => {
-    localStorage.removeItem('Frabrivue_token');
+    localStorage.removeItem('Fabrivue_token');
     setIsLoggedIn(false);
   };
 
@@ -108,7 +108,7 @@ export default function Header({ transparent = false }: { transparent?: boolean 
           <div className={styles.navActions}>
             {/* Logo in Dock */}
             <Link href="/" className={styles.textNavBtn} style={{ padding: '6px 16px' }}>
-              <span className={styles.navLabel} style={{ fontFamily: 'var(--font-playfair)', fontWeight: 700, fontSize: '1.3rem', letterSpacing: '-0.01em', fontStyle: 'italic' }}>Frabrivue</span>
+              <span className={styles.navLabel} style={{ fontFamily: 'var(--font-playfair)', fontWeight: 700, fontSize: '1.3rem', letterSpacing: '-0.01em', fontStyle: 'italic' }}>Fabrivue</span>
             </Link>
 
             <span className={styles.langDivider}>|</span>
@@ -118,10 +118,6 @@ export default function Header({ transparent = false }: { transparent?: boolean 
               <Link href="/moodboard" className={styles.textNavBtn}>
                 <BookMarked size={18} className={styles.navIcon} />
                 <span className={styles.navLabel}>{t('moodboardTitle')}</span>
-              </Link>
-              <Link href="/quiz" className={styles.textNavBtn}>
-                <Sparkles size={18} className={styles.navIcon} />
-                <span className={styles.navLabel}>{t('quiz')}</span>
               </Link>
               <Link href="/feed" className={styles.textNavBtn}>
                 <MessageCircle size={18} className={styles.navIcon} />
@@ -225,10 +221,6 @@ export default function Header({ transparent = false }: { transparent?: boolean 
             <Link href="/moodboard" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
               <BookMarked size={20} />
               {t('moodboardTitle')}
-            </Link>
-            <Link href="/quiz" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
-              <Sparkles size={20} />
-              {t('quiz')}
             </Link>
             <Link href="/feed" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>
               <MessageCircle size={20} />

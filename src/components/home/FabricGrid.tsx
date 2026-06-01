@@ -55,6 +55,7 @@ export default function FabricGrid() {
   const searchParams = useSearchParams();
   const urlQuery = searchParams.get('q') || '';
   const urlSeason = searchParams.get('season') || '';
+  const urlTrending = searchParams.get('trending') || '';
 
   const [fabrics, setFabrics] = useState<Fabric[]>([]);
   const [page, setPage] = useState(1);
@@ -84,7 +85,7 @@ export default function FabricGrid() {
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
-  const fetchFabrics = useCallback(async (p: number, category: string, query: string, season: string) => {
+  const fetchFabrics = useCallback(async (p: number, category: string, query: string, season: string, trending: string) => {
     setLoading(true);
     setError('');
     setWeatherInfo(null);
@@ -93,11 +94,12 @@ export default function FabricGrid() {
       const params = new URLSearchParams({ skip: String(skip), limit: String(PAGE_SIZE) });
       if (category) params.set('category', category);
       if (query) params.set('search', query);
+      if (trending === 'true') params.set('trending', 'true');
 
       let url = `${API_BASE}/api/v1/fabrics/?${params}`;
       
       // If seasonal view (coming from Hero or URL param)
-      if (season && !category && !query) {
+      if (season && !category && !query && trending !== 'true') {
         url = `${API_BASE}/api/v1/fabrics/current-season`;
       } else if (season) {
         params.set('season', season);
@@ -134,13 +136,13 @@ export default function FabricGrid() {
     }
   }, [total, t]);
 
-  // Re-fetch when URL query or season changes
+  // Re-fetch when URL query, season or trending changes
   useEffect(() => {
     setPage(1);
-    fetchFabrics(1, activeCategory, urlQuery, urlSeason);
+    fetchFabrics(1, activeCategory, urlQuery, urlSeason, urlTrending);
 
     // Auto-scroll to results when search or filter is applied
-    if (urlQuery || urlSeason || activeCategory) {
+    if (urlQuery || urlSeason || urlTrending || activeCategory) {
       const element = document.getElementById('fabric-grid-section');
       if (element) {
         // Small delay to allow the grid to start rendering/loading
@@ -149,11 +151,11 @@ export default function FabricGrid() {
         }, 100);
       }
     }
-  }, [urlQuery, activeCategory, urlSeason, fetchFabrics]);
+  }, [urlQuery, activeCategory, urlSeason, urlTrending, fetchFabrics]);
 
   useEffect(() => {
-    fetchFabrics(page, activeCategory, urlQuery, urlSeason);
-  }, [page, activeCategory, urlQuery, urlSeason, fetchFabrics]);
+    fetchFabrics(page, activeCategory, urlQuery, urlSeason, urlTrending);
+  }, [page, activeCategory, urlQuery, urlSeason, urlTrending, fetchFabrics]);
 
   const getPageNumbers = () => {
     const pages: (number | '...')[] = [];
@@ -197,6 +199,14 @@ export default function FabricGrid() {
             <Sparkles size={15} className={styles.seasonalIcon} />
             <span>Gợi ý cho <strong>{weatherInfo ? weatherInfo.season : getSeasonLabel(urlSeason)}</strong></span>
             <span className={styles.searchCount}>{total} loại vải phù hợp</span>
+          </div>
+        )}
+
+        {/* Trending indicator */}
+        {urlTrending === 'true' && (
+          <div className={`${styles.searchBanner} ${styles.trendingBanner}`}>
+            <Sparkles size={15} className={styles.trendingIcon} />
+            <span>Các loại vải <strong>thịnh hành nhất hiện nay</strong> (Cotton, Tencel, Linen)</span>
           </div>
         )}
 
@@ -359,7 +369,7 @@ export default function FabricGrid() {
           </div>
 
           <div className={styles.actionBtns}>
-            <button className={styles.dbBtn} onClick={() => fetchFabrics(page, activeCategory, urlQuery, urlSeason)}>
+            <button className={styles.dbBtn} onClick={() => fetchFabrics(page, activeCategory, urlQuery, urlSeason, urlTrending)}>
               <RefreshCcw size={14} />
               {t('updateDatabase')}
             </button>

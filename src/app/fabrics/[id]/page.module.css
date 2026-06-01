@@ -5,8 +5,7 @@
 }
 
 .topBar {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
+  background: var(--bg-white);
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   position: sticky;
   top: 0;
@@ -155,10 +154,7 @@
   font-family: var(--font-merriweather), 'Merriweather', serif;
   font-size: 2.6rem;
   font-weight: 800;
-  color: transparent;
-  background: linear-gradient(90deg, var(--brand-brown) 0%, var(--brand-indigo) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
+  color: var(--text-primary);
   line-height: 1.1;
   margin-bottom: 12px;
 }
@@ -187,7 +183,7 @@
 
 .conceptBadge {
   background: rgba(139, 94, 60, 0.08);
-  color: var(--brand-brown);
+  color: #8b5e3c;
   border: 1px solid rgba(139, 94, 60, 0.1);
 }
 
@@ -208,10 +204,9 @@
 }
 
 .section {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(8px);
+  background: var(--bg-white);
   border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--border);
   padding: 24px 28px;
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-base);

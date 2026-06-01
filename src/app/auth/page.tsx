@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 import Link from 'next/link';
-import { Mail, Lock, User, LogIn, UserPlus, Eye, EyeOff, ArrowLeft, Scissors } from 'lucide-react';
+import { Mail, Lock, User, LogIn, UserPlus, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import styles from './page.module.css';
@@ -24,20 +24,9 @@ export default function AuthPage() {
   const [form, setForm] = useState({ email: '', password: '', full_name: '' });
 
   useGSAP(() => {
-    // Left panel reveal
-    gsap.fromTo(`.${styles.brandArea} > *`,
-      { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out', delay: 0.2 }
-    );
-    gsap.fromTo(`.${styles.decorCell}`,
-      { scale: 0.8, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.6, stagger: 0.05, ease: 'back.out(1.7)', delay: 0.5 }
-    );
-
-    // Right panel reveal
     gsap.fromTo(`.${styles.formCard}`,
-      { x: 40, opacity: 0 },
-      { x: 0, opacity: 1, duration: 0.8, ease: 'power2.out', delay: 0.3 }
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out', delay: 0.2 }
     );
   }, { scope: containerRef });
 
@@ -68,7 +57,7 @@ export default function AuthPage() {
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.detail ?? t('loginFailed'));
-        localStorage.setItem('Frabrivue_token', data.access_token);
+        localStorage.setItem('Fabrivue_token', data.access_token);
         setSuccess(t('loginSuccess'));
         setTimeout(() => { window.location.href = '/'; }, 1000);
       }
@@ -81,27 +70,19 @@ export default function AuthPage() {
 
   return (
     <div className={styles.page} ref={containerRef}>
-      {/* Left panel */}
-      <div className={styles.leftPanel}>
+      <video
+        className={styles.bgVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
+        src="/images/background.mp4"
+      />
+      <div className={styles.overlay} />
+      <div className={styles.content}>
         <Link href="/" className={styles.backBtn}>
           <ArrowLeft size={16} /> {t('backHome')}
         </Link>
-        <div className={styles.brandArea}>
-          <div className={styles.brandLogo}>
-            <Scissors size={32} strokeWidth={1.5} />
-          </div>
-          <h1 className={styles.brandName}>Frabri<span>vue</span></h1>
-          <p className={styles.brandTagline}>{t('brandTagline')}</p>
-        </div>
-        <div className={styles.decorGrid}>
-          {Array.from({ length: 9 }).map((_, i) => (
-            <div key={i} className={styles.decorCell} />
-          ))}
-        </div>
-      </div>
-
-      {/* Right panel – Form */}
-      <div className={styles.rightPanel}>
         <div className={styles.formCard}>
           {/* Tab switcher */}
           <div className={styles.modeTabs}>

@@ -36,7 +36,7 @@ export default function MoodboardPage() {
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('Frabrivue_token');
+    const token = localStorage.getItem('Fabrivue_token');
     if (!token) { setLoading(false); return; }
     setAuthed(true);
     fetch(`${API_BASE}/api/v1/moodboards/`, {
@@ -66,7 +66,7 @@ export default function MoodboardPage() {
   }, { scope: containerRef, dependencies: [loading, items, authed] });
 
   const remove = async (id: number) => {
-    const token = localStorage.getItem('Frabrivue_token');
+    const token = localStorage.getItem('Fabrivue_token');
     setItems(prev => prev.filter(i => i.id !== id));
     console.log('Remove moodboard item', id, token);
   };
@@ -131,7 +131,15 @@ export default function MoodboardPage() {
                 className={styles.card}
               >
                 <div className={styles.cardThumb}>
-                  <Scissors size={24} strokeWidth={1.4} className={styles.thumbIcon} />
+                  {item.fabric.image_url ? (
+                    <img 
+                      src={item.fabric.image_url} 
+                      alt={getLocaleValue(item.fabric.name, locale)} 
+                      className={styles.cardImg} 
+                    />
+                  ) : (
+                    <Scissors size={24} strokeWidth={1.4} className={styles.thumbIcon} />
+                  )}
                 </div>
                 <div className={styles.cardBody}>
                   <h3 className={styles.cardName}>{getLocaleValue(item.fabric.name, locale)}</h3>

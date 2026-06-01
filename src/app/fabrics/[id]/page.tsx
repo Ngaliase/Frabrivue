@@ -72,7 +72,7 @@ export default function FabricDetailPage() {
   }, { scope: containerRef, dependencies: [loading, fabric] });
 
   const handleSaveToMoodboard = async () => {
-    const token = localStorage.getItem('Frabrivue_token');
+    const token = localStorage.getItem('Fabrivue_token');
     if (!token) {
       alert(t('loginPrompt'));
       router.push('/auth');

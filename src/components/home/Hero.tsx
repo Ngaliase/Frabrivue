@@ -68,13 +68,18 @@ export default function Hero() {
     }
   };
 
+  const handlePopularStylesClick = () => {
+    router.push('/?trending=true');
+    setTimeout(scrollToGrid, 100);
+  };
+
   const handleSeasonalClick = () => {
     const month = new Date().getMonth() + 1;
     let season = 'winter';
     if (month >= 3 && month <= 5) season = 'spring';
     else if (month >= 6 && month <= 8) season = 'summer';
     else if (month >= 9 && month <= 11) season = 'autumn';
-    
+
     router.push(`/?season=${season}`);
     setTimeout(scrollToGrid, 100);
   };
@@ -120,7 +125,7 @@ export default function Hero() {
                 <button className={styles.cardLink} onClick={scrollToGrid}>&bull; {t('shopNow')}</button>
               </div>
             </div>
-            <div className={styles.card}>
+            <div className={styles.card} onClick={handlePopularStylesClick}>
               {heroImages[1]?.image_url ? (
                 <img
                   src={heroImages[1].image_url}
@@ -135,7 +140,7 @@ export default function Hero() {
               )}
               <div className={styles.cardInfo}>
                 <span className={styles.cardTitle}>{t('popularStyles')}</span>
-                <button className={styles.cardLink} onClick={scrollToGrid}>&bull; {t('shopNow')}</button>
+                <button className={styles.cardLink} onClick={handlePopularStylesClick}>&bull; {t('shopNow')}</button>
               </div>
             </div>
           </div>

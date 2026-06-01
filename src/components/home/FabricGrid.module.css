@@ -86,6 +86,12 @@
 }
 .seasonalIcon { color: var(--brand-brown); }
 
+.trendingBanner {
+  background: linear-gradient(135deg, rgba(26, 38, 84, 0.08) 0%, rgba(139, 94, 60, 0.04) 100%);
+  border-color: rgba(26, 38, 84, 0.2);
+}
+.trendingIcon { color: var(--brand-indigo); }
+
 @media (max-width: 480px) {
   .searchCount { width: 100%; margin-left: 0; padding-top: 4px; border-top: 1px solid rgba(0,0,0,0.05); }
 }
@@ -352,8 +358,8 @@
 
 /* Weather Suggestion Box */
 .weatherBox {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(245, 240, 230, 0.8) 100%);
-  backdrop-filter: blur(12px);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 240, 230, 0.95) 100%);
+  backdrop-filter: blur(6px);
   border: 1px solid rgba(139, 94, 60, 0.15);
   padding: 24px;
   margin-bottom: 24px;
@@ -394,9 +400,9 @@
 }
 
 .location {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 1.5px;
   margin-top: 6px;
@@ -405,7 +411,7 @@
 .weatherTitle h3 {
   font-size: 1.05rem;
   font-weight: 700;
-  color: var(--brand-brown);
+  color: #000;
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -429,7 +435,8 @@
 .suggestionText {
   font-size: 0.95rem;
   line-height: 1.7;
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  font-weight: 500;
   position: relative;
 }
 

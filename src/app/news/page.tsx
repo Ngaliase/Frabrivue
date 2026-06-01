@@ -32,7 +32,7 @@ export default async function NewsArchivePage() {
               <span>{locale === 'en' ? 'INSIGHTS & TRENDS' : 'XU HƯỚNG & TIN TỨC'}</span>
             </div>
             <h1 className={styles.heroTitle}>
-              {locale === 'en' ? 'Fashion Chronicles' : 'Nhật Ký Thời Trang'}
+              {locale === 'en' ? 'Fashion Chronicles' : 'Tin tức'}
             </h1>
             <p className={styles.heroSubtitle}>
               {locale === 'en' 

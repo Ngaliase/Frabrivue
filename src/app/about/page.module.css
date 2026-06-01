@@ -372,6 +372,93 @@
 }
 
 /* ===========================
+   CONTACT SECTION
+   =========================== */
+.contactCard {
+  background: linear-gradient(135deg, #002B80 0%, #0055FF 100%);
+  border-radius: 0;
+  padding: 80px 60px;
+  text-align: center;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.contactCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px rgba(0, 85, 255, 0.25);
+}
+
+.contactIcon {
+  color: #fff;
+  margin-bottom: 32px;
+  opacity: 0.95;
+  filter: drop-shadow(0 2px 8px rgba(255, 255, 255, 0.3));
+}
+
+.contactSectionLabel {
+  color: rgba(255, 255, 255, 0.12);
+  font-size: 6rem;
+  font-weight: 800;
+  line-height: 1;
+  user-select: none;
+  font-family: var(--font-jakarta);
+  pointer-events: none;
+  margin-bottom: 8px;
+}
+
+.contactCard .sectionTitle {
+  color: #fff;
+  margin-bottom: 24px;
+}
+
+.contactCard .sectionTitle::after {
+  background: #fff;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.contactText {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 600px;
+  margin: 0 auto 40px;
+  font-weight: 500;
+}
+
+.contactBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: #0055FF;
+  font-weight: 700;
+  padding: 16px 36px;
+  border-radius: 0;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all var(--transition-base);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+}
+
+.contactBtn:hover {
+  background: var(--brand-brown);
+  color: #002B80;
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.contactBtn:active {
+  transform: translateY(0);
+}
+
+/* ===========================
    RESPONSIVE
    =========================== */
 @media (max-width: 1024px) {
@@ -406,7 +493,8 @@
     grid-template-columns: 1fr;
   }
 
-  .visionCard {
+  .visionCard,
+  .contactCard {
     padding: 60px 24px;
   }
 
